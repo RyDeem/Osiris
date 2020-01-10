@@ -1508,8 +1508,8 @@ void Config::save(size_t id) const noexcept
 		visualsJson["Custom Viewmodel Knife Switch"] = visuals.customViewmodelMenuSwitch;
 		visualsJson["Custom Viewmodel Switch Hand"] = visuals.customViewmodelSwitchHand;
 		visualsJson["Custom Viewmodel Switch Hand Knife"] = visuals.customViewmodelSwitchHandKnife;
-		visualsJson["Custom Viewmodel Menu Switch"] = visuals.customViewmodelSwitchHandKnife;
-		visualsJson["Custom Viewmodel Menu Customize"] = visuals.customViewmodelSwitchHandKnife;
+		visualsJson["Custom Viewmodel Menu Switch"] = visuals.customViewmodelMenuSwitch;
+		visualsJson["Custom Viewmodel Menu Customize"] = visuals.customViewmodelMenuCustomize;
 		visualsJson["Custom Viewmodel X Knife"] = visuals.viewmodel_x_knife;
 		visualsJson["Custom Viewmodel Y Knife"] = visuals.viewmodel_y_knife;
 		visualsJson["Custom Viewmodel Z Knife"] = visuals.viewmodel_z_knife;
