@@ -38,15 +38,15 @@ void Visuals::customViewmodelPosition() noexcept {
 
 	*(int*)((DWORD)& sv_minspec->onChangeCallbacks + 0xC) = 0;
 
-	static bool rightHandDefault = cl_righthand;
+	const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
 
 	if (config.visuals.customViewmodelToggle) {
-		
-		const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
+
+
 		if (!localPlayer)
 			return;
 		if (sv_minspec) {
-		sv_minspec->setValue(0);
+			sv_minspec->setValue(0);
 		};
 		if (!BombOut && !KnifeOut) {
 			view_x->setValue(config.visuals.viewmodel_x);
@@ -54,7 +54,8 @@ void Visuals::customViewmodelPosition() noexcept {
 			view_z->setValue(config.visuals.viewmodel_z);
 			if (!config.visuals.customViewmodelSwitchHand) {
 				cl_righthand->setValue(1);
-			}else {
+			}
+			else {
 				cl_righthand->setValue(0);
 			};
 		};
@@ -66,7 +67,8 @@ void Visuals::customViewmodelPosition() noexcept {
 
 			if (!config.visuals.customViewmodelSwitchHandKnife) {
 				cl_righthand->setValue(1);
-			}else{
+			}
+			else {
 				cl_righthand->setValue(0);
 			};
 		};
@@ -76,19 +78,16 @@ void Visuals::customViewmodelPosition() noexcept {
 			view_y->setValue(0);
 			view_z->setValue(0);
 		};
-	}
-	else if (!config.visuals.customViewmodelToggle) {
-
-		const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
-		if (!localPlayer)
-			return;
+	};
+	if (!config.visuals.customViewmodelToggle) {
 		if (!sv_minspec) {
 			sv_minspec->setValue(1);
 		};
+		if (!localPlayer)
+			return;
 		view_x->setValue(0);
 		view_y->setValue(0);
 		view_z->setValue(0);
-		cl_righthand->setValue(rightHandDefault);
 	};
 };
 

@@ -767,6 +767,10 @@ void GUI::renderVisualsWindow() noexcept
 		};
 		bool customViewmodelMenuSwitch = 0;
 		ImGui::Checkbox("Viewmodel Position", &config.visuals.customViewmodelToggle);
+		if (config.visuals.customViewmodelToggle) {
+		ImGui::SameLine();
+		ImGui::Checkbox("Customize", &config.visuals.customViewmodelMenuCustomize);
+		};
 		if (!config.visuals.customViewmodelToggle) {
 			config.visuals.customViewmodelKnifeEnabled = 0;
 		};
@@ -776,10 +780,8 @@ void GUI::renderVisualsWindow() noexcept
 		if (config.visuals.customViewmodelKnifeToggle) {
 			customViewmodelMenuSwitch = 1;
 		};
-		if (config.visuals.customViewmodelToggle && !config.visuals.customViewmodelKnifeToggle && !customViewmodelMenuSwitch) {
+		if (config.visuals.customViewmodelToggle && !config.visuals.customViewmodelKnifeToggle && !customViewmodelMenuSwitch && config.visuals.customViewmodelMenuCustomize) {
 			config.visuals.customViewmodelKnifeEnabled = 1;
-			ImGui::SameLine();
-			ImGui::Checkbox("Knife Position", &config.visuals.customViewmodelKnifeToggle);
 			ImGui::PushItemWidth(280.0f);
 			ImGui::PushID(1);
 			ImGui::SliderFloat("", &config.visuals.viewmodel_x, -20, 20, "Left/Right: %.2f");
@@ -790,12 +792,12 @@ void GUI::renderVisualsWindow() noexcept
 			ImGui::PushID(3);
 			ImGui::SliderFloat("", &config.visuals.viewmodel_z, -20, 20, "Down/Up: %.2f");
 			ImGui::PopID();
-			ImGui::Checkbox("Right/Left hand Weapon", &config.visuals.customViewmodelSwitchHand);
-		};
-		if (config.visuals.customViewmodelKnifeToggle && customViewmodelMenuSwitch && config.visuals.customViewmodelToggle) {
-			config.visuals.customViewmodelKnifeEnabled = 1;
+			ImGui::Checkbox("Right/Left Hand", &config.visuals.customViewmodelSwitchHand);
 			ImGui::SameLine();
 			ImGui::Checkbox("Knife Position", &config.visuals.customViewmodelKnifeToggle);
+		};
+		if (config.visuals.customViewmodelKnifeToggle && customViewmodelMenuSwitch && config.visuals.customViewmodelToggle && config.visuals.customViewmodelMenuCustomize) {
+			config.visuals.customViewmodelKnifeEnabled = 1;
 			ImGui::PushItemWidth(280.0f);
 			ImGui::PushID(4);
 			ImGui::SliderFloat("", &config.visuals.viewmodel_x_knife, -20, 20, "Left/Right: %.2f");
@@ -806,7 +808,9 @@ void GUI::renderVisualsWindow() noexcept
 			ImGui::PushID(6);
 			ImGui::SliderFloat("", &config.visuals.viewmodel_z_knife, -20, 20, "Down/Up: %.2f");
 			ImGui::PopID();
-			ImGui::Checkbox("Right/Left hand Knife", &config.visuals.customViewmodelSwitchHandKnife);
+			ImGui::Checkbox("Right/Left Hand", &config.visuals.customViewmodelSwitchHandKnife);
+			ImGui::SameLine();
+			ImGui::Checkbox("Knife Position", &config.visuals.customViewmodelKnifeToggle);
 		};
 		ImGui::NextColumn();
 		ImGui::Checkbox("Zoom", &config.visuals.zoom);

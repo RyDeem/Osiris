@@ -721,6 +721,8 @@ void Config::load(size_t id) noexcept
 		if (visualsJson.isMember("Hit marker Damage Indicator Text X")) visuals.hitMarkerDamageIndicatorTextX = visualsJson["Hit marker Damage Indicator Text X"].asInt();
 		if (visualsJson.isMember("Hit marker Damage Indicator Text Y")) visuals.hitMarkerDamageIndicatorTextY = visualsJson["Hit marker Damage Indicator Text Y"].asInt();
 		if (visualsJson.isMember("Custom Viewmodel Toggle")) visuals.customViewmodelToggle = visualsJson["Custom Viewmodel Toggle"].asBool();
+		if (visualsJson.isMember("Custom Viewmodel Menu Switch")) visuals.customViewmodelMenuSwitch = visualsJson["Custom Viewmodel Menu Switch"].asBool();
+		if (visualsJson.isMember("Custom Viewmodel Menu Customize")) visuals.customViewmodelMenuCustomize = visualsJson["Custom Viewmodel Menu Customize"].asBool();
 		if (visualsJson.isMember("Custom Viewmodel X")) visuals.viewmodel_x = visualsJson["Custom Viewmodel X"].asFloat();
 		if (visualsJson.isMember("Custom Viewmodel Y")) visuals.viewmodel_y = visualsJson["Custom Viewmodel Y"].asFloat();
 		if (visualsJson.isMember("Custom Viewmodel Z")) visuals.viewmodel_z = visualsJson["Custom Viewmodel Z"].asFloat();
@@ -1506,6 +1508,8 @@ void Config::save(size_t id) const noexcept
 		visualsJson["Custom Viewmodel Knife Switch"] = visuals.customViewmodelMenuSwitch;
 		visualsJson["Custom Viewmodel Switch Hand"] = visuals.customViewmodelSwitchHand;
 		visualsJson["Custom Viewmodel Switch Hand Knife"] = visuals.customViewmodelSwitchHandKnife;
+		visualsJson["Custom Viewmodel Menu Switch"] = visuals.customViewmodelSwitchHandKnife;
+		visualsJson["Custom Viewmodel Menu Customize"] = visuals.customViewmodelSwitchHandKnife;
 		visualsJson["Custom Viewmodel X Knife"] = visuals.viewmodel_x_knife;
 		visualsJson["Custom Viewmodel Y Knife"] = visuals.viewmodel_y_knife;
 		visualsJson["Custom Viewmodel Z Knife"] = visuals.viewmodel_z_knife;

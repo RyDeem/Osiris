@@ -207,6 +207,7 @@ public:
 		bool customViewmodelKnifeOut{ false };
 		bool customViewmodelKnifeEnabled{ false };
 		bool customViewmodelMenuSwitch{ false };
+		bool customViewmodelMenuCustomize{ false };
 		bool customViewmodelBombEquiped{ false };
 		bool customViewmodelSwitchHand{ false };
 		bool customViewmodelSwitchHandKnife{ false };
