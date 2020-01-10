@@ -749,7 +749,7 @@ void GUI::renderVisualsWindow() noexcept
 		ImGui::Checkbox("No shadows", &config.visuals.noShadows);
 		ImGui::Checkbox("Wireframe smoke", &config.visuals.wireframeSmoke);
 		ImGui::Checkbox("Deagle spinner", &config.visuals.deagleSpinner);
-		ImGui::Checkbox("Physics Timescale", &config.visuals.ragdollTimescaleEnable);
+		ImGui::Checkbox("Physics Timescale  ", &config.visuals.ragdollTimescaleEnable);
 		if (config.visuals.ragdollTimescaleEnable) {
 			ImGui::SameLine();
 			ImGui::Checkbox("Customize Timescale", &config.visuals.ragdollTimescaleCustomize);
@@ -757,10 +757,10 @@ void GUI::renderVisualsWindow() noexcept
 		if (config.visuals.ragdollTimescaleCustomize) {
 			ImGui::InputFloat("    ", &config.visuals.ragdollTimescale, 0, 10, "%.2f");
 		};
-		ImGui::Checkbox("Flip ragdoll gravity", &config.visuals.inverseRagdollGravity);
+		ImGui::Checkbox("Flip ragdoll gravity ", &config.visuals.inverseRagdollGravity);
 		if (config.visuals.inverseRagdollGravity) {
 			ImGui::SameLine();
-			ImGui::Checkbox("Customize gravity", &config.visuals.inverseRagdollGravityCustomize);
+			ImGui::Checkbox("Customize Gravity", &config.visuals.inverseRagdollGravityCustomize);
 		};
 		if (config.visuals.inverseRagdollGravityCustomize && config.visuals.inverseRagdollGravity) {
 			ImGui::InputInt("   ", &config.visuals.inverseRagdollGravityValue, -2400, 2400);
@@ -769,7 +769,7 @@ void GUI::renderVisualsWindow() noexcept
 		ImGui::Checkbox("Viewmodel Position", &config.visuals.customViewmodelToggle);
 		if (config.visuals.customViewmodelToggle) {
 		ImGui::SameLine();
-		ImGui::Checkbox("Customize", &config.visuals.customViewmodelMenuCustomize);
+		ImGui::Checkbox("Customize Position", &config.visuals.customViewmodelMenuCustomize);
 		};
 		if (!config.visuals.customViewmodelToggle) {
 			config.visuals.customViewmodelKnifeEnabled = 0;
