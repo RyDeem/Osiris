@@ -38,14 +38,16 @@ void Visuals::customViewmodelPosition() noexcept {
 
 	*(int*)((DWORD)& sv_minspec->onChangeCallbacks + 0xC) = 0;
 
+	static bool rightHandDefault = cl_righthand;
+
 	if (config.visuals.customViewmodelToggle) {
 		
 		const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
 		if (!localPlayer)
 			return;
-
+		if (sv_minspec) {
 		sv_minspec->setValue(0);
-
+		};
 		if (!BombOut && !KnifeOut) {
 			view_x->setValue(config.visuals.viewmodel_x);
 			view_y->setValue(config.visuals.viewmodel_y);
@@ -80,11 +82,13 @@ void Visuals::customViewmodelPosition() noexcept {
 		const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
 		if (!localPlayer)
 			return;
-
-		sv_minspec->setValue(1);
+		if (!sv_minspec) {
+			sv_minspec->setValue(1);
+		};
 		view_x->setValue(0);
 		view_y->setValue(0);
 		view_z->setValue(0);
+		cl_righthand->setValue(rightHandDefault);
 	};
 };
 
