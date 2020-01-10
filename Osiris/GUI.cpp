@@ -857,7 +857,7 @@ void GUI::renderVisualsWindow() noexcept
 		ImGui::Checkbox("Hit Damage", &config.visuals.hitMarkerDamageIndicator);
 		if (config.visuals.hitMarkerDamageIndicator) {
 			ImGui::SameLine();
-			ImGui::Checkbox("Customize HitDamage", &config.visuals.hitMarkerDamageIndicatorCustomize);
+			ImGui::Checkbox("Customize Hit Damage", &config.visuals.hitMarkerDamageIndicatorCustomize);
 		};
 		ImGui::PushID(14);
 		ImGui::SliderFloat("", &config.visuals.hitMarkerTime, 0.01f, 1.0f, "Hit marker time: %.2fs");
