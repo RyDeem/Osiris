@@ -852,6 +852,23 @@ void GUI::renderVisualsWindow() noexcept
 		ImGuiCustom::colorPicker("World color", config.visuals.world);
 		ImGui::SameLine();
 		ImGuiCustom::colorPicker("Sky color", config.visuals.sky);
+        ImGui::Checkbox("Color correction", &config.visuals.colorCorrection.enabled);
+        ImGui::SameLine();
+        bool ccPopup = ImGui::Button("Edit");
+
+        if (ccPopup)
+            ImGui::OpenPopup("##popup");
+
+        if (ImGui::BeginPopup("##popup")) {
+            ImGui::VSliderFloat("##1", { 40.0f, 160.0f }, &config.visuals.colorCorrection.blue, 0.0f, 1.0f, "Blue\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##2", { 40.0f, 160.0f }, &config.visuals.colorCorrection.red, 0.0f, 1.0f, "Red\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##3", { 40.0f, 160.0f }, &config.visuals.colorCorrection.mono, 0.0f, 1.0f, "Mono\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##4", { 40.0f, 160.0f }, &config.visuals.colorCorrection.saturation, 0.0f, 1.0f, "Sat\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##5", { 40.0f, 160.0f }, &config.visuals.colorCorrection.ghost, 0.0f, 1.0f, "Ghost\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##6", { 40.0f, 160.0f }, &config.visuals.colorCorrection.green, 0.0f, 1.0f, "Green\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##7", { 40.0f, 160.0f }, &config.visuals.colorCorrection.yellow, 0.0f, 1.0f, "Yellow\n%.3f"); ImGui::SameLine();
+            ImGui::EndPopup();
+        }
 		ImGui::Combo("VFX", &config.visuals.screenEffect, "None\0Drone cam\0Drone cam with noise\0Underwater\0Healthboost\0Dangerzone\0");
 		ImGui::Combo("HitMark", &config.visuals.hitMarker, "None\0Drone cam\0Drone cam with noise\0Underwater\0Healthboost\0Dangerzone\0");
 		ImGui::Checkbox("Hit Damage", &config.visuals.hitMarkerDamageIndicator);

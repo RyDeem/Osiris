@@ -704,6 +704,18 @@ void Config::load(size_t id) noexcept
             if (skyJson.isMember("Rainbow")) visuals.sky.rainbow = skyJson["Rainbow"].asBool();
             if (skyJson.isMember("Rainbow speed")) visuals.sky.rainbowSpeed = skyJson["Rainbow speed"].asFloat();
         }
+        if (visualsJson.isMember("Color correction")) {
+            const auto& cc = visualsJson["Color correction"];
+
+            if (cc.isMember("Enabled")) visuals.colorCorrection.enabled = cc["Enabled"].asBool();
+            if (cc.isMember("Blue")) visuals.colorCorrection.blue = cc["Blue"].asFloat();
+            if (cc.isMember("Red")) visuals.colorCorrection.red = cc["Red"].asFloat();
+            if (cc.isMember("Mono")) visuals.colorCorrection.mono = cc["Mono"].asFloat();
+            if (cc.isMember("Saturation")) visuals.colorCorrection.saturation = cc["Saturation"].asFloat();
+            if (cc.isMember("Ghost")) visuals.colorCorrection.ghost = cc["Ghost"].asFloat();
+            if (cc.isMember("Green")) visuals.colorCorrection.green = cc["Green"].asFloat();
+            if (cc.isMember("Yellow")) visuals.colorCorrection.yellow = cc["Yellow"].asFloat();
+        }
         if (visualsJson.isMember("Deagle spinner")) visuals.deagleSpinner = visualsJson["Deagle spinner"].asBool();
         if (visualsJson.isMember("Screen effect")) visuals.screenEffect = visualsJson["Screen effect"].asInt();
         if (visualsJson.isMember("Hit marker")) visuals.hitMarker = visualsJson["Hit marker"].asInt();
@@ -1485,6 +1497,17 @@ void Config::save(size_t id) const noexcept
             skyJson["Rainbow speed"] = visuals.sky.rainbowSpeed;
         }
 
+        {
+            auto& cc = visualsJson["Color correction"];
+            cc["Enabled"] = visuals.colorCorrection.enabled;
+            cc["Blue"] = visuals.colorCorrection.blue;
+            cc["Red"] = visuals.colorCorrection.red;
+            cc["Mono"] = visuals.colorCorrection.mono;
+            cc["Saturation"] = visuals.colorCorrection.saturation;
+            cc["Ghost"] = visuals.colorCorrection.ghost;
+            cc["Green"] = visuals.colorCorrection.green;
+            cc["Yellow"] = visuals.colorCorrection.yellow;
+        }
         visualsJson["Deagle spinner"] = visuals.deagleSpinner;
         visualsJson["Screen effect"] = visuals.screenEffect;
         visualsJson["Hit marker"] = visuals.hitMarker;

@@ -216,6 +216,16 @@ public:
 		float viewmodel_z_knife{ 0 };
 		bool view_bob{ false };
 		bool full_bright{ false };
+        struct {
+            bool enabled = false;
+            float blue = 0.0f;
+            float red = 0.0f;
+            float mono = 0.0f;
+            float saturation = 0.0f;
+            float ghost = 0.0f;
+            float green = 0.0f;
+            float yellow = 0.0f;
+        } colorCorrection;
     } visuals;
 
     std::array<item_setting, 36> skinChanger;
@@ -249,8 +259,8 @@ public:
         bool animatedClanTag{ false };
         bool fastDuck{ false };
         bool moonwalk{ false };
-		bool edgejump{ false };
-		int edgejumpkey{ 0 };
+        bool edgejump{ false };
+        int edgejumpkey{ 0 };
         bool slowwalk{ false };
         int slowwalkKey{ 0 };
         bool sniperCrosshair{ false };
