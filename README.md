@@ -4,17 +4,27 @@ Added by ry:
 
 Added:
 -Ping Based Backtrack
+
 -Draw all backtrack cham ticks
+
 -Fullbright Light//mat_fullbright
+
 -Ragdoll Gravity custom value changer
+
 -Ragdoll Physics time scale (faster or slower moving body through time/air)//cl_phys_timescale
+
 -Added remove weapon sway when moving/running option.//cl_use_new_headbob
 
 -Viewmodel Move XYZ for weapons and knife independently(sv_minspec->setValue(1); is needed for more then 2.5 each xyz direction, now up to a max of 20.)
+
 -cl_righthand in menu when selecting viewmodel for weapons and knife independent(if you quit out of the game not disabling viewmodel position cl_righthand will stay what it was on last exit cheat controlled BUG)
+
 -default (0.0.0) location for bomb equip viewmodel forced. (works 95% of the time)
+
 -Hitmarker Damage numbers animation from chrosshair with menu settings integration.
+
 -spec list on players you are spectating added
+
 -Config save/load integration for all of the above.
 
 ////////////////////////////////////////////////////////////////////////
