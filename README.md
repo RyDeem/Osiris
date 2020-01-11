@@ -1,5 +1,47 @@
 # Osiris [![C++](https://img.shields.io/badge/language-C%2B%2B-%23f34b7d.svg)](https://en.wikipedia.org/wiki/C%2B%2B) [![CS:GO](https://img.shields.io/badge/game-CS%3AGO-yellow.svg)](https://store.steampowered.com/app/730/CounterStrike_Global_Offensive/) [![Windows](https://img.shields.io/badge/platform-Windows-0078d7.svg)](https://en.wikipedia.org/wiki/Microsoft_Windows) [![x86](https://img.shields.io/badge/arch-x86-red.svg)](https://en.wikipedia.org/wiki/X86) [![License](https://img.shields.io/github/license/danielkrupinski/Osiris.svg)](LICENSE) ![](https://img.shields.io/github/issues/danielkrupinski/Osiris.svg)
 
+Added by ry:
+
+Added:
+-Ping Based Backtrack
+-Draw all backtrack cham ticks
+-Fullbright Light//mat_fullbright
+-Ragdoll Gravity custom value changer
+-Ragdoll Physics time scale (faster or slower moving body through time/air)//cl_phys_timescale
+-Added remove weapon sway when moving/running option.//cl_use_new_headbob
+
+-Viewmodel Move XYZ for weapons and knife independently(sv_minspec->setValue(1); is needed for more then 2.5 each xyz direction, now up to a max of 20.)
+-cl_righthand in menu when selecting viewmodel for weapons and knife independent(if you quit out of the game not disabling viewmodel position cl_righthand will stay what it was on last exit cheat controlled BUG)
+-default (0.0.0) location for bomb equip viewmodel forced. (works 95% of the time)
+-Hitmarker Damage numbers animation from chrosshair with menu settings integration.
+-spec list on players you are spectating added
+-Config save/load integration for all of the above.
+
+////////////////////////////////////////////////////////////////////////
+if (config.human.reader) > (config.emotion.interested)=extended description{
+
+-Pingbased backtrack is what it says on the tin, it makes the backtrack lenght match your ingame ping to server in ms. If you disable pingbased you can see the ping value in backtrack tick ms slider on the gui. Basically takes similar code like on the fps/ping watermark.
+
+-Fullbright light = forces mat_fullbright 1 and disables brightness slider, as in my test it did nothing with fullbright on, change the world color for much crisper light now, and see chams better on no shadows and light changes in the enviroment.
+
+-Gravity value changer = customize the gravity abount you get with the flip gravity gui button,
+do -600(default or -2400 for fast moving flying upwards ragdolls. Want them to suck to the ground when they die instantly? do 2400.
+
+-Added a gui interface thats not perfect onto ZerGo0'ds code for changing the hitmarker damage settings, would be better if i understood how he calls for movement direction in the code. not gud coder eh,? yas :/
+
+-And i moved around things in the visuals window, hope people arent mad about that, i had to put my new GUI poppup sliders for gravity changer, viewmodel xyz and hitmarker at the bottom for max nice effect xd
+
+-Added ragdoll Physics timescale float input window for when selecting the option in visuals, default is 1.0 and you can set it to 0.5 for half as fast ragdoll animation/physics or 2x for faster, onr anything inbetween. Goes up from 0.0x to 10x.
+
+};
+//////////
+
+Thank you coders!
+#835 By ZerGo0 // Hitmarker Damage Indicator
+#894 By agshaidun // Spec List on other players
+#730 By JDeu // Draw All Backtrack Tick Chams
+#584 By effex1337 // View Model Offset XYZ
+
 Free open-source training software / cheat for **Counter-Strike: Global Offensive** game. Designed as internal cheat - [Dynamic-link library](https://en.wikipedia.org/wiki/Dynamic-link_library) (DLL) loadable into game process. Compatible with the latest version of the game on Steam.
 
 ## Features
