@@ -16,19 +16,11 @@
 
 void Visuals::customViewmodelPosition() noexcept {
 
-    bool KnifeOut = 0;
-    bool BombOut = 0;
-    if (const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer())) {
-        if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::Knife) KnifeOut = 1;else KnifeOut = 0;
-        if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::C4) BombOut = 1;else BombOut = 0;
-    }
-
     static ConVar* view_x = interfaces.cvar->findVar("viewmodel_offset_x");
     static ConVar* view_y = interfaces.cvar->findVar("viewmodel_offset_y");
     static ConVar* view_z = interfaces.cvar->findVar("viewmodel_offset_z");
-    static ConVar* sv_minspec = interfaces.cvar->findVar("sv_competitive_minspec");
-    static ConVar* cl_righthand = interfaces.cvar->findVar("cl_righthand");
-
+	static ConVar* sv_minspec = interfaces.cvar->findVar("sv_competitive_minspec");
+	static ConVar* cl_rightHand = interfaces.cvar->findVar("cl_righthand");
     *(int*)((DWORD)& sv_minspec->onChangeCallbacks + 0xC) = 0;
 
     const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
@@ -36,26 +28,42 @@ void Visuals::customViewmodelPosition() noexcept {
     if (config.visuals.customViewmodelToggle) {
         if (!localPlayer)
             return;
+		bool KnifeOut = 0;
+		bool BombOut = 0;
+		bool DualPistolsOut = 0;
+		if (const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer())) {
+			if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::Knife) KnifeOut = 1; else KnifeOut = 0;
+			if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::C4) BombOut = 1; else BombOut = 0;
+			if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::Elite) DualPistolsOut = 1; else DualPistolsOut = 0;
+		}
+		
         sv_minspec->setValue(0);
-        if (!BombOut && !KnifeOut) {
+        if (!BombOut && !KnifeOut && !DualPistolsOut) {
             view_x->setValue(config.visuals.viewmodel_x);
             view_y->setValue(config.visuals.viewmodel_y);
             view_z->setValue(config.visuals.viewmodel_z);
-            if (!config.visuals.customViewmodelSwitchHand) {cl_righthand->setValue(1);}else {cl_righthand->setValue(0);}
+            if (!config.visuals.customViewmodelSwitchHand){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}
         }
         if (KnifeOut) {
             view_x->setValue(config.visuals.viewmodel_x_knife);
             view_y->setValue(config.visuals.viewmodel_y_knife);
             view_z->setValue(config.visuals.viewmodel_z_knife);
-            if (!config.visuals.customViewmodelSwitchHandKnife) {cl_righthand->setValue(1);}else {cl_righthand->setValue(0);}
+            if (!config.visuals.customViewmodelSwitchHandKnife){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}
         }
         if (BombOut) {
             view_x->setValue(0);
             view_y->setValue(0);
             view_z->setValue(0);
         }
+		if (DualPistolsOut) {
+			view_x->setValue(0);
+			view_y->setValue(config.visuals.viewmodel_y);
+			view_z->setValue(config.visuals.viewmodel_z);
+			if (!config.visuals.customViewmodelSwitchHand){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}
+		}
     }else{
-        sv_minspec->setValue(1);
+		sv_minspec->setValue(1);
+		cl_rightHand->setValue(1);
         view_x->setValue(0);
         view_y->setValue(0);
         view_z->setValue(0);
