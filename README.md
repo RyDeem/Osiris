@@ -2,6 +2,8 @@
 
 Added by ry:
 
+updated to  3,480 commit on daniel master branch (should be latest checking every day)
+
 Added:
 
 -Ping Based Backtrack
