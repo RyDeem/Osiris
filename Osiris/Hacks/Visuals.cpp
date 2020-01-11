@@ -41,13 +41,8 @@ void Visuals::customViewmodelPosition() noexcept {
 	const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
 
 	if (config.visuals.customViewmodelToggle) {
-
-
 		if (!localPlayer)
 			return;
-		if (sv_minspec) {
-			sv_minspec->setValue(0);
-		};
 		if (!BombOut && !KnifeOut) {
 			view_x->setValue(config.visuals.viewmodel_x);
 			view_y->setValue(config.visuals.viewmodel_y);
@@ -59,7 +54,6 @@ void Visuals::customViewmodelPosition() noexcept {
 				cl_righthand->setValue(0);
 			};
 		};
-
 		if (KnifeOut) {
 			view_x->setValue(config.visuals.viewmodel_x_knife);
 			view_y->setValue(config.visuals.viewmodel_y_knife);
@@ -72,87 +66,63 @@ void Visuals::customViewmodelPosition() noexcept {
 				cl_righthand->setValue(0);
 			};
 		};
-
 		if (BombOut) {
 			view_x->setValue(0);
 			view_y->setValue(0);
 			view_z->setValue(0);
 		};
-	};
-	if (!config.visuals.customViewmodelToggle) {
-		if (!sv_minspec) {
-			sv_minspec->setValue(1);
-		};
+	}else{
+		sv_minspec->setValue(1);
 		if (!localPlayer)
 			return;
 		view_x->setValue(0);
 		view_y->setValue(0);
 		view_z->setValue(0);
 	};
-};
+}
 
 void Visuals::physicsTimescale() noexcept {
-
-	static ConVar* cl_phys_timescale = interfaces.cvar->findVar("cl_phys_timescale");
-
-	if (!config.visuals.ragdollTimescaleEnable) {
-		cl_phys_timescale->setValue(1);
-	};
-	if (config.visuals.ragdollTimescaleEnable) {
-		cl_phys_timescale->setValue(config.visuals.ragdollTimescale);
-	};
-};
+    const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
+    if (!localPlayer)
+        return;
+    static auto physicsTimescale = interfaces.cvar->findVar("cl_phys_timescale");
+    physicsTimescale->setValue(config.visuals.ragdollTimescaleEnable ? config.visuals.ragdollTimescale : 1);
+}
 
 void Visuals::viewBob() noexcept {
-
-	static ConVar* view_bob = interfaces.cvar->findVar("cl_use_new_headbob");
-
-	if (!config.visuals.view_bob) {
-		view_bob->setValue(config.visuals.view_bob ? 1 : 1);
-	};
-	if (config.visuals.view_bob) {
-		view_bob->setValue(config.visuals.view_bob ? 0 : 1);
-	};
-};
+    static auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
+    if (!localPlayer)
+        return;
+    interfaces.cvar->findVar("cl_use_new_headbob")->setValue(config.visuals.view_bob ? 0 : 1);
+}
 
 void Visuals::fullBright() noexcept {
-
-	static ConVar* full_bright = interfaces.cvar->findVar("mat_fullbright");
-
-	if (!config.visuals.full_bright) {
-		full_bright->setValue(config.visuals.full_bright ? 0 : 0);
-	};
-	if (config.visuals.full_bright) {
-		full_bright->setValue(config.visuals.full_bright ? 1 : 0);
-	};
-};
+    static auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
+    if (!localPlayer)
+        return;
+    interfaces.cvar->findVar("mat_fullbright")->setValue(config.visuals.full_bright ? 1 : 0);
+}
 
 void Visuals::hitMarkerSetDamageIndicator(GameEvent* event) noexcept{	
-
-	const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
-	if (!localPlayer)
-		return;
-
-	if (config.visuals.hitMarkerDamageIndicator)
-	{
-		if (event && interfaces.engine->getPlayerForUserID(event->getInt("attacker")) == interfaces.engine->getLocalPlayer()) {
-			hitMarkerInfo.push_back({ memory.globalVars->realtime + config.visuals.hitMarkerTime, event->getInt("dmg_health") });
-		}
-	}
+    const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
+    if (!localPlayer)
+        return;
+    if (config.visuals.hitMarkerDamageIndicator){
+        if (event && interfaces.engine->getPlayerForUserID(event->getInt("attacker")) == interfaces.engine->getLocalPlayer()) {
+            hitMarkerInfo.push_back({ memory.globalVars->realtime + config.visuals.hitMarkerTime, event->getInt("dmg_health") });
+        }
+    }
 }
 
 void Visuals::hitMarkerDamageIndicator() noexcept
 {
-	if (config.visuals.hitMarkerDamageIndicator)
-	{
-		if (hitMarkerInfo.empty()) return;
-
-		const auto [width, height] = interfaces.surface->getScreenSize();
-
-		for (size_t i = 0; i < hitMarkerInfo.size(); i++)
-		{
-			const auto diff = hitMarkerInfo.at(i).hitMarkerExpTime - memory.globalVars->realtime;
-
+    if (config.visuals.hitMarkerDamageIndicator)
+    {
+        if (hitMarkerInfo.empty()) return;
+        const auto [width, height] = interfaces.surface->getScreenSize();
+        for (size_t i = 0; i < hitMarkerInfo.size(); i++)
+        {
+            const auto diff = hitMarkerInfo.at(i).hitMarkerExpTime - memory.globalVars->realtime;
 			if (diff < 0.f)
 			{
 				hitMarkerInfo.erase(hitMarkerInfo.begin() + i);
