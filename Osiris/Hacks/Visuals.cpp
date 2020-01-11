@@ -22,7 +22,7 @@ void Visuals::customViewmodelPosition() noexcept {
 	static ConVar* sv_minspec = interfaces.cvar->findVar("sv_competitive_minspec");
 	static ConVar* cl_rightHand = interfaces.cvar->findVar("cl_righthand");
     *(int*)((DWORD)& sv_minspec->onChangeCallbacks + 0xC) = 0;
-
+	
     const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
 
     if (config.visuals.customViewmodelToggle) {
@@ -56,7 +56,7 @@ void Visuals::customViewmodelPosition() noexcept {
             view_z->setValue(0);
         }
 		if (DualPistolsOut) {
-			view_x->setValue(0);
+			view_x->setValue(0.118f);
 			view_y->setValue(config.visuals.viewmodel_y);
 			view_z->setValue(config.visuals.viewmodel_z);
 			if (!config.visuals.customViewmodelSwitchHand){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}
@@ -82,8 +82,8 @@ void Visuals::viewBob() noexcept {
     static auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
     if (!localPlayer)
         return;
-    interfaces.cvar->findVar("cl_use_new_headbob")->setValue(config.visuals.view_bob ? 0 : 1);
-}
+		interfaces.cvar->findVar("cl_use_new_headbob")->setValue(config.visuals.view_bob ? 0 : 1);
+	}
 
 void Visuals::fullBright() noexcept {
     static auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
