@@ -734,7 +734,25 @@ void GUI::renderVisualsWindow() noexcept
         ImGui::SetColumnOffset(1, 298.0f);
         ImGui::Combo("T Player Model", &config.visuals.playerModelT, "Default\0Special Agent Ava | FBI\0Operator | FBI SWAT\0Markus Delrow | FBI HRT\0Michael Syfers | FBI Sniper\0B Squadron Officer | SAS\0Seal Team 6 Soldier | NSWC SEAL\0Buckshot | NSWC SEAL\0Lt. Commander Ricksaw | NSWC SEAL\0Third Commando Company | KSK\0'Two Times' McCoy | USAF TACP\0Dragomir | Sabre\0Rezan The Ready | Sabre\0'The Doctor' Romanov | Sabre\0Maximus | Sabre\0Blackwolf | Sabre\0The Elite Mr. Muhlik | Elite Crew\0Ground Rebel | Elite Crew\0Osiris | Elite Crew\0Prof. Shahmat | Elite Crew\0Enforcer | Phoenix\0Slingshot | Phoenix\0Soldier | Phoenix\0");
         ImGui::Combo("CT Player Model", &config.visuals.playerModelCT, "Default\0Special Agent Ava | FBI\0Operator | FBI SWAT\0Markus Delrow | FBI HRT\0Michael Syfers | FBI Sniper\0B Squadron Officer | SAS\0Seal Team 6 Soldier | NSWC SEAL\0Buckshot | NSWC SEAL\0Lt. Commander Ricksaw | NSWC SEAL\0Third Commando Company | KSK\0'Two Times' McCoy | USAF TACP\0Dragomir | Sabre\0Rezan The Ready | Sabre\0'The Doctor' Romanov | Sabre\0Maximus | Sabre\0Blackwolf | Sabre\0The Elite Mr. Muhlik | Elite Crew\0Ground Rebel | Elite Crew\0Osiris | Elite Crew\0Prof. Shahmat | Elite Crew\0Enforcer | Phoenix\0Slingshot | Phoenix\0Soldier | Phoenix\0");
+        if (config.visuals.colorCorrection.enabled) {
         ImGui::Checkbox("Disable post-processing", &config.visuals.disablePostProcessing);
+        config.visuals.disablePostProcessing = 0;
+        }else { config.visuals.disablePostProcessing = 1; };
+        ImGui::Checkbox("Color correction", &config.visuals.colorCorrection.enabled);
+        ImGui::SameLine();
+        bool ccPopup = ImGui::Button("Edit");
+        if (ccPopup)
+            ImGui::OpenPopup("##popup");
+        if (ImGui::BeginPopup("##popup")) {
+            ImGui::VSliderFloat("##1", { 40.0f, 160.0f }, &config.visuals.colorCorrection.blue, 0.0f, 1.0f, "Blue\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##2", { 40.0f, 160.0f }, &config.visuals.colorCorrection.red, 0.0f, 1.0f, "Red\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##3", { 40.0f, 160.0f }, &config.visuals.colorCorrection.mono, 0.0f, 1.0f, "Mono\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##4", { 40.0f, 160.0f }, &config.visuals.colorCorrection.saturation, 0.0f, 1.0f, "Sat\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##5", { 40.0f, 160.0f }, &config.visuals.colorCorrection.ghost, 0.0f, 1.0f, "Ghost\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##6", { 40.0f, 160.0f }, &config.visuals.colorCorrection.green, 0.0f, 1.0f, "Green\n%.3f"); ImGui::SameLine();
+            ImGui::VSliderFloat("##7", { 40.0f, 160.0f }, &config.visuals.colorCorrection.yellow, 0.0f, 1.0f, "Yellow\n%.3f"); ImGui::SameLine();
+            ImGui::EndPopup();
+        }
         ImGui::Checkbox("No fog", &config.visuals.noFog);
         ImGui::Checkbox("No 3d sky", &config.visuals.no3dSky);
         ImGui::Checkbox("No aim punch", &config.visuals.noAimPunch);
@@ -872,21 +890,6 @@ void GUI::renderVisualsWindow() noexcept
             ImGui::SliderFloat(" ", &config.visuals.hitMarkerDamageIndicatorRatio, -1.0f, 1.0f, "Ratio: %.2f");
             ImGui::PopID();
         };
-        ImGui::Checkbox("Color correction", &config.visuals.colorCorrection.enabled);
-        ImGui::SameLine();
-        bool ccPopup = ImGui::Button("Edit");
-        if (ccPopup)
-            ImGui::OpenPopup("##popup");
-        if (ImGui::BeginPopup("##popup")) {
-            ImGui::VSliderFloat("##1", { 40.0f, 160.0f }, &config.visuals.colorCorrection.blue, 0.0f, 1.0f, "Blue\n%.3f"); ImGui::SameLine();
-            ImGui::VSliderFloat("##2", { 40.0f, 160.0f }, &config.visuals.colorCorrection.red, 0.0f, 1.0f, "Red\n%.3f"); ImGui::SameLine();
-            ImGui::VSliderFloat("##3", { 40.0f, 160.0f }, &config.visuals.colorCorrection.mono, 0.0f, 1.0f, "Mono\n%.3f"); ImGui::SameLine();
-            ImGui::VSliderFloat("##4", { 40.0f, 160.0f }, &config.visuals.colorCorrection.saturation, 0.0f, 1.0f, "Sat\n%.3f"); ImGui::SameLine();
-            ImGui::VSliderFloat("##5", { 40.0f, 160.0f }, &config.visuals.colorCorrection.ghost, 0.0f, 1.0f, "Ghost\n%.3f"); ImGui::SameLine();
-            ImGui::VSliderFloat("##6", { 40.0f, 160.0f }, &config.visuals.colorCorrection.green, 0.0f, 1.0f, "Green\n%.3f"); ImGui::SameLine();
-            ImGui::VSliderFloat("##7", { 40.0f, 160.0f }, &config.visuals.colorCorrection.yellow, 0.0f, 1.0f, "Yellow\n%.3f"); ImGui::SameLine();
-            ImGui::EndPopup();
-        }
         ImGui::Columns(1);
 
         if (!config.style.menuStyle)
