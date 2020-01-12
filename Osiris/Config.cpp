@@ -88,6 +88,7 @@ void Config::load(size_t id) noexcept
         if (backtrackJson.isMember("Time limit")) backtrack.timeLimit = backtrackJson["Time limit"].asInt();
         if (backtrackJson.isMember("Ping Based")) backtrack.pingBased = backtrackJson["Ping Based"].asBool();
         if (backtrackJson.isMember("Draw all ticks")) backtrack.drawAllTicks = backtrackJson["Draw all ticks"].asBool();
+        if (backtrackJson.isMember("Draw Backtrack")) backtrack.drawBacktrack = backtrackJson["Draw Backtracl"].asBool();
     }
 
     {
@@ -998,6 +999,7 @@ void Config::save(size_t id) const noexcept
         backtrackJson["Time limit"] = backtrack.timeLimit;
         backtrackJson["Draw all ticks"] = backtrack.drawAllTicks;
         backtrackJson["Ping Based"] = backtrack.pingBased;
+        backtrackJson["Draw Backtrack"] = backtrack.drawBacktrack;
     }
 
     {

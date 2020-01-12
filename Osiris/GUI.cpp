@@ -406,6 +406,7 @@ void GUI::renderBacktrackWindow() noexcept
         ImGui::Checkbox("Enabled", &config.backtrack.enabled);
         ImGui::Checkbox("Ignore smoke", &config.backtrack.ignoreSmoke);
         ImGui::Checkbox("Recoil based fov", &config.backtrack.recoilBasedFov);
+        ImGui::Checkbox("Draw Backtrack", &config.backtrack.drawBacktrack);
         ImGui::Checkbox("Draw all ticks", &config.backtrack.drawAllTicks);
         ImGui::Checkbox("Ping based", &config.backtrack.pingBased);
         if (!config.backtrack.pingBased) {

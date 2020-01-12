@@ -155,7 +155,7 @@ bool Chams::renderPlayers(void* ctx, void* state, const ModelRenderInfo& info, m
                     }
                 }
 
-                if (config.chams[BACKTRACK].materials[i].enabled && config.backtrack.enabled) {
+                if (config.chams[BACKTRACK].materials[i].enabled && config.backtrack.enabled && config.backtrack.drawBacktrack) {
                     auto record = &Backtrack::records[info.entityIndex];
                     if (record && record->size() && Backtrack::valid(record->front().simulationTime)) {
                         if (applied)
