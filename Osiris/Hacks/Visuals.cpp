@@ -19,24 +19,22 @@ void Visuals::customViewmodelPosition() noexcept {
     static ConVar* view_x = interfaces.cvar->findVar("viewmodel_offset_x");
     static ConVar* view_y = interfaces.cvar->findVar("viewmodel_offset_y");
     static ConVar* view_z = interfaces.cvar->findVar("viewmodel_offset_z");
-	static ConVar* sv_minspec = interfaces.cvar->findVar("sv_competitive_minspec");
-	static ConVar* cl_rightHand = interfaces.cvar->findVar("cl_righthand");
+    static ConVar* sv_minspec = interfaces.cvar->findVar("sv_competitive_minspec");
+    static ConVar* cl_rightHand = interfaces.cvar->findVar("cl_righthand");
     *(int*)((DWORD)& sv_minspec->onChangeCallbacks + 0xC) = 0;
-	
     const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
-
     if (config.visuals.customViewmodelToggle) {
         if (!localPlayer)return;
-		bool KnifeOut = 0;bool BombOut = 0;bool DualPistolsOut = 0;
-		if (const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer())) {
-			if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::Knife) KnifeOut = 1; else KnifeOut = 0;
-			if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::C4) BombOut = 1; else BombOut = 0;
-			if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::Elite) DualPistolsOut = 1; else DualPistolsOut = 0;}
-		sv_minspec->setValue(0);
+        bool KnifeOut = 0;bool BombOut = 0;bool DualPistolsOut = 0;
+        if (const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer())) {
+            if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::Knife) KnifeOut = 1; else KnifeOut = 0;
+            if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::C4) BombOut = 1; else BombOut = 0;
+            if (const auto activeWeapon = localPlayer->getActiveWeapon(); activeWeapon && activeWeapon->getClientClass()->classId == ClassId::Elite) DualPistolsOut = 1; else DualPistolsOut = 0;}
+        sv_minspec->setValue(0);
         if (!BombOut && !KnifeOut && !DualPistolsOut){view_x->setValue(config.visuals.viewmodel_x);view_y->setValue(config.visuals.viewmodel_y);view_z->setValue(config.visuals.viewmodel_z);if (!config.visuals.customViewmodelSwitchHand){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}}
         if (KnifeOut) {view_x->setValue(config.visuals.viewmodel_x_knife);view_y->setValue(config.visuals.viewmodel_y_knife);view_z->setValue(config.visuals.viewmodel_z_knife);if (!config.visuals.customViewmodelSwitchHandKnife){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}}
         if (BombOut) {view_x->setValue(0);view_y->setValue(0);view_z->setValue(0);}
-		if (DualPistolsOut) {view_x->setValue(0.118f);view_y->setValue(config.visuals.viewmodel_y);view_z->setValue(config.visuals.viewmodel_z);if (!config.visuals.customViewmodelSwitchHand){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}}
+        if (DualPistolsOut) {view_x->setValue(0.118f);view_y->setValue(config.visuals.viewmodel_y);view_z->setValue(config.visuals.viewmodel_z);if (!config.visuals.customViewmodelSwitchHand){cl_rightHand->setValue(1);}else{cl_rightHand->setValue(0);}}
     }else{sv_minspec->setValue(1);cl_rightHand->setValue(1);view_x->setValue(0);view_y->setValue(0);view_z->setValue(0);}
 }
 
@@ -52,14 +50,14 @@ void Visuals::viewBob() noexcept {
     static auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
     if (!localPlayer)
         return;
-		interfaces.cvar->findVar("cl_use_new_headbob")->setValue(config.visuals.view_bob ? 0 : 1);
-	}
+        interfaces.cvar->findVar("cl_use_new_headbob")->setValue(config.visuals.view_bob ? 0 : 1);
+    }
 
 void Visuals::fullBright() noexcept {
     static auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
     if (!localPlayer)
         return;
-    interfaces.cvar->findVar("mat_fullbright")->setValue(config.visuals.full_bright ? 1 : 0);
+    interfaces.cvar->findVar("mat_fullbright")->setValue(config.visuals.fullBright ? 1 : 0);
 }
 
 void Visuals::hitMarkerSetDamageIndicator(GameEvent* event) noexcept{	
@@ -82,23 +80,29 @@ void Visuals::hitMarkerDamageIndicator() noexcept
         for (size_t i = 0; i < hitMarkerInfo.size(); i++)
         {
             const auto diff = hitMarkerInfo.at(i).hitMarkerExpTime - memory.globalVars->realtime;
-			if (diff < 0.f)
-			{
-				hitMarkerInfo.erase(hitMarkerInfo.begin() + i);
-				continue;
-			}
+            if (diff < 0.f)
+            {
+                hitMarkerInfo.erase(hitMarkerInfo.begin() + i);
+                continue;
+            }
 
-			const auto dist = config.visuals.hitMarkerDamageIndicatorDist;
-			const auto ratio = config.visuals.hitMarkerDamageIndicatorRatio - diff;
-			const auto alpha = diff * config.visuals.hitMarkerDamageIndicatorAlpha;
+            const auto dist = config.visuals.hitMarkerDamageIndicatorDist;
+            const auto ratio = config.visuals.hitMarkerDamageIndicatorRatio - diff;
+            const auto alpha = diff * config.visuals.hitMarkerDamageIndicatorAlpha;
 
-			const auto font_id = config.visuals.hitMarkerDamageIndicatorFont;
-			interfaces.surface->setTextFont(font_id);
-			interfaces.surface->setTextPosition(width / 2 + config.visuals.hitMarkerDamageIndicatorTextX + ratio * dist / 2, height / 2 + config.visuals.hitMarkerDamageIndicatorTextY + ratio * dist);
-			interfaces.surface->setTextColor(255, 255, 255, alpha);
-			interfaces.surface->printText(std::to_wstring(hitMarkerInfo.at(i).hitMarkerDmg));
-		}
-	}
+            const auto font_id = config.visuals.hitMarkerDamageIndicatorFont;
+            interfaces.surface->setTextFont(font_id);
+            interfaces.surface->setTextPosition(width / 2 + config.visuals.hitMarkerDamageIndicatorTextX + ratio * dist / 2, height / 2 + config.visuals.hitMarkerDamageIndicatorTextY + ratio * dist);
+            interfaces.surface->setTextColor(255, 255, 255, alpha);
+            interfaces.surface->printText(std::to_wstring(hitMarkerInfo.at(i).hitMarkerDmg));
+        }
+    }
+}
+
+void Visuals::inverseRagdollGravity() noexcept
+{
+    static auto ragdollGravity = interfaces.cvar->findVar("cl_ragdoll_gravity");
+    ragdollGravity->setValue(config.visuals.inverseRagdollGravity ? config.visuals.inverseRagdollGravityValue : 600);
 }
 
 void Visuals::playerModel(FrameStage stage) noexcept

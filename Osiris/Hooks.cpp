@@ -138,10 +138,10 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     Misc::quickHealthshot(cmd);
     Misc::fixTabletSignal();
     Misc::slowwalk(cmd);
-	Misc::edgejump(cmd);
-	Visuals::fullBright();
-	Visuals::viewBob();
-	Visuals::physicsTimescale();
+    Misc::edgejump(cmd);
+    Visuals::fullBright();
+    Visuals::viewBob();
+    Visuals::physicsTimescale();
 
     if (!(cmd->buttons & (UserCmd::IN_ATTACK | UserCmd::IN_ATTACK2))) {
         Misc::chokePackets(sendPacket);
@@ -174,7 +174,7 @@ static int __stdcall doPostScreenEffects(int param) noexcept
     if (interfaces.engine->isInGame()) {
         Visuals::modifySmoke();
         Visuals::thirdperson();
-        Misc::inverseRagdollGravity();
+        Visuals::inverseRagdollGravity();
         Visuals::disablePostProcessing();
         Visuals::reduceFlashEffect();
         Visuals::removeBlur();
@@ -182,7 +182,7 @@ static int __stdcall doPostScreenEffects(int param) noexcept
         Visuals::removeGrass();
         Visuals::remove3dSky();
         Glow::render();
-		Visuals::customViewmodelPosition();
+        Visuals::customViewmodelPosition();
     }
     return hooks.clientMode.callOriginal<int, int>(44, param);
 }
@@ -228,7 +228,7 @@ static void __stdcall paintTraverse(unsigned int panel, bool forceRepaint, bool 
         Misc::drawBombTimer();
         Misc::spectatorList();
         Misc::watermark();
-		Visuals::hitMarkerDamageIndicator();
+        Visuals::hitMarkerDamageIndicator();
     }
     hooks.panel.callOriginal<void, unsigned int, bool, bool>(41, panel, forceRepaint, allowForce);
 }
@@ -333,7 +333,7 @@ static bool __stdcall fireEventClientSide(GameEvent* event) noexcept
     case fnv::hash("player_hurt"):
         Misc::playHitSound(event);
         Visuals::hitMarker(event);
-		Visuals::hitMarkerSetDamageIndicator(event);
+        Visuals::hitMarkerSetDamageIndicator(event);
         break;
     }
     return hooks.gameEventManager.callOriginal<bool, GameEvent*>(9, event);
@@ -447,7 +447,6 @@ void __stdcall updateColorCorrectionWeights() noexcept
         *reinterpret_cast<float*>(std::uintptr_t(memory.clientMode) + 0x4D0) = cfg.yellow;
     }
 }
-
 
 Hooks::Hooks() noexcept
 {

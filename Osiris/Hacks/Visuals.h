@@ -17,6 +17,7 @@ struct HitMarkerInfo {
 };
 
 namespace Visuals {
+    void inverseRagdollGravity() noexcept;
     void playerModel(FrameStage stage) noexcept;
     void colorWorld() noexcept;
     void modifySmoke() noexcept;
@@ -30,12 +31,12 @@ namespace Visuals {
     void applyZoom(FrameStage) noexcept;
     void applyScreenEffects() noexcept;
     void hitMarker(GameEvent* = nullptr) noexcept;
-	void hitMarkerSetDamageIndicator(GameEvent* = nullptr) noexcept;
-	void hitMarkerDamageIndicator() noexcept;
-	void customViewmodelPosition() noexcept;
-	void fullBright() noexcept;
-	void viewBob() noexcept;
-	void physicsTimescale() noexcept;
+    void hitMarkerSetDamageIndicator(GameEvent* = nullptr) noexcept;
+    void hitMarkerDamageIndicator() noexcept;
+    void customViewmodelPosition() noexcept;
+    void fullBright() noexcept;
+    void viewBob() noexcept;
+    void physicsTimescale() noexcept;
 
     constexpr void disablePostProcessing() noexcept
     {
@@ -74,5 +75,5 @@ namespace Visuals {
         else
             memory.loadSky(interfaces.cvar->findVar("sv_skyname")->string);
     }
-	inline std::vector<HitMarkerInfo> hitMarkerInfo;
+    inline std::vector<HitMarkerInfo> hitMarkerInfo;
 };

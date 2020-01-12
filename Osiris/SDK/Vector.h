@@ -66,12 +66,12 @@ struct Vector {
 
     auto length() const noexcept
     {
-		return std::sqrt(x * x + y * y + z * z);
-	}
+        return std::sqrt(x * x + y * y + z * z);
+    }
 
-	auto length2D() const noexcept
-	{
-		return std::sqrt(x * x + y * y);
+    auto length2D() const noexcept
+    {
+        return std::sqrt(x * x + y * y);
     }
 
     constexpr auto squareLength() const noexcept

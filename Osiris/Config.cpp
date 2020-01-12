@@ -86,8 +86,8 @@ void Config::load(size_t id) noexcept
         if (backtrackJson.isMember("Ignore smoke")) backtrack.ignoreSmoke = backtrackJson["Ignore smoke"].asBool();
         if (backtrackJson.isMember("Recoil based fov")) backtrack.recoilBasedFov = backtrackJson["Recoil based fov"].asBool();
         if (backtrackJson.isMember("Time limit")) backtrack.timeLimit = backtrackJson["Time limit"].asInt();
-		if (backtrackJson.isMember("Ping Based")) backtrack.pingBased = backtrackJson["Ping Based"].asBool();
-		if (backtrackJson.isMember("Draw all ticks")) backtrack.drawAllTicks = backtrackJson["Draw all ticks"].asBool();
+        if (backtrackJson.isMember("Ping Based")) backtrack.pingBased = backtrackJson["Ping Based"].asBool();
+        if (backtrackJson.isMember("Draw all ticks")) backtrack.drawAllTicks = backtrackJson["Draw all ticks"].asBool();
     }
 
     {
@@ -649,12 +649,12 @@ void Config::load(size_t id) noexcept
         const auto& visualsJson = json["visuals"];
         if (visualsJson.isMember("disablePostProcessing")) visuals.disablePostProcessing = visualsJson["disablePostProcessing"].asBool();
         if (visualsJson.isMember("inverseRagdollGravity")) visuals.inverseRagdollGravity = visualsJson["inverseRagdollGravity"].asBool();
-		if (visualsJson.isMember("inverseRagdollGravityValue")) visuals.inverseRagdollGravityValue = visualsJson["inverseRagdollGravityValue"].asInt();
-		if (visualsJson.isMember("inverseRagdollGravityCustomize")) visuals.inverseRagdollGravityCustomize = visualsJson["inverseRagdollGravityCustomize"].asBool();
-		if (visualsJson.isMember("ragdollTimescale")) visuals.ragdollTimescale = visualsJson["ragdollTimescale"].asFloat();
-		if (visualsJson.isMember("ragdollTimescaleEnable")) visuals.ragdollTimescaleEnable = visualsJson["ragdollTimescaleEnable"].asBool();
-		if (visualsJson.isMember("ragdollTimescaleCustomize")) visuals.ragdollTimescaleCustomize = visualsJson["ragdollTimescaleCustomize"].asBool();
-		if (visualsJson.isMember("noFog")) visuals.noFog = visualsJson["noFog"].asBool();
+        if (visualsJson.isMember("noFog")) visuals.noFog = visualsJson["noFog"].asBool();
+        if (visualsJson.isMember("inverseRagdollGravityValue")) visuals.inverseRagdollGravityValue = visualsJson["inverseRagdollGravityValue"].asInt();
+        if (visualsJson.isMember("inverseRagdollGravityCustomize")) visuals.inverseRagdollGravityCustomize = visualsJson["inverseRagdollGravityCustomize"].asBool();
+        if (visualsJson.isMember("ragdollTimescale")) visuals.ragdollTimescale = visualsJson["ragdollTimescale"].asFloat();
+        if (visualsJson.isMember("ragdollTimescaleEnable")) visuals.ragdollTimescaleEnable = visualsJson["ragdollTimescaleEnable"].asBool();
+        if (visualsJson.isMember("ragdollTimescaleCustomize")) visuals.ragdollTimescaleCustomize = visualsJson["ragdollTimescaleCustomize"].asBool();
         if (visualsJson.isMember("no3dSky")) visuals.no3dSky = visualsJson["no3dSky"].asBool();
         if (visualsJson.isMember("No aim punch")) visuals.noAimPunch = visualsJson["No aim punch"].asBool();
         if (visualsJson.isMember("No view punch")) visuals.noViewPunch = visualsJson["No view punch"].asBool();
@@ -704,6 +704,12 @@ void Config::load(size_t id) noexcept
             if (skyJson.isMember("Rainbow")) visuals.sky.rainbow = skyJson["Rainbow"].asBool();
             if (skyJson.isMember("Rainbow speed")) visuals.sky.rainbowSpeed = skyJson["Rainbow speed"].asFloat();
         }
+        if (visualsJson.isMember("Deagle spinner")) visuals.deagleSpinner = visualsJson["Deagle spinner"].asBool();
+        if (visualsJson.isMember("Screen effect")) visuals.screenEffect = visualsJson["Screen effect"].asInt();
+        if (visualsJson.isMember("Hit marker")) visuals.hitMarker = visualsJson["Hit marker"].asInt();
+        if (visualsJson.isMember("Hit marker time")) visuals.hitMarkerTime = visualsJson["Hit marker time"].asFloat();
+        if (visualsJson.isMember("Playermodel T")) visuals.playerModelT = visualsJson["Playermodel T"].asInt();
+        if (visualsJson.isMember("Playermodel CT")) visuals.playerModelCT = visualsJson["Playermodel CT"].asInt();
         if (visualsJson.isMember("Color correction")) {
             const auto& cc = visualsJson["Color correction"];
 
@@ -716,37 +722,31 @@ void Config::load(size_t id) noexcept
             if (cc.isMember("Green")) visuals.colorCorrection.green = cc["Green"].asFloat();
             if (cc.isMember("Yellow")) visuals.colorCorrection.yellow = cc["Yellow"].asFloat();
         }
-        if (visualsJson.isMember("Deagle spinner")) visuals.deagleSpinner = visualsJson["Deagle spinner"].asBool();
-        if (visualsJson.isMember("Screen effect")) visuals.screenEffect = visualsJson["Screen effect"].asInt();
         if (visualsJson.isMember("Hit marker")) visuals.hitMarker = visualsJson["Hit marker"].asInt();
         if (visualsJson.isMember("Hit marker time")) visuals.hitMarkerTime = visualsJson["Hit marker time"].asFloat();
-        if (visualsJson.isMember("Playermodel T")) visuals.playerModelT = visualsJson["Playermodel T"].asInt();
-        if (visualsJson.isMember("Playermodel CT")) visuals.playerModelCT = visualsJson["Playermodel CT"].asInt();
-		if (visualsJson.isMember("Hit marker")) visuals.hitMarker = visualsJson["Hit marker"].asInt();
-		if (visualsJson.isMember("Hit marker time")) visuals.hitMarkerTime = visualsJson["Hit marker time"].asFloat();
-		if (visualsJson.isMember("Hit marker Damage Indicator")) visuals.hitMarkerDamageIndicator = visualsJson["Hit marker Damage Indicator"].asBool();
-		if (visualsJson.isMember("Hit marker Damage Indicator Customize")) visuals.hitMarkerDamageIndicatorCustomize = visualsJson["Hit marker Damage Indicator Customize"].asBool();
-		if (visualsJson.isMember("Hit marker Damage Indicator Dist")) visuals.hitMarkerDamageIndicatorDist = visualsJson["Hit marker Damage Indicator Dist"].asInt();
-		if (visualsJson.isMember("Hit marker Damage Indicator Ratio")) visuals.hitMarkerDamageIndicatorRatio = visualsJson["Hit marker Damage Indicator Ratio"].asFloat();
-		if (visualsJson.isMember("Hit marker Damage Indicator Alpha")) visuals.hitMarkerDamageIndicatorAlpha = visualsJson["Hit marker Damage Indicator Alpha"].asInt();
-		if (visualsJson.isMember("Hit marker Damage Indicator Font")) visuals.hitMarkerDamageIndicatorFont = visualsJson["Hit marker Damage Indicator Font"].asInt();
-		if (visualsJson.isMember("Hit marker Damage Indicator Text X")) visuals.hitMarkerDamageIndicatorTextX = visualsJson["Hit marker Damage Indicator Text X"].asInt();
-		if (visualsJson.isMember("Hit marker Damage Indicator Text Y")) visuals.hitMarkerDamageIndicatorTextY = visualsJson["Hit marker Damage Indicator Text Y"].asInt();
-		if (visualsJson.isMember("Custom Viewmodel Toggle")) visuals.customViewmodelToggle = visualsJson["Custom Viewmodel Toggle"].asBool();
-		if (visualsJson.isMember("Custom Viewmodel Menu Switch")) visuals.customViewmodelMenuSwitch = visualsJson["Custom Viewmodel Menu Switch"].asBool();
-		if (visualsJson.isMember("Custom Viewmodel Menu Customize")) visuals.customViewmodelMenuCustomize = visualsJson["Custom Viewmodel Menu Customize"].asBool();
-		if (visualsJson.isMember("Custom Viewmodel X")) visuals.viewmodel_x = visualsJson["Custom Viewmodel X"].asFloat();
-		if (visualsJson.isMember("Custom Viewmodel Y")) visuals.viewmodel_y = visualsJson["Custom Viewmodel Y"].asFloat();
-		if (visualsJson.isMember("Custom Viewmodel Z")) visuals.viewmodel_z = visualsJson["Custom Viewmodel Z"].asFloat();
-		if (visualsJson.isMember("Custom Viewmodel X Knife")) visuals.viewmodel_x_knife = visualsJson["Custom Viewmodel X Knife"].asFloat();
-		if (visualsJson.isMember("Custom Viewmodel Y Knife")) visuals.viewmodel_y_knife = visualsJson["Custom Viewmodel Y Knife"].asFloat();
-		if (visualsJson.isMember("Custom Viewmodel Z Knife")) visuals.viewmodel_z_knife = visualsJson["Custom Viewmodel Z Knife"].asFloat();
-		if (visualsJson.isMember("Custom Viewmodel Knife Toggle")) visuals.customViewmodelKnifeToggle = visualsJson["Custom Viewmodel Knife Toggle"].asBool();
-		if (visualsJson.isMember("Custom Viewmodel Knife Enabled")) visuals.customViewmodelKnifeEnabled = visualsJson["Custom Viewmodel Knife Enabled"].asBool();
-		if (visualsJson.isMember("Custom Viewmodel Switch Hand")) visuals.customViewmodelSwitchHand = visualsJson["Custom Viewmodel Switch Hand"].asBool();
-		if (visualsJson.isMember("Custom Viewmodel Switch Hand Knife")) visuals.customViewmodelSwitchHandKnife = visualsJson["Custom Viewmodel Switch Hand Knife"].asBool();
-		if (visualsJson.isMember("Custom Viewmodel Bob")) visuals.view_bob = visualsJson["Custom Viewmodel Bob"].asBool();
-		if (visualsJson.isMember("Full Brightness Light")) visuals.full_bright = visualsJson["Full Brightness Light"].asBool();
+        if (visualsJson.isMember("Hit marker Damage Indicator")) visuals.hitMarkerDamageIndicator = visualsJson["Hit marker Damage Indicator"].asBool();
+        if (visualsJson.isMember("Hit marker Damage Indicator Customize")) visuals.hitMarkerDamageIndicatorCustomize = visualsJson["Hit marker Damage Indicator Customize"].asBool();
+        if (visualsJson.isMember("Hit marker Damage Indicator Dist")) visuals.hitMarkerDamageIndicatorDist = visualsJson["Hit marker Damage Indicator Dist"].asInt();
+        if (visualsJson.isMember("Hit marker Damage Indicator Ratio")) visuals.hitMarkerDamageIndicatorRatio = visualsJson["Hit marker Damage Indicator Ratio"].asFloat();
+        if (visualsJson.isMember("Hit marker Damage Indicator Alpha")) visuals.hitMarkerDamageIndicatorAlpha = visualsJson["Hit marker Damage Indicator Alpha"].asInt();
+        if (visualsJson.isMember("Hit marker Damage Indicator Font")) visuals.hitMarkerDamageIndicatorFont = visualsJson["Hit marker Damage Indicator Font"].asInt();
+        if (visualsJson.isMember("Hit marker Damage Indicator Text X")) visuals.hitMarkerDamageIndicatorTextX = visualsJson["Hit marker Damage Indicator Text X"].asInt();
+        if (visualsJson.isMember("Hit marker Damage Indicator Text Y")) visuals.hitMarkerDamageIndicatorTextY = visualsJson["Hit marker Damage Indicator Text Y"].asInt();
+        if (visualsJson.isMember("Custom Viewmodel Toggle")) visuals.customViewmodelToggle = visualsJson["Custom Viewmodel Toggle"].asBool();
+        if (visualsJson.isMember("Custom Viewmodel Menu Switch")) visuals.customViewmodelMenuSwitch = visualsJson["Custom Viewmodel Menu Switch"].asBool();
+        if (visualsJson.isMember("Custom Viewmodel Menu Customize")) visuals.customViewmodelMenuCustomize = visualsJson["Custom Viewmodel Menu Customize"].asBool();
+        if (visualsJson.isMember("Custom Viewmodel X")) visuals.viewmodel_x = visualsJson["Custom Viewmodel X"].asFloat();
+        if (visualsJson.isMember("Custom Viewmodel Y")) visuals.viewmodel_y = visualsJson["Custom Viewmodel Y"].asFloat();
+        if (visualsJson.isMember("Custom Viewmodel Z")) visuals.viewmodel_z = visualsJson["Custom Viewmodel Z"].asFloat();
+        if (visualsJson.isMember("Custom Viewmodel X Knife")) visuals.viewmodel_x_knife = visualsJson["Custom Viewmodel X Knife"].asFloat();
+        if (visualsJson.isMember("Custom Viewmodel Y Knife")) visuals.viewmodel_y_knife = visualsJson["Custom Viewmodel Y Knife"].asFloat();
+        if (visualsJson.isMember("Custom Viewmodel Z Knife")) visuals.viewmodel_z_knife = visualsJson["Custom Viewmodel Z Knife"].asFloat();
+        if (visualsJson.isMember("Custom Viewmodel Knife Toggle")) visuals.customViewmodelKnifeToggle = visualsJson["Custom Viewmodel Knife Toggle"].asBool();
+        if (visualsJson.isMember("Custom Viewmodel Knife Enabled")) visuals.customViewmodelKnifeEnabled = visualsJson["Custom Viewmodel Knife Enabled"].asBool();
+        if (visualsJson.isMember("Custom Viewmodel Switch Hand")) visuals.customViewmodelSwitchHand = visualsJson["Custom Viewmodel Switch Hand"].asBool();
+        if (visualsJson.isMember("Custom Viewmodel Switch Hand Knife")) visuals.customViewmodelSwitchHandKnife = visualsJson["Custom Viewmodel Switch Hand Knife"].asBool();
+        if (visualsJson.isMember("Custom Viewmodel Bob")) visuals.view_bob = visualsJson["Custom Viewmodel Bob"].asBool();
+        if (visualsJson.isMember("Full Brightness Light")) visuals.fullBright = visualsJson["Full Brightness Light"].asBool();
     }
 
     for (size_t i = 0; i < skinChanger.size(); i++) {
@@ -836,9 +836,9 @@ void Config::load(size_t id) noexcept
         if (miscJson.isMember("Animated clan tag")) misc.animatedClanTag = miscJson["Animated clan tag"].asBool();
         if (miscJson.isMember("Fast duck")) misc.fastDuck = miscJson["Fast duck"].asBool();
         if (miscJson.isMember("Moonwalk")) misc.moonwalk = miscJson["Moonwalk"].asBool();
-		if (miscJson.isMember("Edge Jump")) misc.edgejump = miscJson["Edge Jump"].asBool();
-		if (miscJson.isMember("Edge Jump Key")) misc.edgejumpkey = miscJson["Edge Jump Key"].asInt();
-		if (miscJson.isMember("Slowwalk")) misc.slowwalk = miscJson["Slowwalk"].asBool();
+        if (miscJson.isMember("Edge Jump")) misc.edgejump = miscJson["Edge Jump"].asBool();
+        if (miscJson.isMember("Edge Jump Key")) misc.edgejumpkey = miscJson["Edge Jump Key"].asInt();
+        if (miscJson.isMember("Slowwalk")) misc.slowwalk = miscJson["Slowwalk"].asBool();
         if (miscJson.isMember("Slowwalk key")) misc.slowwalkKey = miscJson["Slowwalk key"].asInt();
         if (miscJson.isMember("Sniper crosshair")) misc.sniperCrosshair = miscJson["Sniper crosshair"].asBool();
         if (miscJson.isMember("Recoil crosshair")) misc.recoilCrosshair = miscJson["Recoil crosshair"].asBool();
@@ -996,8 +996,8 @@ void Config::save(size_t id) const noexcept
         backtrackJson["Ignore smoke"] = backtrack.ignoreSmoke;
         backtrackJson["Recoil based fov"] = backtrack.recoilBasedFov;
         backtrackJson["Time limit"] = backtrack.timeLimit;
-		backtrackJson["Draw all ticks"] = backtrack.drawAllTicks;
-		backtrackJson["Ping Based"] = backtrack.pingBased;
+        backtrackJson["Draw all ticks"] = backtrack.drawAllTicks;
+        backtrackJson["Ping Based"] = backtrack.pingBased;
     }
 
     {
@@ -1447,12 +1447,12 @@ void Config::save(size_t id) const noexcept
         auto& visualsJson = json["visuals"];
         visualsJson["disablePostProcessing"] = visuals.disablePostProcessing;
         visualsJson["inverseRagdollGravity"] = visuals.inverseRagdollGravity;
-		visualsJson["inverseRagdollGravityValue"] = visuals.inverseRagdollGravityValue;
-		visualsJson["inverseRagdollGravityCustomize"] = visuals.inverseRagdollGravityCustomize;
-		visualsJson["ragdollTimescale"] = visuals.ragdollTimescale;
-		visualsJson["ragdollTimescaleEnable"] = visuals.ragdollTimescaleEnable;
-		visualsJson["ragdollTimescaleCustomize"] = visuals.ragdollTimescaleCustomize;
-		visualsJson["noFog"] = visuals.noFog;
+        visualsJson["noFog"] = visuals.noFog;
+        visualsJson["inverseRagdollGravityValue"] = visuals.inverseRagdollGravityValue;
+        visualsJson["inverseRagdollGravityCustomize"] = visuals.inverseRagdollGravityCustomize;
+        visualsJson["ragdollTimescale"] = visuals.ragdollTimescale;
+        visualsJson["ragdollTimescaleEnable"] = visuals.ragdollTimescaleEnable;
+        visualsJson["ragdollTimescaleCustomize"] = visuals.ragdollTimescaleCustomize;
         visualsJson["no3dSky"] = visuals.no3dSky;
         visualsJson["No aim punch"] = visuals.noAimPunch;
         visualsJson["No view punch"] = visuals.noViewPunch;
@@ -1497,6 +1497,13 @@ void Config::save(size_t id) const noexcept
             skyJson["Rainbow speed"] = visuals.sky.rainbowSpeed;
         }
 
+        visualsJson["Deagle spinner"] = visuals.deagleSpinner;
+        visualsJson["Screen effect"] = visuals.screenEffect;
+        visualsJson["Hit marker"] = visuals.hitMarker;
+        visualsJson["Hit marker time"] = visuals.hitMarkerTime;
+        visualsJson["Playermodel T"] = visuals.playerModelT;
+        visualsJson["Playermodel CT"] = visuals.playerModelCT;
+
         {
             auto& cc = visualsJson["Color correction"];
             cc["Enabled"] = visuals.colorCorrection.enabled;
@@ -1508,12 +1515,6 @@ void Config::save(size_t id) const noexcept
             cc["Green"] = visuals.colorCorrection.green;
             cc["Yellow"] = visuals.colorCorrection.yellow;
         }
-        visualsJson["Deagle spinner"] = visuals.deagleSpinner;
-        visualsJson["Screen effect"] = visuals.screenEffect;
-        visualsJson["Hit marker"] = visuals.hitMarker;
-        visualsJson["Hit marker time"] = visuals.hitMarkerTime;
-        visualsJson["Playermodel T"] = visuals.playerModelT;
-        visualsJson["Playermodel CT"] = visuals.playerModelCT;
 		visualsJson["Hit marker Damage Indicator"] = visuals.hitMarkerDamageIndicator;
 		visualsJson["Hit marker Damage Indicator Customize"] = visuals.hitMarkerDamageIndicatorCustomize;
 		visualsJson["Hit marker Damage Indicator Dist"] = visuals.hitMarkerDamageIndicatorDist;
@@ -1537,7 +1538,7 @@ void Config::save(size_t id) const noexcept
 		visualsJson["Custom Viewmodel Y Knife"] = visuals.viewmodel_y_knife;
 		visualsJson["Custom Viewmodel Z Knife"] = visuals.viewmodel_z_knife;
 		visualsJson["Custom Viewmodel Bob"] = visuals.view_bob;
-		visualsJson["Full Brightness Light"] = visuals.full_bright;
+		visualsJson["Full Brightness Light"] = visuals.fullBright;
     }
 
     for (size_t i = 0; i < skinChanger.size(); i++) {
@@ -1618,8 +1619,8 @@ void Config::save(size_t id) const noexcept
         miscJson["Animated clan tag"] = misc.animatedClanTag;
         miscJson["Fast duck"] = misc.fastDuck;
         miscJson["Moonwalk"] = misc.moonwalk;
-		miscJson["Edge Jump"] = misc.edgejump;
-		miscJson["Edge Jump Key"] = misc.edgejumpkey;
+        miscJson["Edge Jump"] = misc.edgejump;
+        miscJson["Edge Jump Key"] = misc.edgejumpkey;
         miscJson["Slowwalk"] = misc.slowwalk;
         miscJson["Slowwalk key"] = misc.slowwalkKey;
         miscJson["Sniper crosshair"] = misc.sniperCrosshair;
