@@ -402,7 +402,7 @@ void GUI::renderBacktrackWindow() noexcept
         if (!config.style.menuStyle) {
             ImGui::SetNextWindowSize({ 0.0f, 0.0f });
             ImGui::Begin("Backtrack", &window.backtrack, windowFlags);
-        };
+        }
         ImGui::Checkbox("Enabled", &config.backtrack.enabled);
         ImGui::Checkbox("Ignore smoke", &config.backtrack.ignoreSmoke);
         ImGui::Checkbox("Recoil based fov", &config.backtrack.recoilBasedFov);
@@ -411,7 +411,7 @@ void GUI::renderBacktrackWindow() noexcept
         if (!config.backtrack.pingBased) {
             ImGui::PushItemWidth(220.0f);
             ImGui::SliderInt("", &config.backtrack.timeLimit, 1, 200, "Time limit: %d ms");
-        };
+        }
         ImGui::PopItemWidth();
         if (!config.style.menuStyle)
             ImGui::End();
@@ -885,7 +885,7 @@ void GUI::renderVisualsWindow() noexcept
             ImGui::VSliderFloat("##6", { 40.0f, 160.0f }, &config.visuals.colorCorrection.green, 0.0f, 1.0f, "Green\n%.3f"); ImGui::SameLine();
             ImGui::VSliderFloat("##7", { 40.0f, 160.0f }, &config.visuals.colorCorrection.yellow, 0.0f, 1.0f, "Yellow\n%.3f"); ImGui::SameLine();
             ImGui::EndPopup();
-        };
+        }
         ImGui::Columns(1);
 
         if (!config.style.menuStyle)

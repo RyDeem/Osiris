@@ -59,11 +59,9 @@ void Misc::slowwalk(UserCmd* cmd) noexcept
         const float maxSpeedRoot = maxSpeed * static_cast<float>(M_SQRT1_2);
         cmd->forwardmove = cmd->forwardmove < 0.0f ? -maxSpeedRoot : maxSpeedRoot;
         cmd->sidemove = cmd->sidemove < 0.0f ? -maxSpeedRoot : maxSpeedRoot;
-    }
-    else if (cmd->forwardmove) {
+    } else if (cmd->forwardmove) {
         cmd->forwardmove = cmd->forwardmove < 0.0f ? -maxSpeed : maxSpeed;
-    }
-    else if (cmd->sidemove) {
+    } else if (cmd->sidemove) {
         cmd->sidemove = cmd->sidemove < 0.0f ? -maxSpeed : maxSpeed;
     }
 }
