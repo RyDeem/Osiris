@@ -81,7 +81,6 @@ public:
         int timeLimit{ 200 };
         bool pingBased{ 0 };
         bool drawAllTicks{ false };
-        bool drawBacktrack{ true };
     } backtrack;
 
     struct {
