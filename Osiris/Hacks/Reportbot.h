@@ -1,5 +1,6 @@
 #pragma once
 
-namespace Reportbot {
+namespace Reportbot
+{
     void run() noexcept;
 }

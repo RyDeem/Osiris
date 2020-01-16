@@ -23,7 +23,7 @@ void Reportbot::run() noexcept
 
     if (lastReportTime + config.reportbot.delay > memory.globalVars->realtime)
         return;
-    
+
     for (int i = 1; i <= interfaces.engine->getMaxClients(); ++i) {
         const auto entity = interfaces.entityList->getEntity(i);
 
