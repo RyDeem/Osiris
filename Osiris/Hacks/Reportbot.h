@@ -1,5 +1,5 @@
 #pragma once
 
 namespace Reportbot {
-    void run();
+    void run() noexcept;
 }
