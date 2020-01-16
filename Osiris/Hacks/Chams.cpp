@@ -157,36 +157,24 @@ bool Chams::renderPlayers(void* ctx, void* state, const ModelRenderInfo& info, m
                 }
             }
 
-<<<<<<< HEAD
-                if (config.chams[BACKTRACK].materials[i].enabled && config.backtrack.enabled && config.backtrack.drawBacktrack) {
-                    auto record = &Backtrack::records[info.entityIndex];
-                    if (record && record->size() && Backtrack::valid(record->front().simulationTime)) {
-                        if (applied)
-                            hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, customBoneToWorld);
-                        applyChams(config.chams[BACKTRACK].materials[i], false, entity->health());
-                        if (config.backtrack.drawAllTicks) {
-                            for (int x = 0; x < record->size(); x++) {
-                                hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, record->at(x).matrix);
-                            }
-                        }
-                        else
-                            hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, record->back().matrix);
-                        interfaces.modelRender->forceMaterialOverride(nullptr);
-                        applied = true;
-                    }
-=======
             if (config.chams[BACKTRACK].materials[i].enabled && config.backtrack.enabled) {
                 auto record = &Backtrack::records[info.entityIndex];
                 if (record && record->size() && Backtrack::valid(record->front().simulationTime)) {
                     if (applied)
                         hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, customBoneToWorld);
                     applyChams(config.chams[BACKTRACK].materials[i], false, entity->health());
-                    hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, record->back().matrix);
+                    if (config.backtrack.drawAllTicks) {
+                        for (int x = 0; x < record->size(); x++) {
+                            hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, record->at(x).matrix);
+                        }
+                    }
+                    else
+                        hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, record->back().matrix);
                     interfaces.modelRender->forceMaterialOverride(nullptr);
                     applied = true;
->>>>>>> upstream/master
                 }
             }
+
         } else {
             if (config.chams[ALLIES_ALL].materials[i].enabled) {
                 if (applied)
