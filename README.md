@@ -6,7 +6,7 @@ Added by ry:
 
 -Draw all backtrack cham ticks
 
--Fullbright Light//mat_fullbright
+-Fullbright Light//setting mat_fullbright to 1
 
 -Ragdoll Gravity custom value changer
 
