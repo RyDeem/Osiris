@@ -880,25 +880,26 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
         ImGui::VSliderFloat("##6", { 40.0f, 160.0f }, &config.visuals.colorCorrection.green, 0.0f, 1.0f, "Green\n%.3f"); ImGui::SameLine();
         ImGui::VSliderFloat("##7", { 40.0f, 160.0f }, &config.visuals.colorCorrection.yellow, 0.0f, 1.0f, "Yellow\n%.3f"); ImGui::SameLine();
         ImGui::EndPopup();
-        ImGui::Checkbox("Hit Damage", &config.visuals.hitMarkerDamageIndicator);
-        if (config.visuals.hitMarkerDamageIndicator) {
-            ImGui::SameLine();
-            ImGui::Checkbox("Customize Hit Damage", &config.visuals.hitMarkerDamageIndicatorCustomize);
-        };
-        ImGui::PushID(14);
-        ImGui::SliderFloat("", &config.visuals.hitMarkerTime, 0.01f, 1.0f, "Hit marker time: %.2fs");
-        ImGui::PopID();
-        if (config.visuals.hitMarkerDamageIndicator && config.visuals.hitMarkerDamageIndicatorCustomize) {
-            ImGui::InputInt("Font", &config.visuals.hitMarkerDamageIndicatorFont, 1, 294);
-            ImGui::InputInt("Alpha", &config.visuals.hitMarkerDamageIndicatorAlpha, 1, 1000);
-            ImGui::InputInt("Dist", &config.visuals.hitMarkerDamageIndicatorDist, -100, 100);
-            ImGui::InputInt("Text X", &config.visuals.hitMarkerDamageIndicatorTextX, -100, 100);
-            ImGui::InputInt("Text Y", &config.visuals.hitMarkerDamageIndicatorTextY, -100, 100);
-            ImGui::PushID(15);
-            ImGui::SliderFloat(" ", &config.visuals.hitMarkerDamageIndicatorRatio, -1.0f, 1.0f, "Ratio: %.2f");
-            ImGui::PopID();
-        };
     }
+    ImGui::Checkbox("Hit Damage", &config.visuals.hitMarkerDamageIndicator);
+    if (config.visuals.hitMarkerDamageIndicator) {
+        ImGui::SameLine();
+        ImGui::Checkbox("Customize Hit Damage", &config.visuals.hitMarkerDamageIndicatorCustomize);
+    };
+    ImGui::PushID(14);
+    ImGui::SliderFloat("", &config.visuals.hitEffectTime, 0.01f, 1.0f, "Hit marker time: %.2fs");
+    ImGui::PopID();
+    if (config.visuals.hitMarkerDamageIndicator && config.visuals.hitMarkerDamageIndicatorCustomize) {
+        ImGui::InputInt("Font", &config.visuals.hitMarkerDamageIndicatorFont, 1, 294);
+        ImGui::InputInt("Alpha", &config.visuals.hitMarkerDamageIndicatorAlpha, 1, 1000);
+        ImGui::InputInt("Dist", &config.visuals.hitMarkerDamageIndicatorDist, -100, 100);
+        ImGui::InputInt("Text X", &config.visuals.hitMarkerDamageIndicatorTextX, -100, 100);
+        ImGui::InputInt("Text Y", &config.visuals.hitMarkerDamageIndicatorTextY, -100, 100);
+        ImGui::PushID(15);
+        ImGui::SliderFloat(" ", &config.visuals.hitMarkerDamageIndicatorRatio, -1.0f, 1.0f, "Ratio: %.2f");
+        ImGui::PopID();
+    };
+    
     ImGui::Columns(1);
 
     if (!contentOnly)

@@ -66,7 +66,7 @@ void Visuals::hitMarkerSetDamageIndicator(GameEvent* event) noexcept{
         return;
     if (config.visuals.hitMarkerDamageIndicator){
         if (event && interfaces.engine->getPlayerForUserID(event->getInt("attacker")) == interfaces.engine->getLocalPlayer()) {
-            hitMarkerInfo.push_back({ memory.globalVars->realtime + config.visuals.hitMarkerTime, event->getInt("dmg_health") });
+            hitMarkerInfo.push_back({ memory.globalVars->realtime + config.visuals.hitEffectTime, event->getInt("dmg_health") });
         }
     }
 }
