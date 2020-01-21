@@ -403,25 +403,17 @@ void GUI::renderBacktrackWindow(bool contentOnly) noexcept
             return;
         ImGui::SetNextWindowSize({ 0.0f, 0.0f });
         ImGui::Begin("Backtrack", &window.backtrack, windowFlags);
-        }
-        ImGui::Checkbox("Enabled", &config.backtrack.enabled);
-        ImGui::Checkbox("Ignore smoke", &config.backtrack.ignoreSmoke);
-        ImGui::Checkbox("Recoil based fov", &config.backtrack.recoilBasedFov);
-        ImGui::Checkbox("Draw all ticks", &config.backtrack.drawAllTicks);
-        ImGui::Checkbox("Ping based", &config.backtrack.pingBased);
-        if (!config.backtrack.pingBased) {
-            ImGui::PushItemWidth(220.0f);
-            ImGui::SliderInt("", &config.backtrack.timeLimit, 1, 200, "Time limit: %d ms");
-        }
-        ImGui::PopItemWidth();
-        if (!config.style.menuStyle)
-            ImGui::End();
+    }
     ImGui::Checkbox("Enabled", &config.backtrack.enabled);
     ImGui::Checkbox("Ignore smoke", &config.backtrack.ignoreSmoke);
     ImGui::Checkbox("Recoil based fov", &config.backtrack.recoilBasedFov);
-    ImGui::PushItemWidth(220.0f);
-    ImGui::SliderInt("Time limit", &config.backtrack.timeLimit, 1, 200, "%d ms");
-    ImGui::PopItemWidth();
+    ImGui::Checkbox("Draw all ticks", &config.backtrack.drawAllTicks);
+    ImGui::Checkbox("Ping based", &config.backtrack.pingBased);
+    if (!config.backtrack.pingBased) {
+        ImGui::PushItemWidth(220.0f);
+        ImGui::SliderInt("", &config.backtrack.timeLimit, 1, 200, "Time limit: %d ms");
+        ImGui::PopItemWidth();
+    }
     if (!contentOnly)
         ImGui::End();
 }

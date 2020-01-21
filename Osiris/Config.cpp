@@ -722,8 +722,8 @@ void Config::load(size_t id) noexcept
             if (cc.isMember("Green")) visuals.colorCorrection.green = cc["Green"].asFloat();
             if (cc.isMember("Yellow")) visuals.colorCorrection.yellow = cc["Yellow"].asFloat();
         }
-        if (visualsJson.isMember("Hit marker")) visuals.hitMarker = visualsJson["Hit marker"].asInt();
-        if (visualsJson.isMember("Hit marker time")) visuals.hitMarkerTime = visualsJson["Hit marker time"].asFloat();
+        if (visualsJson.isMember("Hit marker")) visuals.hitEffect = visualsJson["Hit marker"].asInt();
+        if (visualsJson.isMember("Hit marker time")) visuals.hitEffectTime = visualsJson["Hit marker time"].asFloat();
         if (visualsJson.isMember("Hit marker Damage Indicator")) visuals.hitMarkerDamageIndicator = visualsJson["Hit marker Damage Indicator"].asBool();
         if (visualsJson.isMember("Hit marker Damage Indicator Customize")) visuals.hitMarkerDamageIndicatorCustomize = visualsJson["Hit marker Damage Indicator Customize"].asBool();
         if (visualsJson.isMember("Hit marker Damage Indicator Dist")) visuals.hitMarkerDamageIndicatorDist = visualsJson["Hit marker Damage Indicator Dist"].asInt();
