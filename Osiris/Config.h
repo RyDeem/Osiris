@@ -2,6 +2,7 @@
 
 #include <array>
 #include <filesystem>
+#include <string>
 
 #include "imgui/imgui.h"
 #include "nSkinz/config_.hpp"
@@ -255,7 +256,7 @@ public:
         bool bunnyHop{ false };
         bool customClanTag{ false };
         bool clocktag{ false };
-        char clanTag[16]{ "" };
+        std::string clanTag;
         bool animatedClanTag{ false };
         bool fastDuck{ false };
         bool moonwalk{ false };
@@ -280,12 +281,12 @@ public:
         bool disableModelOcclusion{ false };
         float aspectratio{ 0 };
         bool killMessage{ false };
-        char killMessageString[230]{ "Gotcha!" };
+        std::string killMessageString{ "Gotcha!" };
         bool nameStealer{ false };
         bool disablePanoramablur{ false };
-        char voteText[50]{ "" };
+        std::string voteText;
         int banColor{ 6 };
-        char banText[150]{ "Cheater has been permanently banned from official CS:GO servers." };
+        std::string banText{ "Cheater has been permanently banned from official CS:GO servers." };
         bool fastPlant{ false };
         bool bombDamage{ false };
         ColorToggle bombTimer{ 1.0f, 0.55f, 0.0f };

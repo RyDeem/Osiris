@@ -6,12 +6,14 @@
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_stdlib.h"
 
 #include "imguiCustom.h"
 
 #include "GUI.h"
 #include "Config.h"
 #include "Hacks/Misc.h"
+#include "Hacks/Reportbot.h"
 #include "Hacks/SkinChanger.h"
 #include "Hacks/Visuals.h"
 #include "Hooks.h"
@@ -1105,18 +1107,18 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::SameLine();
     ImGui::PushItemWidth(120.0f);
     ImGui::PushID(0);
-    if (ImGui::InputText("", config.misc.clanTag, IM_ARRAYSIZE(config.misc.clanTag)))
+    if (ImGui::InputText("", &config.misc.clanTag))
         Misc::updateClanTag(true);
     ImGui::PopID();
     ImGui::Checkbox("Kill message", &config.misc.killMessage);
     ImGui::SameLine();
     ImGui::PushItemWidth(120.0f);
     ImGui::PushID(1);
-    ImGui::InputText("", config.misc.killMessageString, IM_ARRAYSIZE(config.misc.killMessageString));
+    ImGui::InputText("", &config.misc.killMessageString);
     ImGui::PopID();
     ImGui::Checkbox("Name stealer", &config.misc.nameStealer);
     ImGui::PushID(2);
-    ImGui::InputText("", config.misc.voteText, IM_ARRAYSIZE(config.misc.voteText));
+    ImGui::InputText("", &config.misc.voteText);
     ImGui::PopID();
     ImGui::SameLine();
     if (ImGui::Button("Setup fake vote"))
@@ -1128,7 +1130,7 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::PopID();
     ImGui::SameLine();
     ImGui::PushID(4);
-    ImGui::InputText("", config.misc.banText, IM_ARRAYSIZE(config.misc.banText));
+    ImGui::InputText("", &config.misc.banText);
     ImGui::PopID();
     ImGui::SameLine();
     if (ImGui::Button("Setup fake ban"))
@@ -1172,6 +1174,10 @@ void GUI::renderReportbotWindow(bool contentOnly) noexcept
         ImGui::Begin("Reportbot", &window.reportbot, windowFlags);
     }
     ImGui::Checkbox("Enabled", &config.reportbot.enabled);
+    ImGui::SameLine(0.0f, 50.0f);
+    if (ImGui::Button("Reset"))
+        Reportbot::reset();
+    ImGui::Separator();
     ImGui::Combo("Target", &config.reportbot.target, "Enemies\0Allies\0All\0");
     ImGui::InputInt("Delay (s)", &config.reportbot.delay, 1, 5);
     config.reportbot.delay = (std::max)(config.reportbot.delay, 0);
@@ -1205,19 +1211,19 @@ void GUI::renderConfigWindow(bool contentOnly) noexcept
     if (static_cast<size_t>(currentConfig) >= configItems.size())
         currentConfig = -1;
 
-    static char buffer[16];
+    static std::string buffer;
 
     if (ImGui::ListBox("", &currentConfig, [](void* data, int idx, const char** out_text) {
         auto& vector = *static_cast<std::vector<std::string>*>(data);
         *out_text = vector[idx].c_str();
         return true;
         }, &configItems, configItems.size(), 5) && currentConfig != -1)
-        strcpy(buffer, configItems[currentConfig].c_str());
+            buffer = configItems[currentConfig];
 
         ImGui::PushID(0);
-        if (ImGui::InputText("", buffer, IM_ARRAYSIZE(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        if (ImGui::InputText("", &buffer, ImGuiInputTextFlags_EnterReturnsTrue)) {
             if (currentConfig != -1)
-                config.rename(currentConfig, buffer);
+                config.rename(currentConfig, buffer.c_str());
         }
         ImGui::PopID();
         ImGui::NextColumn();
@@ -1225,7 +1231,7 @@ void GUI::renderConfigWindow(bool contentOnly) noexcept
         ImGui::PushItemWidth(100.0f);
 
         if (ImGui::Button("Create config", { 100.0f, 25.0f }))
-            config.add(buffer);
+            config.add(buffer.c_str());
 
         if (ImGui::Button("Reset config", { 100.0f, 25.0f }))
             ImGui::OpenPopup("Config to reset");
@@ -1275,10 +1281,10 @@ void GUI::renderConfigWindow(bool contentOnly) noexcept
 
 void GUI::renderGuiStyle2() noexcept
 {
-    ImGui::SetNextWindowSize({ 800.0f, 0.0f });
+    ImGui::SetNextWindowSize({ 600.0f, 0.0f });
     ImGui::Begin("Osiris", nullptr, windowFlags | ImGuiWindowFlags_NoTitleBar);
 
-    if (ImGui::BeginTabBar("TabBar", ImGuiTabBarFlags_Reorderable)) {
+    if (ImGui::BeginTabBar("TabBar", ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_FittingPolicyScroll | ImGuiTabBarFlags_NoTooltip)) {
         if (ImGui::BeginTabItem("Aimbot")) {
             renderAimbotWindow(true);
             ImGui::EndTabItem();
