@@ -262,12 +262,14 @@ void Misc::drawBombTimer() noexcept
             }
             int bombDamage = max((int)ceilf(flDamage), 0);
 
-            if (bombDamage >= localPlayer->health())
+            if (bombDamage > localPlayer->health())
                 interfaces.surface->setTextColor(255, 0, 0);
+            if (bombDamage = localPlayer->health())
+                interfaces.surface->setTextColor(255, 69, 0);
             else
                 interfaces.surface->setTextColor(0, 255, 0);
 
-            auto bombDmgText{ (std::wstringstream{ } << L"Bomb Damage: " << bombDamage).str() };
+            auto bombDmgText{ (std::wstringstream{ } << L"Health after explosion: " << localPlayer->health()-bombDamage).str() };
 
             auto bombDmgX{ interfaces.surface->getScreenSize().first / 2 - static_cast<int>((interfaces.surface->getTextSize(font, bombDmgText.c_str())).first / 2) };
             auto drawPositionDamageY{ interfaces.surface->getScreenSize().second / 10 };
