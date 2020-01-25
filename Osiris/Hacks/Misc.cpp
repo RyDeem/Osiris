@@ -507,11 +507,18 @@ void Misc::killMessage(GameEvent& event) noexcept
 void Misc::drawBombDamage() noexcept
 {
     const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
-
+    auto localHealth{ localPlayer->health() };
+    auto healthLeftOrDamage{ L"Health Left: " };
     //No Alive return since it is useful if you want to call it out to a mate that he will die
     if (!localPlayer || !config.misc.bombDamage)
+        localHealth = 0;
+    healthLeftOrDamage = { L"Damage After Exposion: " };
         return;
 
+    else
+        localHealth = { localPlayer->health() };
+        healthLeftOrDamage = { L"Health Left: " };
+    
     for (int i = interfaces.engine->getMaxClients(); i <= interfaces.entityList->getHighestEntityIndex(); i++)
     {
         auto entity = interfaces.entityList->getEntity(i);
@@ -548,7 +555,7 @@ void Misc::drawBombDamage() noexcept
         else
             interfaces.surface->setTextColor(0, 255, 0);
 
-        auto bombDmgText{ (std::wstringstream{} << L"Health Left: " << localPlayer->health()-bombDamage).str() };
+        auto bombDmgText{ (std::wstringstream{} << healthLeftOrDamage << localHealth-bombDamage).str() };
 
         constexpr unsigned font{ 0xc1 };
         interfaces.surface->setTextFont(font);
