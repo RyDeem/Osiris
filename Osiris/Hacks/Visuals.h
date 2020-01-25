@@ -31,6 +31,7 @@ namespace Visuals {
     void applyZoom(FrameStage) noexcept;
     void applyScreenEffects() noexcept;
     void hitEffect(GameEvent* = nullptr) noexcept;
+    void hitMarker(GameEvent* = nullptr) noexcept;
     void hitMarkerSetDamageIndicator(GameEvent* = nullptr) noexcept;
     void hitMarkerDamageIndicator() noexcept;
     void customViewmodelPosition() noexcept;

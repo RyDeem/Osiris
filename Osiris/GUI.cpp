@@ -35,6 +35,7 @@ GUI::GUI() noexcept
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
     io.LogFilename = nullptr;
+    io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 
     if (PWSTR pathToFonts; SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, nullptr, &pathToFonts))) {
         const std::filesystem::path path{ pathToFonts };
@@ -858,6 +859,8 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::Combo("Screen effect", &config.visuals.screenEffect, "None\0Drone cam\0Drone cam with noise\0Underwater\0Healthboost\0Dangerzone\0");
     ImGui::Combo("Hit effect", &config.visuals.hitEffect, "None\0Drone cam\0Drone cam with noise\0Underwater\0Healthboost\0Dangerzone\0");
     ImGui::SliderFloat("Hit effect time", &config.visuals.hitEffectTime, 0.1f, 1.5f, "%.2fs");
+    ImGui::Combo("Hit marker", &config.visuals.hitMarker, "None\0Default (Cross)\0");
+    ImGui::SliderFloat("Hit marker time", &config.visuals.hitMarkerTime, 0.1f, 1.5f, "%.2fs");
     ImGui::Checkbox("Color correction", &config.visuals.colorCorrection.enabled);
     ImGui::SameLine();
     bool ccPopup = ImGui::Button("Edit");
