@@ -229,7 +229,6 @@ void Misc::fastPlant(UserCmd* cmd) noexcept
 void Misc::drawBombTimer() noexcept
 {
     if (config.misc.bombTimer.enabled) {
-        const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
         for (int i = interfaces.engine->getMaxClients(); i <= interfaces.entityList->getHighestEntityIndex(); i++) {
             Entity* entity = interfaces.entityList->getEntity(i);
             if (!entity || entity->isDormant() || entity->getClientClass()->classId != ClassId::PlantedC4 || !entity->c4Ticking())
@@ -237,45 +236,6 @@ void Misc::drawBombTimer() noexcept
 
             constexpr unsigned font{ 0xc1 };
             interfaces.surface->setTextFont(font);
-
-            Vector vecBombDistance = entity->origin() - localPlayer->origin();
-
-            float a = 450.7f;
-            float b = 75.68f;
-            float c = 789.2f;
-            float d = (vecBombDistance.length() - b) / c;
-            float flDamage = a * exp(-d * d);
-
-            int ArmorValue = localPlayer->armor();
-            float flArmorRatio = 0.5f;
-            float flArmorBonus = 0.5f;
-            if (ArmorValue > 0) {
-                float flNew = flDamage * flArmorRatio;
-                float flArmor = (flDamage - flNew) * flArmorBonus;
-
-                if (flArmor > static_cast<float>(ArmorValue)) {
-                    flArmor = static_cast<float>(ArmorValue) * (1.f / flArmorBonus);
-                    flNew = flDamage - flArmor;
-                }
-
-                flDamage = flNew;
-            }
-            int bombDamage = max((int)ceilf(flDamage), 0);
-
-            if (bombDamage >= localPlayer->health())
-                interfaces.surface->setTextColor(255, 0, 0);
-            else
-                interfaces.surface->setTextColor(0, 255, 0);
-
-            auto bombDmgText{ (std::wstringstream{ } << L"Health After Explosion:  " << localPlayer->health() - bombDamage).str() };
-
-            auto bombDmgX{ interfaces.surface->getScreenSize().first / 2 - static_cast<int>((interfaces.surface->getTextSize(font, bombDmgText.c_str())).first / 2) };
-            auto drawPositionDamageY{ interfaces.surface->getScreenSize().second / 10 };
-            interfaces.surface->setTextPosition(bombDmgX, drawPositionDamageY);
-            interfaces.surface->printText(bombDmgText.c_str());
-
-            drawPositionDamageY += interfaces.surface->getTextSize(font, bombDmgText.c_str()).second;
-
             interfaces.surface->setTextColor(255, 255, 255);
             auto drawPositionY{ interfaces.surface->getScreenSize().second / 8 };
             auto bombText{ (std::wstringstream{ } << L"Bomb on " << (!entity->c4BombSite() ? 'A' : 'B') << L" : " << std::fixed << std::showpoint << std::setprecision(3) << (std::max)(entity->c4BlowTime() - memory.globalVars->currenttime, 0.0f) << L" s").str() };
@@ -542,4 +502,63 @@ void Misc::killMessage(GameEvent& event) noexcept
     cmd += config.misc.killMessageString;
     cmd += "\"";
     interfaces.engine->clientCmdUnrestricted(cmd.c_str());
+}
+
+void Misc::drawBombDamage() noexcept
+{
+    const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
+
+    //No Alive return since it is useful if you want to call it out to a mate that he will die
+    if (!localPlayer || !config.misc.bombDamage)
+        return;
+
+    for (int i = interfaces.engine->getMaxClients(); i <= interfaces.entityList->getHighestEntityIndex(); i++)
+    {
+        auto entity = interfaces.entityList->getEntity(i);
+        if (!entity || entity->isDormant() || entity->getClientClass()->classId != ClassId::PlantedC4 || !entity->
+            c4Ticking())
+            continue;
+
+        auto vecBombDistance = entity->origin() - localPlayer->origin();
+
+        const auto d = (vecBombDistance.length() - 75.68f) / 789.2f;
+        auto flDamage = 450.7f * exp(-d * d);
+
+        const auto ArmorValue = localPlayer->armor();
+        if (ArmorValue > 0)
+        {
+            auto flNew = flDamage * 0.5f;
+            auto flArmor = (flDamage - flNew) * 0.5f;
+
+            if (flArmor > static_cast<float>(ArmorValue))
+            {
+                flArmor = static_cast<float>(ArmorValue) * (1.f / 0.5f);
+                flNew = flDamage - flArmor;
+            }
+
+            flDamage = flNew;
+        }
+
+        const int bombDamage = max(ceilf(flDamage), 0);
+
+        //Could get the specator target here as well and set the color based on the spaceted player
+        //I'm too lazy for that tho, green while you are dead just looks nicer
+        if (localPlayer->isAlive() && bombDamage >= localPlayer->health())
+            interfaces.surface->setTextColor(255, 0, 0);
+        else
+            interfaces.surface->setTextColor(0, 255, 0);
+
+        auto bombDmgText{ (std::wstringstream{} << L"Bomb Damage: " << localPlayer->health()-bombDamage).str() };
+
+        constexpr unsigned font{ 0xc1 };
+        interfaces.surface->setTextFont(font);
+
+        auto drawPositionY{ interfaces.surface->getScreenSize().second / 8 };
+        const auto bombDmgX{ interfaces.surface->getScreenSize().first / 2 - static_cast<int>((interfaces.surface->getTextSize(font, bombDmgText.c_str())).first / 2) };
+
+        drawPositionY -= interfaces.surface->getTextSize(font, bombDmgText.c_str()).second;
+
+        interfaces.surface->setTextPosition(bombDmgX, drawPositionY);
+        interfaces.surface->printText(bombDmgText.c_str());
+    }
 }
