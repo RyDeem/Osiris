@@ -548,7 +548,7 @@ void Misc::drawBombDamage() noexcept
         else
             interfaces.surface->setTextColor(0, 255, 0);
 
-        auto bombDmgText{ (std::wstringstream{} << L"Bomb Damage: " << localPlayer->health()-bombDamage).str() };
+        auto bombDmgText{ (std::wstringstream{} << L"Health Left: " << localPlayer->health()-bombDamage).str() };
 
         constexpr unsigned font{ 0xc1 };
         interfaces.surface->setTextFont(font);
