@@ -63,46 +63,6 @@ void Visuals::fullBright() noexcept {
     interfaces.cvar->findVar("mat_fullbright")->setValue(config.visuals.fullBright ? 1 : 0);
 }
 
-void Visuals::hitMarkerSetDamageIndicator(GameEvent* event) noexcept{	
-    const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
-    if (!localPlayer)
-        return;
-    if (config.visuals.hitMarkerDamageIndicator){
-        if (event && interfaces.engine->getPlayerForUserID(event->getInt("attacker")) == interfaces.engine->getLocalPlayer()) {
-            hitMarkerInfo.push_back({ memory.globalVars->realtime + config.visuals.hitEffectTime, event->getInt("dmg_health") });
-        }
-    }
-}
-
-void Visuals::hitMarkerDamageIndicator() noexcept
-{
-    if (config.visuals.hitMarkerDamageIndicator)
-    {
-        if (hitMarkerInfo.empty()) 
-            return;
-        const auto [width, height] = interfaces.surface->getScreenSize();
-        for (size_t i = 0; i < hitMarkerInfo.size(); i++)
-        {
-            const auto diff = hitMarkerInfo.at(i).hitMarkerExpTime - memory.globalVars->realtime;
-            if (diff < 0.f)
-            {
-                hitMarkerInfo.erase(hitMarkerInfo.begin() + i);
-                continue;
-            }
-
-            const auto dist = config.visuals.hitMarkerDamageIndicatorDist;
-            const auto ratio = config.visuals.hitMarkerDamageIndicatorRatio - diff;
-            const auto alpha = diff * config.visuals.hitMarkerDamageIndicatorAlpha;
-
-            const auto font_id = config.visuals.hitMarkerDamageIndicatorFont;
-            interfaces.surface->setTextFont(font_id);
-            interfaces.surface->setTextPosition(width / 2 + config.visuals.hitMarkerDamageIndicatorTextX + ratio * dist / 2, height / 2 + config.visuals.hitMarkerDamageIndicatorTextY + ratio * dist);
-            interfaces.surface->setTextColor(255, 255, 255, alpha);
-            interfaces.surface->printText(std::to_wstring(hitMarkerInfo.at(i).hitMarkerDmg));
-        }
-    }
-}
-
 void Visuals::inverseRagdollGravity() noexcept
 {
     static auto ragdollGravity = interfaces.cvar->findVar("cl_ragdoll_gravity");
@@ -421,14 +381,20 @@ void Visuals::hitMarker(GameEvent* event) noexcept
     if (lastHitTime + config.visuals.hitMarkerTime < memory.globalVars->realtime)
         return;
 
+    const auto [width, height] = interfaces.surface->getScreenSize();
+    const auto width_mid = width / 2;
+    const auto height_mid = height / 2;
+
     switch (config.visuals.hitMarker) {
     case 1:
-        const auto [width, height] = interfaces.surface->getScreenSize();
-
-        const auto width_mid = width / 2;
-        const auto height_mid = height / 2;
-
         interfaces.surface->setDrawColor(255, 255, 255, 255);
+        interfaces.surface->drawLine(width_mid + 10, height_mid + 10, width_mid + 4, height_mid + 4);
+        interfaces.surface->drawLine(width_mid - 10, height_mid + 10, width_mid - 4, height_mid + 4);
+        interfaces.surface->drawLine(width_mid + 10, height_mid - 10, width_mid + 4, height_mid - 4);
+        interfaces.surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
+        break;
+    case 2:
+        interfaces.surface->setDrawColor(255, 0, 255, 255);
         interfaces.surface->drawLine(width_mid + 10, height_mid + 10, width_mid + 4, height_mid + 4);
         interfaces.surface->drawLine(width_mid - 10, height_mid + 10, width_mid - 4, height_mid + 4);
         interfaces.surface->drawLine(width_mid + 10, height_mid - 10, width_mid + 4, height_mid - 4);

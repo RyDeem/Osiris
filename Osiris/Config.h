@@ -194,14 +194,6 @@ public:
         float hitMarkerTime{ 0.6f };
         int playerModelT{ 0 };
         int playerModelCT{ 0 };
-        bool hitMarkerDamageIndicator{ false };
-        bool hitMarkerDamageIndicatorCustomize{ false };
-        int hitMarkerDamageIndicatorDist{ 150 };
-        float hitMarkerDamageIndicatorRatio{ 0.0f };
-        int hitMarkerDamageIndicatorAlpha{ 800 };
-        int hitMarkerDamageIndicatorFont{ 31 };
-        int hitMarkerDamageIndicatorTextX{ 60 };
-        int hitMarkerDamageIndicatorTextY{ 150 };
         bool customViewmodelToggle{ false };
         float viewmodel_x{ 0 };
         float viewmodel_y{ 0 };

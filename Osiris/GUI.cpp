@@ -852,14 +852,22 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     };
     ImGui::Checkbox("Full Bright", &config.visuals.fullBright);
     ImGui::PopItemWidth();
+    ImGui::PushID(14);
     ImGui::Combo("Skybox", &config.visuals.skybox, "Default\0cs_baggage_skybox_\0cs_tibet\0embassy\0italy\0jungle\0nukeblank\0office\0sky_cs15_daylight01_hdr\0sky_cs15_daylight02_hdr\0sky_cs15_daylight03_hdr\0sky_cs15_daylight04_hdr\0sky_csgo_cloudy01\0sky_csgo_night_flat\0sky_csgo_night02\0sky_day02_05_hdr\0sky_day02_05\0sky_dust\0sky_l4d_rural02_ldr\0sky_venice\0vertigo_hdr\0vertigo\0vertigoblue_hdr\0vietnam\0");
+    ImGui::PopID(); 
     ImGuiCustom::colorPicker("World color", config.visuals.world);
     ImGuiCustom::colorPicker("Sky color", config.visuals.sky);
     ImGui::Checkbox("Deagle spinner", &config.visuals.deagleSpinner);
+    ImGui::PushID(15);
     ImGui::Combo("Screen effect", &config.visuals.screenEffect, "None\0Drone cam\0Drone cam with noise\0Underwater\0Healthboost\0Dangerzone\0");
+    ImGui::PopID();
+    ImGui::PushID(16);
     ImGui::Combo("Hit effect", &config.visuals.hitEffect, "None\0Drone cam\0Drone cam with noise\0Underwater\0Healthboost\0Dangerzone\0");
+    ImGui::PopID();
     ImGui::SliderFloat("Hit effect time", &config.visuals.hitEffectTime, 0.1f, 1.5f, "%.2fs");
-    ImGui::Combo("Hit marker", &config.visuals.hitMarker, "None\0Default (Cross)\0");
+    ImGui::PushID(17);
+    ImGui::Combo("Hit marker", &config.visuals.hitMarker, "None\0Default (Cross)\0Purple (Cross)\0");
+    ImGui::PopID();
     ImGui::SliderFloat("Hit marker time", &config.visuals.hitMarkerTime, 0.1f, 1.5f, "%.2fs");
     ImGui::Checkbox("Color correction", &config.visuals.colorCorrection.enabled);
     ImGui::SameLine();
@@ -878,24 +886,6 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
         ImGui::VSliderFloat("##7", { 40.0f, 160.0f }, &config.visuals.colorCorrection.yellow, 0.0f, 1.0f, "Yellow\n%.3f"); ImGui::SameLine();
         ImGui::EndPopup();
     }
-    ImGui::Checkbox("Hit Damage", &config.visuals.hitMarkerDamageIndicator);
-    if (config.visuals.hitMarkerDamageIndicator) {
-        ImGui::SameLine();
-        ImGui::Checkbox("Customize Hit Damage", &config.visuals.hitMarkerDamageIndicatorCustomize);
-    };
-    ImGui::PushID(14);
-    ImGui::SliderFloat("", &config.visuals.hitEffectTime, 0.01f, 1.0f, "Hit marker time: %.2fs");
-    ImGui::PopID();
-    if (config.visuals.hitMarkerDamageIndicator && config.visuals.hitMarkerDamageIndicatorCustomize) {
-        ImGui::InputInt("Font", &config.visuals.hitMarkerDamageIndicatorFont, 1, 294);
-        ImGui::InputInt("Alpha", &config.visuals.hitMarkerDamageIndicatorAlpha, 1, 1000);
-        ImGui::InputInt("Dist", &config.visuals.hitMarkerDamageIndicatorDist, -100, 100);
-        ImGui::InputInt("Text X", &config.visuals.hitMarkerDamageIndicatorTextX, -100, 100);
-        ImGui::InputInt("Text Y", &config.visuals.hitMarkerDamageIndicatorTextY, -100, 100);
-        ImGui::PushID(15);
-        ImGui::SliderFloat(" ", &config.visuals.hitMarkerDamageIndicatorRatio, -1.0f, 1.0f, "Ratio: %.2f");
-        ImGui::PopID();
-    };
     
     ImGui::Columns(1);
 

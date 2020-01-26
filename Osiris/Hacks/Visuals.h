@@ -32,8 +32,6 @@ namespace Visuals {
     void applyScreenEffects() noexcept;
     void hitEffect(GameEvent* = nullptr) noexcept;
     void hitMarker(GameEvent* = nullptr) noexcept;
-    void hitMarkerSetDamageIndicator(GameEvent* = nullptr) noexcept;
-    void hitMarkerDamageIndicator() noexcept;
     void customViewmodelPosition() noexcept;
     void fullBright() noexcept;
     void viewBob() noexcept;
@@ -76,5 +74,4 @@ namespace Visuals {
         else
             memory.loadSky(interfaces.cvar->findVar("sv_skyname")->string);
     }
-    inline std::vector<HitMarkerInfo> hitMarkerInfo;
 };

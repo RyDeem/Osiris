@@ -511,7 +511,9 @@ void Misc::drawBombDamage() noexcept
     //No Alive return since it is useful if you want to call it out to a mate that he will die
     if (!localPlayer || !config.misc.bombDamage)
         return;
-    
+    if (localPlayer->health() < 1)
+        return;
+
     for (int i = interfaces.engine->getMaxClients(); i <= interfaces.entityList->getHighestEntityIndex(); i++)
     {
         auto entity = interfaces.entityList->getEntity(i);

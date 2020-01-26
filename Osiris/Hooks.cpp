@@ -231,7 +231,6 @@ static void __stdcall paintTraverse(unsigned int panel, bool forceRepaint, bool 
         Misc::watermark();
 		Visuals::hitMarker();
         Misc::drawBombDamage();
-        Visuals::hitMarkerDamageIndicator();
     }
     hooks.panel.callOriginal<void, unsigned int, bool, bool>(41, panel, forceRepaint, allowForce);
 }
