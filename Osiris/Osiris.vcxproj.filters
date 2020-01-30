@@ -352,5 +352,11 @@
     <ClInclude Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.h">
       <Filter>Hacks</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\Prediction.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\PseudoMd5.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.h" />
+    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\Prediction.h" />
+    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\PseudoMd5.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="fnv.h" />
     <ClInclude Include="Hacks\Aimbot.h" />

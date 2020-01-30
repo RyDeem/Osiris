@@ -14,6 +14,7 @@ struct Vector;
 struct Trace;
 class Entity;
 class ViewRender;
+class MoveHelper;
 
 class Memory {
 public:
@@ -26,6 +27,7 @@ public:
     Input* input;
     GlobalVars* globalVars;
     GlowObjectManager* glowObjectManager;
+    MoveHelper* moveHelper;
 
     bool* disablePostProcessing;
 
@@ -56,6 +58,7 @@ public:
     std::add_pointer_t<void __cdecl(const char* msg, ...)> debugMsg;
     float* vignette;
     int(__thiscall* equipWearable)(void* wearable, void* player);
+    int* predictionRandomSeed;
 private:
     template <typename T = uintptr_t>
     static auto findPattern(const wchar_t* module, const char* pattern, size_t offset = 0) noexcept
