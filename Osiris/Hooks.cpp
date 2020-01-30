@@ -24,6 +24,7 @@
 #include "Hacks/SkinChanger.h"
 #include "Hacks/Triggerbot.h"
 #include "Hacks/Visuals.h"
+#include "Hacks/EnginePrediction.h"
 
 #include "SDK/Engine.h"
 #include "SDK/Entity.h"

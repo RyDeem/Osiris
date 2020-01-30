@@ -116,6 +116,9 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.cpp">
+      <Filter>Hacks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI.h">
@@ -345,6 +348,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.h">
+      <Filter>Hacks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
