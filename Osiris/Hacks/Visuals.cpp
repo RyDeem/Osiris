@@ -394,7 +394,6 @@ void Visuals::hitMarker(GameEvent* event) noexcept
         interfaces.surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
         break;
     case 2:
-        interfaces.surface->setDrawColor(255, 0, 255, 255);
         interfaces.surface->setDrawColor(125, 0, 255, 255);
         interfaces.surface->drawLine(width_mid + 10, height_mid + 10, width_mid + 4, height_mid + 4);
         interfaces.surface->drawLine(width_mid - 10, height_mid + 10, width_mid - 4, height_mid + 4);
