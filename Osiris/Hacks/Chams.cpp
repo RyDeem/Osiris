@@ -167,7 +167,7 @@ bool Chams::renderPlayers(void* ctx, void* state, const ModelRenderInfo& info, m
                     applyChams(config.chams[BACKTRACK].materials[i], false, entity->health());
                     if (config.backtrack.drawAllTicks) {
                         for (int x = 0; x < record->size(); x++) {
-                            hooks.modelRender.callOriginal<void, void*, void*, const ModelRenderInfo&, matrix3x4*>(21, ctx, state, info, record->at(x).matrix);
+                            hooks.modelRender.callOriginal<void, 21>(ctx, state, std::cref(info), record->at(x).matrix);
                         }
                     }
                     else
