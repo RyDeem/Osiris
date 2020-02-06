@@ -234,7 +234,7 @@ static void __stdcall paintTraverse(unsigned int panel, bool forceRepaint, bool 
         Misc::drawBombTimer();
         Misc::spectatorList();
         Misc::watermark();
-	    Visuals::hitMarker();
+        Visuals::hitMarker();
         Misc::drawBombDamage();
     }
     hooks.panel.callOriginal<void, 41>(panel, forceRepaint, allowForce);
