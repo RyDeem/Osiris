@@ -168,12 +168,14 @@ bool Chams::renderPlayers(void* ctx, void* state, const ModelRenderInfo& info, m
                     if (config.backtrack.drawAllTicks) {
                         for (int x = 0; x < record->size(); x++) {
                             hooks.modelRender.callOriginal<void, 21>(ctx, state, std::cref(info), record->at(x).matrix);
+                            interfaces.modelRender->forceMaterialOverride(nullptr);
+                            applied = true;
                         }
-                    }
-                    else
+                    } else {
                         hooks.modelRender.callOriginal<void, 21>(ctx, state, std::cref(info), record->back().matrix);
                         interfaces.modelRender->forceMaterialOverride(nullptr);
                         applied = true;
+                    }
                 }
             }
 
