@@ -116,7 +116,7 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.cpp">
+    <ClCompile Include="Hacks\EnginePrediction.cpp">
       <Filter>Hacks</Filter>
     </ClCompile>
   </ItemGroup>
@@ -349,13 +349,13 @@
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.h">
+    <ClInclude Include="Hacks\EnginePrediction.h">
       <Filter>Hacks</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\Prediction.h">
+    <ClInclude Include="SDK\Prediction.h">
       <Filter>SDK</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\PseudoMd5.h">
+    <ClInclude Include="SDK\PseudoMd5.h">
       <Filter>SDK</Filter>
     </ClInclude>
   </ItemGroup>

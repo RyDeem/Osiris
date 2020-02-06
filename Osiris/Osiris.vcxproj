@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Hacks\Aimbot.cpp" />
     <ClCompile Include="Hacks\AntiAim.cpp" />
     <ClCompile Include="Hacks\Backtrack.cpp" />
     <ClCompile Include="Hacks\Chams.cpp" />
+    <ClCompile Include="Hacks\EnginePrediction.cpp" />
     <ClCompile Include="Hacks\Esp.cpp" />
     <ClCompile Include="Hacks\Glow.cpp" />
     <ClCompile Include="Hacks\Reportbot.cpp" />
@@ -44,15 +44,13 @@
     <ClCompile Include="SDK\GlobalVars.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Osiris\Osiris\Hacks\EnginePrediction.h" />
-    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\Prediction.h" />
-    <ClInclude Include="..\..\..\Osiris\Osiris\SDK\PseudoMd5.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="fnv.h" />
     <ClInclude Include="Hacks\Aimbot.h" />
     <ClInclude Include="Hacks\AntiAim.h" />
     <ClInclude Include="Hacks\Backtrack.h" />
     <ClInclude Include="Hacks\Chams.h" />
+    <ClInclude Include="Hacks\EnginePrediction.h" />
     <ClInclude Include="Hacks\Esp.h" />
     <ClInclude Include="Hacks\Glow.h" />
     <ClInclude Include="Hacks\Misc.h" />
@@ -109,6 +107,8 @@
     <ClInclude Include="SDK\NetworkChannel.h" />
     <ClInclude Include="SDK\Panel.h" />
     <ClInclude Include="SDK\PhysicsSurfaceProps.h" />
+    <ClInclude Include="SDK\Prediction.h" />
+    <ClInclude Include="SDK\PseudoMd5.h" />
     <ClInclude Include="SDK\Recv.h" />
     <ClInclude Include="SDK\RenderContext.h" />
     <ClInclude Include="SDK\RenderView.h" />
