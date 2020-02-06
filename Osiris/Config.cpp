@@ -712,18 +712,6 @@ void Config::load(size_t id) noexcept
         if (visualsJson.isMember("Hit marker time")) visuals.hitMarkerTime = visualsJson["Hit marker time"].asFloat();
         if (visualsJson.isMember("Playermodel T")) visuals.playerModelT = visualsJson["Playermodel T"].asInt();
         if (visualsJson.isMember("Playermodel CT")) visuals.playerModelCT = visualsJson["Playermodel CT"].asInt();
-        if (visualsJson.isMember("Color correction")) {
-            const auto& cc = visualsJson["Color correction"];
-
-            if (cc.isMember("Enabled")) visuals.colorCorrection.enabled = cc["Enabled"].asBool();
-            if (cc.isMember("Blue")) visuals.colorCorrection.blue = cc["Blue"].asFloat();
-            if (cc.isMember("Red")) visuals.colorCorrection.red = cc["Red"].asFloat();
-            if (cc.isMember("Mono")) visuals.colorCorrection.mono = cc["Mono"].asFloat();
-            if (cc.isMember("Saturation")) visuals.colorCorrection.saturation = cc["Saturation"].asFloat();
-            if (cc.isMember("Ghost")) visuals.colorCorrection.ghost = cc["Ghost"].asFloat();
-            if (cc.isMember("Green")) visuals.colorCorrection.green = cc["Green"].asFloat();
-            if (cc.isMember("Yellow")) visuals.colorCorrection.yellow = cc["Yellow"].asFloat();
-        }
         if (visualsJson.isMember("Custom Viewmodel Toggle")) visuals.customViewmodelToggle = visualsJson["Custom Viewmodel Toggle"].asBool();
         if (visualsJson.isMember("Custom Viewmodel Menu Switch")) visuals.customViewmodelMenuSwitch = visualsJson["Custom Viewmodel Menu Switch"].asBool();
         if (visualsJson.isMember("Custom Viewmodel Menu Customize")) visuals.customViewmodelMenuCustomize = visualsJson["Custom Viewmodel Menu Customize"].asBool();
@@ -739,6 +727,18 @@ void Config::load(size_t id) noexcept
         if (visualsJson.isMember("Custom Viewmodel Switch Hand Knife")) visuals.customViewmodelSwitchHandKnife = visualsJson["Custom Viewmodel Switch Hand Knife"].asBool();
         if (visualsJson.isMember("Custom Viewmodel Bob")) visuals.view_bob = visualsJson["Custom Viewmodel Bob"].asBool();
         if (visualsJson.isMember("Full Brightness Light")) visuals.fullBright = visualsJson["Full Brightness Light"].asBool();
+        if (visualsJson.isMember("Color correction")) {
+            const auto& cc = visualsJson["Color correction"];
+
+            if (cc.isMember("Enabled")) visuals.colorCorrection.enabled = cc["Enabled"].asBool();
+            if (cc.isMember("Blue")) visuals.colorCorrection.blue = cc["Blue"].asFloat();
+            if (cc.isMember("Red")) visuals.colorCorrection.red = cc["Red"].asFloat();
+            if (cc.isMember("Mono")) visuals.colorCorrection.mono = cc["Mono"].asFloat();
+            if (cc.isMember("Saturation")) visuals.colorCorrection.saturation = cc["Saturation"].asFloat();
+            if (cc.isMember("Ghost")) visuals.colorCorrection.ghost = cc["Ghost"].asFloat();
+            if (cc.isMember("Green")) visuals.colorCorrection.green = cc["Green"].asFloat();
+            if (cc.isMember("Yellow")) visuals.colorCorrection.yellow = cc["Yellow"].asFloat();
+        }
     }
 
     for (size_t i = 0; i < skinChanger.size(); i++) {
@@ -1499,7 +1499,22 @@ void Config::save(size_t id) const noexcept
         visualsJson["Hit marker time"] = visuals.hitMarkerTime;
         visualsJson["Playermodel T"] = visuals.playerModelT;
         visualsJson["Playermodel CT"] = visuals.playerModelCT;
-
+        visualsJson["Custom Viewmodel Toggle"] = visuals.customViewmodelToggle;
+        visualsJson["Custom Viewmodel X"] = visuals.viewmodel_x;
+        visualsJson["Custom Viewmodel Y"] = visuals.viewmodel_y;
+        visualsJson["Custom Viewmodel Z"] = visuals.viewmodel_z;
+        visualsJson["Custom Viewmodel Knife Toggle"] = visuals.customViewmodelKnifeToggle;
+        visualsJson["Custom Viewmodel Knife Enabled"] = visuals.customViewmodelKnifeEnabled;
+        visualsJson["Custom Viewmodel Knife Switch"] = visuals.customViewmodelMenuSwitch;
+        visualsJson["Custom Viewmodel Switch Hand"] = visuals.customViewmodelSwitchHand;
+        visualsJson["Custom Viewmodel Switch Hand Knife"] = visuals.customViewmodelSwitchHandKnife;
+        visualsJson["Custom Viewmodel Menu Switch"] = visuals.customViewmodelMenuSwitch;
+        visualsJson["Custom Viewmodel Menu Customize"] = visuals.customViewmodelMenuCustomize;
+        visualsJson["Custom Viewmodel X Knife"] = visuals.viewmodel_x_knife;
+        visualsJson["Custom Viewmodel Y Knife"] = visuals.viewmodel_y_knife;
+        visualsJson["Custom Viewmodel Z Knife"] = visuals.viewmodel_z_knife;
+        visualsJson["Custom Viewmodel Bob"] = visuals.view_bob;
+        visualsJson["Full Brightness Light"] = visuals.fullBright;
         {
             auto& cc = visualsJson["Color correction"];
             cc["Enabled"] = visuals.colorCorrection.enabled;
@@ -1511,22 +1526,6 @@ void Config::save(size_t id) const noexcept
             cc["Green"] = visuals.colorCorrection.green;
             cc["Yellow"] = visuals.colorCorrection.yellow;
         }
-		visualsJson["Custom Viewmodel Toggle"] = visuals.customViewmodelToggle;
-		visualsJson["Custom Viewmodel X"] = visuals.viewmodel_x;
-		visualsJson["Custom Viewmodel Y"] = visuals.viewmodel_y;
-		visualsJson["Custom Viewmodel Z"] = visuals.viewmodel_z;
-		visualsJson["Custom Viewmodel Knife Toggle"] = visuals.customViewmodelKnifeToggle;
-		visualsJson["Custom Viewmodel Knife Enabled"] = visuals.customViewmodelKnifeEnabled;
-		visualsJson["Custom Viewmodel Knife Switch"] = visuals.customViewmodelMenuSwitch;
-		visualsJson["Custom Viewmodel Switch Hand"] = visuals.customViewmodelSwitchHand;
-		visualsJson["Custom Viewmodel Switch Hand Knife"] = visuals.customViewmodelSwitchHandKnife;
-		visualsJson["Custom Viewmodel Menu Switch"] = visuals.customViewmodelMenuSwitch;
-		visualsJson["Custom Viewmodel Menu Customize"] = visuals.customViewmodelMenuCustomize;
-		visualsJson["Custom Viewmodel X Knife"] = visuals.viewmodel_x_knife;
-		visualsJson["Custom Viewmodel Y Knife"] = visuals.viewmodel_y_knife;
-		visualsJson["Custom Viewmodel Z Knife"] = visuals.viewmodel_z_knife;
-		visualsJson["Custom Viewmodel Bob"] = visuals.view_bob;
-		visualsJson["Full Brightness Light"] = visuals.fullBright;
     }
 
     for (size_t i = 0; i < skinChanger.size(); i++) {
