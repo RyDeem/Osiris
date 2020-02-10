@@ -2,6 +2,7 @@
 #include "../Memory.h"
 
 #include "../SDK/Engine.h"
+#include "../SDK/Entity.h"
 #include "../SDK/EntityList.h"
 #include "../SDK/GameMovement.h"
 #include "../SDK/GlobalVars.h"
@@ -10,11 +11,15 @@
 
 #include "EnginePrediction.h"
 
+static int localPlayerFlags;
+
 void EnginePrediction::run(UserCmd* cmd) noexcept
 {
     const auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
     if (!localPlayer)
         return;
+    
+    localPlayerFlags = localPlayer->flags();
 
     *memory.predictionRandomSeed = 0;
 
@@ -34,4 +39,9 @@ void EnginePrediction::run(UserCmd* cmd) noexcept
 
     memory.globalVars->currenttime = oldCurrenttime;
     memory.globalVars->frametime = oldFrametime;
+}
+
+int EnginePrediction::getFlags() noexcept
+{
+    return localPlayerFlags;
 }
