@@ -31,7 +31,6 @@
 #include "SDK/Entity.h"
 #include "SDK/EntityList.h"
 #include "SDK/GameEvent.h"
-#include "SDK/GameEventManager.h"
 #include "SDK/GameUI.h"
 #include "SDK/InputSystem.h"
 #include "SDK/MaterialSystem.h"
@@ -366,17 +365,19 @@ struct RenderableInfo {
 
 static int __stdcall listLeavesInBox(const Vector& mins, const Vector& maxs, unsigned short* list, int listMax) noexcept
 {
-    if (config.misc.disableModelOcclusion && reinterpret_cast<uintptr_t>(_ReturnAddress()) == memory.listLeaves) {
-        if (auto info = *reinterpret_cast<RenderableInfo**>(reinterpret_cast<uintptr_t>(_AddressOfReturnAddress()) + 0x14); info&& info->renderable) {
-            if (auto ent = callVirtualMethod<Entity*>(info->renderable - 4, 7); ent&& ent->isPlayer()) {
+    if (std::uintptr_t(_ReturnAddress()) == memory.listLeaves) {
+        if (const auto info = *reinterpret_cast<RenderableInfo**>(std::uintptr_t(_AddressOfReturnAddress()) + 0x14); info && info->renderable) {
+            if (const auto ent = callVirtualMethod<Entity*>(info->renderable - 4, 7); ent && ent->isPlayer()) {
                 info->flags &= ~0x100;
                 info->flags2 |= 0xC0;
 
-                constexpr float maxCoord{ 16384.0f };
-                constexpr float minCoord{ -maxCoord };
-                constexpr Vector min{ minCoord, minCoord, minCoord };
-                constexpr Vector max{ maxCoord, maxCoord, maxCoord };
-                return hooks.bspQuery.callOriginal<int, 6>(std::cref(min), std::cref(max), list, listMax);
+                if (config.misc.disableModelOcclusion) {
+                    constexpr float maxCoord = 16384.0f;
+                    constexpr float minCoord = -maxCoord;
+                    constexpr Vector min{ minCoord, minCoord, minCoord };
+                    constexpr Vector max{ maxCoord, maxCoord, maxCoord };
+                    return hooks.bspQuery.callOriginal<int, 6>(std::cref(min), std::cref(max), list, listMax);
+                }
             }
         }
     }
