@@ -176,6 +176,7 @@ public:
         int farZ{ 0 };
         int flashReduction{ 0 };
         float brightness{ 0.0f };
+        bool fullBright{ false };
         int skybox{ 0 };
         ColorToggle world;
         ColorToggle sky;

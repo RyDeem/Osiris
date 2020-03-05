@@ -182,6 +182,7 @@ static int __stdcall doPostScreenEffects(int param) noexcept
         Visuals::reduceFlashEffect();
         Visuals::removeBlur();
         Visuals::updateBrightness();
+        Visuals::fullBright();
         Visuals::removeGrass();
         Visuals::remove3dSky();
         Glow::render();

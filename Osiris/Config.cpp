@@ -670,6 +670,7 @@ void Config::load(size_t id) noexcept
         if (visualsJson.isMember("farZ")) visuals.farZ = visualsJson["farZ"].asInt();
         if (visualsJson.isMember("flashReduction")) visuals.flashReduction = visualsJson["flashReduction"].asInt();
         if (visualsJson.isMember("brightness")) visuals.brightness = visualsJson["brightness"].asFloat();
+        if (visualsJson.isMember("Full Brightness Light")) visuals.fullBright = visualsJson["Full Brightness Light"].asBool();
         if (visualsJson.isMember("skybox")) visuals.skybox = visualsJson["skybox"].asInt();
         if (visualsJson.isMember("World")) {
             const auto& worldJson = visualsJson["World"];
@@ -1440,6 +1441,7 @@ void Config::save(size_t id) const noexcept
         visualsJson["farZ"] = visuals.farZ;
         visualsJson["flashReduction"] = visuals.flashReduction;
         visualsJson["brightness"] = visuals.brightness;
+        visualsJson["Full Brightness Light"] = visuals.fullBright;
         visualsJson["skybox"] = visuals.skybox;
 
         {
