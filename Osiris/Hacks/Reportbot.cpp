@@ -10,7 +10,8 @@
 
 #include "Reportbot.h"
 
-static std::vector<__int64> reportedPlayers;
+static std::vector<std::uint64_t> reportedPlayers;
+static int currentRound;
 
 void Reportbot::run() noexcept
 {
@@ -26,6 +27,10 @@ void Reportbot::run() noexcept
     if (lastReportTime + config.reportbot.delay > memory.globalVars->realtime)
         return;
 
+    if (currentRound >= config.reportbot.rounds)
+        return;
+
+    bool allPlayersReported = true;
     for (int i = 1; i <= interfaces.engine->getMaxClients(); ++i) {
         const auto entity = interfaces.entityList->getEntity(i);
 
@@ -39,7 +44,7 @@ void Reportbot::run() noexcept
         if (!interfaces.engine->getPlayerInfo(i, playerInfo))
             continue;
 
-        if (playerInfo.steamID64 == 0 || std::find(reportedPlayers.cbegin(), reportedPlayers.cend(), playerInfo.steamID64) != reportedPlayers.cend())
+        if (playerInfo.xuid == 0 || std::find(reportedPlayers.cbegin(), reportedPlayers.cend(), playerInfo.xuid) != reportedPlayers.cend())
             continue;
 
         std::string report;
@@ -56,15 +61,22 @@ void Reportbot::run() noexcept
             report += "speedhack,";
 
         if (!report.empty()) {
-            memory.submitReport(std::to_string(playerInfo.steamID64).c_str(), report.c_str());
+            memory.submitReport(std::to_string(playerInfo.xuid).c_str(), report.c_str());
             lastReportTime = memory.globalVars->realtime;
-            reportedPlayers.push_back(playerInfo.steamID64);
+            reportedPlayers.push_back(playerInfo.xuid);
         }
+        allPlayersReported = false;
         break;
+    }
+
+    if (allPlayersReported) {
+        reportedPlayers.clear();
+        ++currentRound;
     }
 }
 
 void Reportbot::reset() noexcept
 {
+    currentRound = 0;
     reportedPlayers.clear();
 }
