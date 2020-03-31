@@ -16,10 +16,10 @@
 #include <array>
 
 void Visuals::fullBright() noexcept {
-    static auto localPlayer = interfaces.entityList->getEntity(interfaces.engine->getLocalPlayer());
+    static auto localPlayer = interfaces->entityList->getEntity(interfaces->engine->getLocalPlayer());
     if (!localPlayer)
         return;
-    interfaces.cvar->findVar("mat_fullbright")->setValue(config.visuals.fullBright ? 1 : 0);
+    interfaces->cvar->findVar("mat_fullbright")->setValue(config->visuals.fullBright ? 1 : 0);
 }
 
 void Visuals::playerModel(FrameStage stage) noexcept
