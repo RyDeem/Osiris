@@ -169,7 +169,7 @@ public:
         int zoomKey{ 0 };
         bool thirdperson{ false };
         int thirdpersonKey{ 0 };
-        int thirdpersonDistance{ 0 };
+        int thirdpersonDistance{ -30 };
         int viewmodelFov{ 0 };
         int fov{ 0 };
         int farZ{ 0 };
@@ -187,6 +187,19 @@ public:
         float hitMarkerTime{ 0.6f };
         int playerModelT{ 0 };
         int playerModelCT{ 0 };
+        /////visualsJson["Viewmodel XYZ Swap Side"] = visuals.viewmodel_x_clrighthand;
+        bool viewmodel_xyz{ 0 };
+        bool viewmodel_xyz_clrightguns{ 1 };
+        bool viewmodel_xyz_clrightknife{ 1 };
+        //
+        float viewmodel_x{ 0.0f };
+        float viewmodel_y{ 0.0f };
+        float viewmodel_z{ 0.0f };
+        //
+        float viewmodel_x_knife{ 0.0f };
+        float viewmodel_y_knife{ 0.0f };
+        float viewmodel_z_knife{ 0.0f };
+        ////
 
         struct {
             bool enabled = false;

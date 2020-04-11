@@ -14,6 +14,7 @@ enum class FrameStage;
 class GameEvent;
 
 namespace Visuals {
+    void ViewmodelXYZ() noexcept;
     void fullBright() noexcept;
     void playerModel(FrameStage stage) noexcept;
     void colorWorld() noexcept;

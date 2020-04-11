@@ -704,6 +704,19 @@ void Config::load(size_t id) noexcept
         if (visualsJson.isMember("Hit marker time")) visuals.hitMarkerTime = visualsJson["Hit marker time"].asFloat();
         if (visualsJson.isMember("Playermodel T")) visuals.playerModelT = visualsJson["Playermodel T"].asInt();
         if (visualsJson.isMember("Playermodel CT")) visuals.playerModelCT = visualsJson["Playermodel CT"].asInt();
+        ///
+        if (visualsJson.isMember("Viewmodel XYZ")) visuals.viewmodel_xyz = visualsJson["Viewmodel XYZ"].asBool();
+        if (visualsJson.isMember("Viewmodel XYZ Swap Guns")) visuals.viewmodel_xyz_clrightguns = visualsJson["Viewmodel XYZ Swap Guns"].asBool();
+        if (visualsJson.isMember("Viewmodel XYZ Swap Knife")) visuals.viewmodel_xyz_clrightknife = visualsJson["Viewmodel XYZ Swap Knife"].asBool();
+        //
+        if (visualsJson.isMember("Viewmodel X")) visuals.viewmodel_x = visualsJson["Viewmodel X"].asFloat();
+        if (visualsJson.isMember("Viewmodel Y")) visuals.viewmodel_y = visualsJson["Viewmodel Y"].asFloat();
+        if (visualsJson.isMember("Viewmodel Z")) visuals.viewmodel_z = visualsJson["Viewmodel Z"].asFloat();
+        //
+        if (visualsJson.isMember("Viewmodel X Knife")) visuals.viewmodel_x_knife = visualsJson["Viewmodel X Knife"].asFloat();
+        if (visualsJson.isMember("Viewmodel Y Knife")) visuals.viewmodel_y_knife = visualsJson["Viewmodel Y Knife"].asFloat();
+        if (visualsJson.isMember("Viewmodel Z Knife")) visuals.viewmodel_z_knife = visualsJson["Viewmodel Z Knife"].asFloat();
+        ////
 
         if (visualsJson.isMember("Color correction")) {
             const auto& cc = visualsJson["Color correction"];
@@ -1467,6 +1480,19 @@ void Config::save(size_t id) const noexcept
         visualsJson["Hit marker time"] = visuals.hitMarkerTime;
         visualsJson["Playermodel T"] = visuals.playerModelT;
         visualsJson["Playermodel CT"] = visuals.playerModelCT;
+        ////
+        visualsJson["Viewmodel XYZ"] = visuals.viewmodel_x;
+        visualsJson["Viewmodel XYZ Swap Side"] = visuals.viewmodel_xyz_clrightguns;
+        visualsJson["Viewmodel XYZ Swap Side"] = visuals.viewmodel_xyz_clrightknife;
+        //
+        visualsJson["Viewmodel X"] = visuals.viewmodel_x;
+        visualsJson["Viewmodel Y"] = visuals.viewmodel_y;
+        visualsJson["Viewmodel Z"] = visuals.viewmodel_z;
+        //
+        visualsJson["Viewmodel X Knife"] = visuals.viewmodel_x_knife;
+        visualsJson["Viewmodel Y Knife"] = visuals.viewmodel_y_knife;
+        visualsJson["Viewmodel Z Knife"] = visuals.viewmodel_z_knife;
+        ////
 
         {
             auto& cc = visualsJson["Color correction"];

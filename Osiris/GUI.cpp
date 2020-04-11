@@ -748,6 +748,45 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::Checkbox("No grass", &config->visuals.noGrass);
     ImGui::Checkbox("No shadows", &config->visuals.noShadows);
     ImGui::Checkbox("Wireframe smoke", &config->visuals.wireframeSmoke);
+    ////
+    ImGui::Checkbox("Viewmodel XYZ", &viewModelView);
+    //
+    if (viewModelView) {
+    //
+        ImGui::SameLine();
+        ImGui::Checkbox("Enable", &config->visuals.viewmodel_xyz);
+        ImGui::Checkbox("Gun or Knife", &viewModelType);
+        ImGui::SameLine();
+        if (!viewModelType) {ImGui::Checkbox("Swap Side", &config->visuals.viewmodel_xyz_clrightguns);};
+        if (viewModelType) {ImGui::Checkbox("Swap Side", &config->visuals.viewmodel_xyz_clrightknife);};
+        //
+        if (!viewModelType) {
+
+            ImGui::PushID(0);
+            ImGui::SliderFloat("", &config->visuals.viewmodel_x, -25, 25, "Guns X: %.1f");
+            ImGui::PopID(); 
+            ImGui::PushID(1);
+            ImGui::SliderFloat("", &config->visuals.viewmodel_y, -25, 25, "Guns Y: %.1f");
+            ImGui::PopID();
+            ImGui::PushID(2);
+            ImGui::SliderFloat("", &config->visuals.viewmodel_z, -25, 25, "Guns Z: %.1f");
+            ImGui::PopID();
+        };
+        //
+        if (viewModelType) {
+            ImGui::PushID(3);
+            ImGui::SliderFloat("", &config->visuals.viewmodel_x_knife, -25, 25, "Knife X: %.1f");
+            ImGui::PopID();
+            ImGui::PushID(4);
+            ImGui::SliderFloat("", &config->visuals.viewmodel_y_knife, -25, 25, "Knife Y: %.1f");
+            ImGui::PopID();
+            ImGui::PushID(5);
+            ImGui::SliderFloat("", &config->visuals.viewmodel_z_knife, -25, 25, "Knife Z: %.1f");
+            ImGui::PopID();
+        };
+        //
+    };
+    ////
     ImGui::NextColumn();
     ImGui::Checkbox("Zoom", &config->visuals.zoom);
     ImGui::SameLine();
@@ -756,28 +795,28 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::SameLine();
     hotkey(config->visuals.thirdpersonKey);
     ImGui::PushItemWidth(290.0f);
-    ImGui::PushID(0);
-    ImGui::SliderInt("", &config->visuals.thirdpersonDistance, 0, 1000, "Thirdperson distance: %d");
+    ImGui::PushID(6);
+    ImGui::SliderInt("", &config->visuals.thirdpersonDistance, -30, 1000, "Thirdperson distance: %d");
     ImGui::PopID();
-    ImGui::PushID(1);
+    ImGui::PushID(7);
     ImGui::SliderInt("", &config->visuals.viewmodelFov, -60, 60, "Viewmodel FOV: %d");
     ImGui::PopID();
-    ImGui::PushID(2);
+    ImGui::PushID(8);
     ImGui::SliderInt("", &config->visuals.fov, -60, 60, "FOV: %d");
     ImGui::PopID();
-    ImGui::PushID(3);
+    ImGui::PushID(9);
     ImGui::SliderInt("", &config->visuals.farZ, 0, 2000, "Far Z: %d");
     ImGui::PopID();
-    ImGui::PushID(4);
+    ImGui::PushID(10);
     ImGui::SliderInt("", &config->visuals.flashReduction, 0, 100, "Flash reduction: %d%%");
     ImGui::PopID();
     if (!config->visuals.fullBright) {
-        ImGui::PushID(5);
+        ImGui::PushID(11);
         ImGui::SliderFloat("", &config->visuals.brightness, 0.0f, 1.0f, "Brightness: %.2f");
         ImGui::PopID();
     }
     else {
-        ImGui::PushID(6);
+        ImGui::PushID(12);
         ImGui::SliderFloat("", &config->visuals.brightness, 0.0f, 0.0f, "Disabled for Full Bright");
         ImGui::PopID();
     };
@@ -1013,7 +1052,32 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::Checkbox("Fix bone matrix", &config->misc.fixBoneMatrix);
     ImGui::Checkbox("Fix movement", &config->misc.fixMovement);
     ImGui::Checkbox("Disable model occlusion", &config->misc.disableModelOcclusion);
-    ImGui::SliderFloat("Aspect Ratio", &config->misc.aspectratio, 0.0f, 5.0f, "%.2f");
+    ////
+    ImGui::Checkbox("Aspect Ratio", &AspectRatioView);
+    if (AspectRatioView) {
+        //
+        ImGui::SameLine();
+        if (ImGui::Button("Default"))
+            config->misc.aspectratio = 0.0f;
+        //////
+        if (ImGui::Button("16:9"))
+            config->misc.aspectratio = 1.777777777777778f;
+        ImGui::SameLine();
+        if (ImGui::Button("4:3"))
+            config->misc.aspectratio = 1.333333333333333f;
+        ImGui::SameLine();
+        if (ImGui::Button("19:10"))
+            config->misc.aspectratio = 1.6f;
+        ImGui::SameLine();
+        if (ImGui::Button("21:9"))
+            config->misc.aspectratio = 2.333333333333333f;
+        //////
+        ImGui::PushID(0);
+        ImGui::SliderFloat("", &config->misc.aspectratio, 0.0f, 5.0f, "%.2f");
+        ImGui::PopID();
+        //
+    };
+    ////
     ImGui::NextColumn();
     ImGui::Checkbox("Disable HUD blur", &config->misc.disablePanoramablur);
     ImGui::Checkbox("Animated clan tag", &config->misc.animatedClanTag);
@@ -1021,14 +1085,14 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::Checkbox("Custom clantag", &config->misc.customClanTag);
     ImGui::SameLine();
     ImGui::PushItemWidth(120.0f);
-    ImGui::PushID(0);
+    ImGui::PushID(1);
     if (ImGui::InputText("", &config->misc.clanTag))
         Misc::updateClanTag(true);
     ImGui::PopID();
     ImGui::Checkbox("Kill message", &config->misc.killMessage);
     ImGui::SameLine();
     ImGui::PushItemWidth(120.0f);
-    ImGui::PushID(1);
+    ImGui::PushID(2);
     ImGui::InputText("", &config->misc.killMessageString);
     ImGui::PopID();
     ImGui::Checkbox("Name stealer", &config->misc.nameStealer);

@@ -183,6 +183,7 @@ static int __stdcall doPostScreenEffects(int param) noexcept
         Visuals::fullBright();
         Visuals::removeGrass();
         Visuals::remove3dSky();
+        Visuals::ViewmodelXYZ();
         Glow::render();
     }
     return hooks->clientMode.callOriginal<int, 44>(param);
@@ -196,7 +197,11 @@ static float __stdcall getViewModelFov() noexcept
             additionalFov = 0.0f;
     }
 
+    if (!config->visuals.viewmodel_xyz) {
     return hooks->clientMode.callOriginal<float, 35>() + additionalFov;
+    } else {
+        return hooks->clientMode.callOriginal<float, 35>() + additionalFov + 54;
+    };
 }
 
 static void __stdcall drawModelExecute(void* ctx, void* state, const ModelRenderInfo& info, matrix3x4* customBoneToWorld) noexcept
@@ -457,7 +462,7 @@ static float __stdcall getScreenAspectRatio(int width, int height) noexcept
 {
     if (config->misc.aspectratio)
         return config->misc.aspectratio;
-    return hooks->engine.callOriginal<float, 101>(width, height);
+        return hooks->engine.callOriginal<float, 101>(width, height);
 }
 
 static void __stdcall renderSmokeOverlay(bool update) noexcept
