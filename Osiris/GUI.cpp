@@ -1079,45 +1079,39 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::Checkbox("Dont hide models", &config->misc.disableModelOcclusion);
     ImGui::Checkbox("Fake prime", &config->misc.fakePrime);
     ////
-    ImGui::Checkbox("Aspect Ratio", &AspectRatioView);
-    if (AspectRatioView) {
-        //
+    ImGui::Text("Aspect Ratio");
         ImGui::SameLine();
         if (ImGui::Button("Default"))
             config->misc.aspectratio = 0.0f;
-        //////
         if (ImGui::Button("16:9"))
             config->misc.aspectratio = 1.777777777777778f;
         ImGui::SameLine();
         if (ImGui::Button("4:3"))
             config->misc.aspectratio = 1.333333333333333f;
         ImGui::SameLine();
-        if (ImGui::Button("19:10"))
-            config->misc.aspectratio = 1.6f;
+        if (ImGui::Button("3:2"))
+            config->misc.aspectratio = 1.5f;
         ImGui::SameLine();
         if (ImGui::Button("21:9"))
             config->misc.aspectratio = 2.333333333333333f;
-        //////
         ImGui::PushID(0);
-        ImGui::SliderFloat("", &config->misc.aspectratio, 0.0f, 5.0f, "%.2f");
+        ImGui::SetNextItemWidth(180.0f);
+        ImGui::SliderFloat("", &config->misc.aspectratio, 0.0f, 5.0f, "Custom Ratio %.2f");
         ImGui::PopID();
-        //
-    };
-    ////
+    //////
     ImGui::NextColumn();
     ImGui::Checkbox("Disable HUD blur", &config->misc.disablePanoramablur);
     ImGui::Checkbox("Animated clan tag", &config->misc.animatedClanTag);
     ImGui::Checkbox("Clock tag", &config->misc.clocktag);
     ImGui::Checkbox("Clantag", &config->misc.customClanTag);
     ImGui::SameLine();
-    ImGui::PushItemWidth(100.0f);
     ImGui::PushID(1);
+    ImGui::PushItemWidth(100.0f);
     if (ImGui::InputText("", &config->misc.clanTag))
         Misc::updateClanTag(true);
     ImGui::PopID();
     ImGui::Checkbox("Kill msg", &config->misc.killMessage);
     ImGui::SameLine();
-    ImGui::PushItemWidth(100.0f);
     ImGui::PushID(2);
     ImGui::InputText("", &config->misc.killMessageString);
     ImGui::PopID();
