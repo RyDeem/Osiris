@@ -19,9 +19,8 @@
 void Visuals::ViewmodelXYZ() noexcept {
     ///
     if (config->visuals.viewmodel_xyz) {
-        if (!localPlayer)               //interfaces->cvar->findVar("viewmodel_offset_x")->setValue(0);
-            return;                     //interfaces->cvar->findVar("viewmodel_offset_y")->setValue(0);
-                                        //interfaces->cvar->findVar("viewmodel_offset_z")->setValue(0);
+        if (!localPlayer)
+            return;
         const auto activeWeapon = localPlayer->getActiveWeapon();
         if (interfaces->cvar->findVar("sv_competitive_minspec") != 0) interfaces->cvar->findVar("sv_competitive_minspec")->setValue(0);
     if (activeWeapon->getClientClass()->classId == ClassId::C4) {
@@ -33,15 +32,12 @@ void Visuals::ViewmodelXYZ() noexcept {
         if (interfaces->cvar->findVar("viewmodel_offset_y") != 0) { interfaces->cvar->findVar("viewmodel_offset_y")->setValue(0); };
         if (interfaces->cvar->findVar("viewmodel_offset_z") != 0) { interfaces->cvar->findVar("viewmodel_offset_z")->setValue(0); };
     } else if (activeWeapon->getClientClass()->classId == ClassId::Knife) {
-        
-        //bool minspec = 0; interfaces->cvar->findVar("sv_competitive_minspec")->setValue(minspec);
-        bool righthand = 0; interfaces->cvar->findVar("cl_righthand")->setValue(righthand);
+        bool righthand = 0; interfaces->cvar->findVar("cl_righthand")->setValue(righthand); 
         if (righthand != config->visuals.viewmodel_xyz_clrightknife) { interfaces->cvar->findVar("cl_righthand")->setValue(config->visuals.viewmodel_xyz_clrightknife); };
         int viewmodel_x_knife = 0; int viewmodel_y_knife = 0; int viewmodel_z_knife = 0;
         interfaces->cvar->findVar("viewmodel_offset_x")->setValue(viewmodel_x_knife);
         interfaces->cvar->findVar("viewmodel_offset_y")->setValue(viewmodel_y_knife);
         interfaces->cvar->findVar("viewmodel_offset_z")->setValue(viewmodel_z_knife);
-
         if (viewmodel_x_knife != config->visuals.viewmodel_x_knife) {interfaces->cvar->findVar("viewmodel_offset_x")->setValue(config->visuals.viewmodel_x_knife);};
         if (viewmodel_y_knife != config->visuals.viewmodel_y_knife) {interfaces->cvar->findVar("viewmodel_offset_y")->setValue(config->visuals.viewmodel_y_knife);};
         if (viewmodel_z_knife != config->visuals.viewmodel_z_knife) {interfaces->cvar->findVar("viewmodel_offset_z")->setValue(config->visuals.viewmodel_z_knife);};
@@ -55,7 +51,6 @@ void Visuals::ViewmodelXYZ() noexcept {
         interfaces->cvar->findVar("viewmodel_offset_x")->setValue(viewmodel_x);
         interfaces->cvar->findVar("viewmodel_offset_y")->setValue(viewmodel_y);
         interfaces->cvar->findVar("viewmodel_offset_z")->setValue(viewmodel_z);
-
         if (viewmodel_x != config->visuals.viewmodel_x)
             interfaces->cvar->findVar("viewmodel_offset_x")->setValue(config->visuals.viewmodel_x);
         if (viewmodel_y != config->visuals.viewmodel_y)
@@ -63,15 +58,12 @@ void Visuals::ViewmodelXYZ() noexcept {
         if (viewmodel_z != config->visuals.viewmodel_z)
             interfaces->cvar->findVar("viewmodel_offset_z")->setValue(config->visuals.viewmodel_z);
     };
-    ///
     } else {
         if (interfaces->cvar->findVar("viewmodel_offset_x") != 0) { interfaces->cvar->findVar("viewmodel_offset_x")->setValue(0); };
         if (interfaces->cvar->findVar("viewmodel_offset_y") != 0) { interfaces->cvar->findVar("viewmodel_offset_y")->setValue(0); };
         if (interfaces->cvar->findVar("viewmodel_offset_z") != 0) { interfaces->cvar->findVar("viewmodel_offset_z")->setValue(0); };
-        //
         bool minspec = 1; interfaces->cvar->findVar("sv_competitive_minspec")->setValue(minspec);
         if (minspec != 1) interfaces->cvar->findVar("sv_competitive_minspec")->setValue(1);
-        //
         bool righthand = 1; interfaces->cvar->findVar("cl_righthand")->setValue(righthand);
         if (righthand != 1) interfaces->cvar->findVar("cl_righthand")->setValue(1);
     };////
@@ -81,9 +73,9 @@ void Visuals::fullBright() noexcept {
     if (config->visuals.fullBright) {
     if (!localPlayer)
         return;
-    int fullbright = 0;
+    int fullbright = 1;
     interfaces->cvar->findVar("mat_fullbright")->setValue(fullbright);
-    if (fullbright !=1)
+    if (fullbright != 1)
     interfaces->cvar->findVar("mat_fullbright")->setValue(1);
     } else {
         int fullbright = 0;

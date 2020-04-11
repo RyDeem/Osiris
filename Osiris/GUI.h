@@ -5,7 +5,6 @@
 
 struct ImFont;
 
-bool viewModelView = 0;
 bool viewModelType = 0;
 
 class GUI {

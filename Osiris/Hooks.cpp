@@ -460,7 +460,7 @@ static void __stdcall updateColorCorrectionWeights() noexcept
 
 static float __stdcall getScreenAspectRatio(int width, int height) noexcept
 {
-    if (config->misc.aspectratio)
+    if (config->misc.aspectratio) 
         return config->misc.aspectratio;
         return hooks->engine.callOriginal<float, 101>(width, height);
 }

@@ -768,10 +768,7 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::SameLine();
     ImGui::Checkbox("Wireframe smoke", &config->visuals.wireframeSmoke);
     ////
-    ImGui::Checkbox("Viewmodel XYZ", &viewModelView);
-    //
-    if (viewModelView) {
-    //
+    ImGui::Text("Custom Viewmodel XYZ");
         ImGui::SameLine();
         ImGui::Checkbox("Enable", &config->visuals.viewmodel_xyz);
         ImGui::Checkbox("Gun or Knife", &viewModelType);
@@ -805,8 +802,6 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
             ImGui::PopID();
         };
         //
-    };
-    ////
     ImGui::NextColumn();
     ImGui::Checkbox("Zoom", &config->visuals.zoom);
     ImGui::SameLine();
@@ -820,7 +815,7 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::SliderInt("", &config->visuals.thirdpersonDistance, -30, 1000, "Thirdperson distance: %d");
     ImGui::PopID();
     ImGui::PushID(7);
-    ImGui::SliderInt("", &config->visuals.viewmodelFov, -60, 60, "Viewmodel FOV: %d");
+    ImGui::SliderInt("", &config->visuals.viewmodelFov, -720, 60, "Viewmodel FOV: %d");
     ImGui::PopID();
     ImGui::PushID(8);
     ImGui::SliderInt("", &config->visuals.fov, -60, 60, "FOV: %d");
@@ -838,7 +833,7 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     }
     else {
         ImGui::PushID(12);
-        ImGui::SliderFloat("", &config->visuals.brightness, 0.0f, 0.0f, "Disabled for Full Bright");
+        ImGui::SliderFloat("", &config->visuals.brightness, 0.0f, 0.0f, "Brightness Disabled for Full Bright");
         ImGui::PopID();
     };
     ImGui::Checkbox("Full Bright", &config->visuals.fullBright);
@@ -1044,9 +1039,6 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     }
     ImGui::Columns(3, nullptr, false);
     ImGui::SetColumnOffset(1, 180.0f);
-    ImGui::TextUnformatted("Menu key");
-    ImGui::SameLine();
-    hotkey(config->misc.menuKey);
 
     ImGui::Checkbox("Anti AFK", &config->misc.antiAfkKick);
     ImGui::Checkbox("Auto strafe", &config->misc.autoStrafe);
@@ -1147,6 +1139,10 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
 
     if (ImGui::Button("Unhook"))
         hooks->restore();
+    ImGui::SameLine();
+    ImGui::TextUnformatted("Menu key");
+    ImGui::SameLine();
+    hotkey(config->misc.menuKey);
 
     ImGui::Columns(1);
     if (!contentOnly)
