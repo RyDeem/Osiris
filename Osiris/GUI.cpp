@@ -815,7 +815,7 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::SliderInt("", &config->visuals.thirdpersonDistance, -30, 1000, "Thirdperson distance: %d");
     ImGui::PopID();
     ImGui::PushID(7);
-    ImGui::SliderInt("", &config->visuals.viewmodelFov, -720, 60, "Viewmodel FOV: %d");
+    ImGui::SliderInt("", &config->visuals.viewmodelFov, -60, 60, "Viewmodel FOV: %d");
     ImGui::PopID();
     ImGui::PushID(8);
     ImGui::SliderInt("", &config->visuals.fov, -60, 60, "FOV: %d");

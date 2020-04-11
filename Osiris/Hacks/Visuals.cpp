@@ -18,9 +18,9 @@
 ////
 void Visuals::ViewmodelXYZ() noexcept {
     ///
+    if (!localPlayer)
+        return;
     if (config->visuals.viewmodel_xyz) {
-        if (!localPlayer)
-            return;
         const auto activeWeapon = localPlayer->getActiveWeapon();
         if (interfaces->cvar->findVar("sv_competitive_minspec") != 0) interfaces->cvar->findVar("sv_competitive_minspec")->setValue(0);
     if (activeWeapon->getClientClass()->classId == ClassId::C4) {
@@ -70,17 +70,17 @@ void Visuals::ViewmodelXYZ() noexcept {
 }///////
 /////
 void Visuals::fullBright() noexcept {
-    if (config->visuals.fullBright) {
-    if (!localPlayer)
+    if (!localPlayer) {
+        if (interfaces->cvar->findVar("mat_fullbright") != 0)
+        interfaces->cvar->findVar("mat_fullbright")->setValue(0);
         return;
+    };
     int fullbright = 1;
+    if (config->visuals.fullBright) { 
     interfaces->cvar->findVar("mat_fullbright")->setValue(fullbright);
-    if (fullbright != 1)
-    interfaces->cvar->findVar("mat_fullbright")->setValue(1);
+    if (fullbright != 1) { interfaces->cvar->findVar("mat_fullbright")->setValue(1); };
     } else {
-        int fullbright = 0;
-        interfaces->cvar->findVar("mat_fullbright")->setValue(fullbright);
-        if (fullbright != 0)
+        if (interfaces->cvar->findVar("mat_fullbright") != 0)
             interfaces->cvar->findVar("mat_fullbright")->setValue(0);
     };
 }
