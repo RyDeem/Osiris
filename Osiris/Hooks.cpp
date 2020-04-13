@@ -204,7 +204,7 @@ static float __stdcall getViewModelFov() noexcept
     if (!config->visuals.viewmodel_xyz) {
         return hooks->clientMode.callOriginal<float, 35>() + additionalFov;
     } else {
-        return hooks->clientMode.callOriginal<float, 35>() + additionalFov + 54.0f;
+        return hooks->clientMode.callOriginal<float, 35>() + additionalFov + 54.0f; //When enabling sv_minspec in viewmodel this function gets borked, so we need to add what has been lost from minspeccin
     };
 }
 
