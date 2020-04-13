@@ -169,7 +169,7 @@ public:
         int zoomKey{ 0 };
         bool thirdperson{ false };
         int thirdpersonKey{ 0 };
-        int thirdpersonDistance{ -30 };
+        int thirdpersonDistance{ -30 }; // -30 is the value of distance = the same as first person, for that firstperson/thirdperson hybrid feel, use with localplayer chams alpha 0.
         int viewmodelFov{ 0 };
         int fov{ 0 };
         int farZ{ 0 };

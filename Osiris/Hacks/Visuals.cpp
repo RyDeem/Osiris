@@ -21,8 +21,8 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
     
     return;
     
-
     /*
+    
 
     //config.visuals.viewmodel_xyz_clright_default
     //if (viewmodel_x != viewmodel_x_knife) { viewmodel_offset_x->setValue(viewmodel_x_knife); };

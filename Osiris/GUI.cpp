@@ -743,7 +743,6 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::Checkbox("Disable post-processing", &config->visuals.disablePostProcessing);
     ImGui::SameLine();
     ImGui::Checkbox("Inverse ragdoll gravity", &config->visuals.inverseRagdollGravity);
-
     ImGui::Checkbox("No aim punch", &config->visuals.noAimPunch); 
     ImGui::SameLine();
     ImGui::Checkbox("No view punch", &config->visuals.noViewPunch);
@@ -768,7 +767,6 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::SameLine();
     ImGui::Checkbox("Wireframe smoke", &config->visuals.wireframeSmoke);
     ////
-
     ImGui::Text("Custom Viewmodel XYZ");
         ImGui::SameLine();
         ImGui::Checkbox("Enable", &config->visuals.viewmodel_xyz);
