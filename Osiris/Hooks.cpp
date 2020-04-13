@@ -136,6 +136,9 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     Misc::fixTabletSignal();
     Misc::slowwalk(cmd);
 
+    Visuals::ViewmodelXYZcreateMove();
+
+
     EnginePrediction::run(cmd);
 
     Aimbot::run(cmd);
@@ -183,8 +186,9 @@ static int __stdcall doPostScreenEffects(int param) noexcept
         Visuals::fullBright();
         Visuals::removeGrass();
         Visuals::remove3dSky();
-        Visuals::ViewmodelXYZ();
         Glow::render();
+
+        Visuals::ViewmodelXYZ();
     }
     return hooks->clientMode.callOriginal<int, 44>(param);
 }
@@ -198,9 +202,9 @@ static float __stdcall getViewModelFov() noexcept
     }
 
     if (!config->visuals.viewmodel_xyz) {
-    return hooks->clientMode.callOriginal<float, 35>() + additionalFov;
+        return hooks->clientMode.callOriginal<float, 35>() + additionalFov;
     } else {
-        return hooks->clientMode.callOriginal<float, 35>() + additionalFov + 54;
+        return hooks->clientMode.callOriginal<float, 35>() + additionalFov + 54.0f;
     };
 }
 

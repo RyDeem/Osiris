@@ -706,12 +706,17 @@ void Config::load(size_t id) noexcept
         if (visualsJson.isMember("Playermodel CT")) visuals.playerModelCT = visualsJson["Playermodel CT"].asInt();
         ///
         if (visualsJson.isMember("Viewmodel XYZ")) visuals.viewmodel_xyz = visualsJson["Viewmodel XYZ"].asBool();
+        if (visualsJson.isMember("Viewmodel XYZ Default")) visuals.viewmodel_xyz_clright_default = visualsJson["Viewmodel XYZ Default"].asBool();
         if (visualsJson.isMember("Viewmodel XYZ Swap Guns")) visuals.viewmodel_xyz_clrightguns = visualsJson["Viewmodel XYZ Swap Guns"].asBool();
         if (visualsJson.isMember("Viewmodel XYZ Swap Knife")) visuals.viewmodel_xyz_clrightknife = visualsJson["Viewmodel XYZ Swap Knife"].asBool();
         //
-        if (visualsJson.isMember("Viewmodel X")) visuals.viewmodel_x = visualsJson["Viewmodel X"].asFloat();
-        if (visualsJson.isMember("Viewmodel Y")) visuals.viewmodel_y = visualsJson["Viewmodel Y"].asFloat();
-        if (visualsJson.isMember("Viewmodel Z")) visuals.viewmodel_z = visualsJson["Viewmodel Z"].asFloat();
+        if (visualsJson.isMember("Viewmodel X Default")) visuals.viewmodel_x_default = visualsJson["Viewmodel X Default"].asFloat();
+        if (visualsJson.isMember("Viewmodel Y Default")) visuals.viewmodel_y_default = visualsJson["Viewmodel Y Default"].asFloat();
+        if (visualsJson.isMember("Viewmodel Z Default")) visuals.viewmodel_z_default = visualsJson["Viewmodel Z Default"].asFloat();
+        //
+        if (visualsJson.isMember("Viewmodel X Guns")) visuals.viewmodel_x_guns = visualsJson["Viewmodel X Guns"].asFloat();
+        if (visualsJson.isMember("Viewmodel Y Guns")) visuals.viewmodel_y_guns = visualsJson["Viewmodel Y Guns"].asFloat();
+        if (visualsJson.isMember("Viewmodel Z Guns")) visuals.viewmodel_z_guns = visualsJson["Viewmodel Z Guns"].asFloat();
         //
         if (visualsJson.isMember("Viewmodel X Knife")) visuals.viewmodel_x_knife = visualsJson["Viewmodel X Knife"].asFloat();
         if (visualsJson.isMember("Viewmodel Y Knife")) visuals.viewmodel_y_knife = visualsJson["Viewmodel Y Knife"].asFloat();
@@ -1481,13 +1486,18 @@ void Config::save(size_t id) const noexcept
         visualsJson["Playermodel T"] = visuals.playerModelT;
         visualsJson["Playermodel CT"] = visuals.playerModelCT;
         ////
-        visualsJson["Viewmodel XYZ"] = visuals.viewmodel_x;
+        visualsJson["Viewmodel XYZ"] = visuals.viewmodel_xyz;
+        visualsJson["Viewmodel XYZ Default"] = visuals.viewmodel_xyz_clright_default;
         visualsJson["Viewmodel XYZ Swap Side"] = visuals.viewmodel_xyz_clrightguns;
         visualsJson["Viewmodel XYZ Swap Side"] = visuals.viewmodel_xyz_clrightknife;
         //
-        visualsJson["Viewmodel X"] = visuals.viewmodel_x;
-        visualsJson["Viewmodel Y"] = visuals.viewmodel_y;
-        visualsJson["Viewmodel Z"] = visuals.viewmodel_z;
+        visualsJson["Viewmodel X Default"] = visuals.viewmodel_x_default;
+        visualsJson["Viewmodel Y Default"] = visuals.viewmodel_y_default;
+        visualsJson["Viewmodel Z Default"] = visuals.viewmodel_z_default;
+        //
+        visualsJson["Viewmodel X"] = visuals.viewmodel_x_guns;
+        visualsJson["Viewmodel Y"] = visuals.viewmodel_y_guns;
+        visualsJson["Viewmodel Z"] = visuals.viewmodel_z_guns;
         //
         visualsJson["Viewmodel X Knife"] = visuals.viewmodel_x_knife;
         visualsJson["Viewmodel Y Knife"] = visuals.viewmodel_y_knife;

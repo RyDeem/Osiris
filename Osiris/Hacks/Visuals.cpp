@@ -1,6 +1,8 @@
 #include "../fnv.h"
 #include "Visuals.h"
 
+#include "../SDK/WeaponId.h"
+
 #include "../SDK/ConVar.h"
 #include "../SDK/Entity.h"
 #include "../SDK/FrameStage.h"
@@ -15,74 +17,193 @@
 
 #include <array>
 
-////
+void Visuals::ViewmodelXYZcreateMove() noexcept {
+    
+    return;
+    
+
+    /*
+
+    //config.visuals.viewmodel_xyz_clright_default
+    //if (viewmodel_x != viewmodel_x_knife) { viewmodel_offset_x->setValue(viewmodel_x_knife); };
+    
+
+    const bool cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
+    const bool cl_righthandCvar     = interfaces->cvar->findVar("cl_righthand");
+    //
+    const float viewmodel_x_default  = config->visuals.viewmodel_x_default;
+    const float viewmodel_y_default  = config->visuals.viewmodel_y_default;
+    const float viewmodel_z_default  = config->visuals.viewmodel_z_default;
+    //
+    const float viewmodel_offset_x   = interfaces->cvar->findVar("viewmodel_offset_x")->getFloat;
+    const float viewmodel_offset_y   = interfaces->cvar->findVar("viewmodel_offset_y")->getFloat;
+    const float viewmodel_offset_z   = interfaces->cvar->findVar("viewmodel_offset_z")->getFloat;
+
+    if (cl_righthandCvar == 1) { cl_righthand_default == 1; } else { cl_righthand_default == 0; };
+
+    if (viewmodel_x_default != viewmodel_offset_x) { viewmodel_x_default->setValue(viewmodel_offset_x); };
+
+
+    //if (cl_righthandCvar == 1) { cl_righthand_default->setValue(1); };
+
+    //cl_righthand_default->setValue(config->visuals.fullBright ? 1 : 0);
+    
+    */
+
+};
+
 void Visuals::ViewmodelXYZ() noexcept {
-    ///
-    if (!localPlayer)
-        return;
+
+    if (!localPlayer)   return;
+    if (!localPlayer->getActiveWeapon())   return;
+
+    const auto sv_minSpecCvar = interfaces->cvar->findVar("sv_competitive_minspec");
+
     if (config->visuals.viewmodel_xyz) {
-        const auto activeWeapon = localPlayer->getActiveWeapon();
-        if (interfaces->cvar->findVar("sv_competitive_minspec") != 0) interfaces->cvar->findVar("sv_competitive_minspec")->setValue(0);
-    if (activeWeapon->getClientClass()->classId == ClassId::C4) {
-        if (interfaces->cvar->findVar("viewmodel_offset_x") != 0) { interfaces->cvar->findVar("viewmodel_offset_x")->setValue(0); };
-        if (interfaces->cvar->findVar("viewmodel_offset_y") != 0) { interfaces->cvar->findVar("viewmodel_offset_y")->setValue(0); };
-        if (interfaces->cvar->findVar("viewmodel_offset_z") != 0) { interfaces->cvar->findVar("viewmodel_offset_z")->setValue(0); };
-    } else if (activeWeapon->getClientClass()->classId == ClassId::Elite) {
-        if (interfaces->cvar->findVar("viewmodel_offset_x") != 0) { interfaces->cvar->findVar("viewmodel_offset_x")->setValue(0); };
-        if (interfaces->cvar->findVar("viewmodel_offset_y") != 0) { interfaces->cvar->findVar("viewmodel_offset_y")->setValue(0); };
-        if (interfaces->cvar->findVar("viewmodel_offset_z") != 0) { interfaces->cvar->findVar("viewmodel_offset_z")->setValue(0); };
-    } else if (activeWeapon->getClientClass()->classId == ClassId::Knife) {
-        bool righthand = 0; interfaces->cvar->findVar("cl_righthand")->setValue(righthand); 
-        if (righthand != config->visuals.viewmodel_xyz_clrightknife) { interfaces->cvar->findVar("cl_righthand")->setValue(config->visuals.viewmodel_xyz_clrightknife); };
-        int viewmodel_x_knife = 0; int viewmodel_y_knife = 0; int viewmodel_z_knife = 0;
-        interfaces->cvar->findVar("viewmodel_offset_x")->setValue(viewmodel_x_knife);
-        interfaces->cvar->findVar("viewmodel_offset_y")->setValue(viewmodel_y_knife);
-        interfaces->cvar->findVar("viewmodel_offset_z")->setValue(viewmodel_z_knife);
-        if (viewmodel_x_knife != config->visuals.viewmodel_x_knife) {interfaces->cvar->findVar("viewmodel_offset_x")->setValue(config->visuals.viewmodel_x_knife);};
-        if (viewmodel_y_knife != config->visuals.viewmodel_y_knife) {interfaces->cvar->findVar("viewmodel_offset_y")->setValue(config->visuals.viewmodel_y_knife);};
-        if (viewmodel_z_knife != config->visuals.viewmodel_z_knife) {interfaces->cvar->findVar("viewmodel_offset_z")->setValue(config->visuals.viewmodel_z_knife);};
-    } else {
-        int viewmodel_x = 0; int viewmodel_y = 0; int viewmodel_z = 0;
-        bool minspec = 0; interfaces->cvar->findVar("sv_competitive_minspec")->setValue(minspec);
-        if (minspec != 0) interfaces->cvar->findVar("sv_competitive_minspec")->setValue(0);
-        bool righthand = 0; interfaces->cvar->findVar("cl_righthand")->setValue(righthand);
-        if (righthand != config->visuals.viewmodel_xyz_clrightguns)
-            interfaces->cvar->findVar("cl_righthand")->setValue(config->visuals.viewmodel_xyz_clrightguns);
-        interfaces->cvar->findVar("viewmodel_offset_x")->setValue(viewmodel_x);
-        interfaces->cvar->findVar("viewmodel_offset_y")->setValue(viewmodel_y);
-        interfaces->cvar->findVar("viewmodel_offset_z")->setValue(viewmodel_z);
-        if (viewmodel_x != config->visuals.viewmodel_x)
-            interfaces->cvar->findVar("viewmodel_offset_x")->setValue(config->visuals.viewmodel_x);
-        if (viewmodel_y != config->visuals.viewmodel_y)
-            interfaces->cvar->findVar("viewmodel_offset_y")->setValue(config->visuals.viewmodel_y);
-        if (viewmodel_z != config->visuals.viewmodel_z)
-            interfaces->cvar->findVar("viewmodel_offset_z")->setValue(config->visuals.viewmodel_z);
+
+        const auto activeWeapon = localPlayer->getActiveWeapon()->itemDefinitionIndex2();
+        const auto activeWeaponClassId = localPlayer->getActiveWeapon()->getClientClass()->classId;
+        //
+        const auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
+        bool cl_righthand = 1;
+        cl_righthandCvar->setValue(cl_righthand);
+        //
+        const auto viewmodel_offset_x = interfaces->cvar->findVar("viewmodel_offset_x");
+        const auto viewmodel_offset_y = interfaces->cvar->findVar("viewmodel_offset_y");
+        const auto viewmodel_offset_z = interfaces->cvar->findVar("viewmodel_offset_z");
+        float viewmodel_x = 0.0f; float viewmodel_y = 0.0f; float viewmodel_z = 0.0f;
+        viewmodel_offset_x->setValue(viewmodel_x);
+        viewmodel_offset_y->setValue(viewmodel_y);
+        viewmodel_offset_z->setValue(viewmodel_z);
+        //
+        const auto viewmodel_x_knife = config->visuals.viewmodel_x_knife;
+        const auto viewmodel_y_knife = config->visuals.viewmodel_y_knife;
+        const auto viewmodel_z_knife = config->visuals.viewmodel_z_knife;
+        //
+        const auto viewmodel_x_guns = config->visuals.viewmodel_x_guns;
+        const auto viewmodel_y_guns = config->visuals.viewmodel_y_guns;
+        const auto viewmodel_z_guns = config->visuals.viewmodel_z_guns;
+        //
+        //
+        
+
+            sv_minSpecCvar->setValue(0);
+
+                if (activeWeaponClassId == ClassId::C4){
+                    if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+                    if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+                    if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+                };
+            
+                if (activeWeapon == WeaponId::Elite){
+                    if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+                    if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+                    if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+                };
+            
+                if (activeWeaponClassId == ClassId::Knife){
+                    if (cl_righthand != config->visuals.viewmodel_xyz_clrightknife) { cl_righthandCvar->setValue(config->visuals.viewmodel_xyz_clrightknife); };
+                    if (viewmodel_x != viewmodel_x_knife) { viewmodel_offset_x->setValue(viewmodel_x_knife); };
+                    if (viewmodel_y != viewmodel_y_knife) { viewmodel_offset_y->setValue(viewmodel_y_knife); };
+                    if (viewmodel_z != viewmodel_z_knife) { viewmodel_offset_z->setValue(viewmodel_z_knife); };
+                };
+
+                if ((activeWeaponClassId != ClassId::Knife) && (activeWeapon != WeaponId::Elite) && (activeWeaponClassId != ClassId::C4)) {
+                    if (cl_righthand != config->visuals.viewmodel_xyz_clrightguns) { cl_righthandCvar->setValue(config->visuals.viewmodel_xyz_clrightguns); };
+                    if (viewmodel_x != viewmodel_x_guns) { viewmodel_offset_x->setValue(viewmodel_x_guns); };
+                    if (viewmodel_y != viewmodel_y_guns) { viewmodel_offset_y->setValue(viewmodel_y_guns); };
+                    if (viewmodel_z != viewmodel_z_guns) { viewmodel_offset_z->setValue(viewmodel_z_guns); };
+                };
+
+        } else { sv_minSpecCvar->setValue(1); };
+
+
+
+    /*
+
+
+    if (!localPlayer){return;}; 
+    //
+    int weaponType = 0;
+    const auto activeWeaponClassId = localPlayer->getActiveWeapon()->getClientClass()->classId;
+    const auto sv_minSpecCvar = interfaces->cvar->findVar("sv_competitive_minspec");
+    const auto viewmodel_offset_x = interfaces->cvar->findVar("viewmodel_offset_x");
+    const auto viewmodel_offset_y = interfaces->cvar->findVar("viewmodel_offset_y");
+    const auto viewmodel_offset_z = interfaces->cvar->findVar("viewmodel_offset_z");
+    const auto cl_righthand_cvar = interfaces->cvar->findVar("cl_righthand");
+    //
+    if (config->visuals.viewmodel_xyz && localPlayer) {
+        //////
+        if (activeWeaponClassId == ClassId::C4)     { weaponType = 1; };
+        if (activeWeaponClassId == ClassId::Elite)  { weaponType = 2; };
+        if (activeWeaponClassId == ClassId::Knife)  { weaponType = 3; };
+        //
+        if (sv_minSpecCvar != 0) sv_minSpecCvar->setValue(0);
+        //
+                 //c4
+        if (weaponType == 1) {
+            if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+            if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+            if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+        };
+
+                //Elite
+        if (weaponType == 2) {
+            if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+            if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+            if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+        };
+
+                //Knife
+        if (weaponType == 3) {
+            int viewmodel_x_knife = 0; int viewmodel_y_knife = 0; int viewmodel_z_knife = 0; bool righthand = 0;
+            cl_righthand_cvar->setValue(righthand);
+            if (righthand != config->visuals.viewmodel_xyz_clrightknife) { cl_righthand_cvar->setValue(config->visuals.viewmodel_xyz_clrightknife); };
+            viewmodel_offset_x->setValue(viewmodel_x_knife);
+            viewmodel_offset_y->setValue(viewmodel_y_knife);
+            viewmodel_offset_z->setValue(viewmodel_z_knife);
+            if (viewmodel_x_knife != config->visuals.viewmodel_x_knife) { viewmodel_offset_x->setValue(config->visuals.viewmodel_x_knife); };
+            if (viewmodel_y_knife != config->visuals.viewmodel_y_knife) { viewmodel_offset_y->setValue(config->visuals.viewmodel_y_knife); };
+            if (viewmodel_z_knife != config->visuals.viewmodel_z_knife) { viewmodel_offset_z->setValue(config->visuals.viewmodel_z_knife); };
+        };
+
+        ///////////////////////////////////////////////////////////////////
+                //c4               //Knife              //Elite
+        if ((weaponType != 1) && (weaponType != 2) && (weaponType != 3)) {
+            int viewmodel_x = 0; int viewmodel_y = 0; int viewmodel_z = 0; bool minspec = 0; bool righthand = 0;
+            sv_minSpecCvar->setValue(minspec); if (minspec != 0) sv_minSpecCvar->setValue(0);
+            cl_righthand_cvar->setValue(righthand);
+            if (righthand != config->visuals.viewmodel_xyz_clrightguns)
+                cl_righthand_cvar->setValue(config->visuals.viewmodel_xyz_clrightguns);
+            viewmodel_offset_x->setValue(viewmodel_x);
+            viewmodel_offset_y->setValue(viewmodel_y);
+            viewmodel_offset_z->setValue(viewmodel_z);
+            if (viewmodel_x != config->visuals.viewmodel_x)
+                viewmodel_offset_x->setValue(config->visuals.viewmodel_x);
+            if (viewmodel_y != config->visuals.viewmodel_y)
+                viewmodel_offset_y->setValue(config->visuals.viewmodel_y);
+            if (viewmodel_z != config->visuals.viewmodel_z)
+                viewmodel_offset_z->setValue(config->visuals.viewmodel_z);
+        };
     };
-    } else {
-        if (interfaces->cvar->findVar("viewmodel_offset_x") != 0) { interfaces->cvar->findVar("viewmodel_offset_x")->setValue(0); };
-        if (interfaces->cvar->findVar("viewmodel_offset_y") != 0) { interfaces->cvar->findVar("viewmodel_offset_y")->setValue(0); };
-        if (interfaces->cvar->findVar("viewmodel_offset_z") != 0) { interfaces->cvar->findVar("viewmodel_offset_z")->setValue(0); };
-        bool minspec = 1; interfaces->cvar->findVar("sv_competitive_minspec")->setValue(minspec);
-        if (minspec != 1) interfaces->cvar->findVar("sv_competitive_minspec")->setValue(1);
-        bool righthand = 1; interfaces->cvar->findVar("cl_righthand")->setValue(righthand);
-        if (righthand != 1) interfaces->cvar->findVar("cl_righthand")->setValue(1);
-    };////
+    if (!config->visuals.viewmodel_xyz) {
+        if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+        if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+        if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+        bool minspec = 1; sv_minSpecCvar->setValue(minspec);
+        if (minspec != 1) sv_minSpecCvar->setValue(1);
+        bool righthand = 1; cl_righthand_cvar->setValue(righthand);
+        if (righthand != 1) cl_righthand_cvar->setValue(1);
+    };
+  
+  */
+
 }///////
 /////
 void Visuals::fullBright() noexcept {
-    if (!localPlayer) {
-        if (interfaces->cvar->findVar("mat_fullbright") != 0)
-        interfaces->cvar->findVar("mat_fullbright")->setValue(0);
-        return;
-    };
-    int fullbright = 1;
-    if (config->visuals.fullBright) { 
-    interfaces->cvar->findVar("mat_fullbright")->setValue(fullbright);
-    if (fullbright != 1) { interfaces->cvar->findVar("mat_fullbright")->setValue(1); };
-    } else {
-        if (interfaces->cvar->findVar("mat_fullbright") != 0)
-            interfaces->cvar->findVar("mat_fullbright")->setValue(0);
-    };
+    if (!localPlayer) return;
+    static auto mat_fullbright = interfaces->cvar->findVar("mat_fullbright");
+    mat_fullbright->setValue(config->visuals.fullBright ? 1 : 0);
 }
 
 void Visuals::playerModel(FrameStage stage) noexcept
@@ -380,12 +501,12 @@ void Visuals::hitMarker(GameEvent* event) noexcept
     if (lastHitTime + config->visuals.hitMarkerTime < memory->globalVars->realtime)
         return;
 
+    const auto [width, height] = interfaces->surface->getScreenSize();
+    const auto width_mid = width / 2;
+    const auto height_mid = height / 2;
+
     switch (config->visuals.hitMarker) {
     case 1:
-        const auto [width, height] = interfaces->surface->getScreenSize();
-
-        const auto width_mid = width / 2;
-        const auto height_mid = height / 2;
 
         interfaces->surface->setDrawColor(255, 255, 255, 255);
         interfaces->surface->drawLine(width_mid + 10, height_mid + 10, width_mid + 4, height_mid + 4);
@@ -393,6 +514,22 @@ void Visuals::hitMarker(GameEvent* event) noexcept
         interfaces->surface->drawLine(width_mid + 10, height_mid - 10, width_mid + 4, height_mid - 4);
         interfaces->surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
         break;
+    /*
+    
+    case 2:
+        
+        static auto crosshairR = interfaces->cvar->findVar("cl_crosshaircolor_r");
+        static auto crosshairG = interfaces->cvar->findVar("cl_crosshaircolor_g");
+        static auto crosshairB = interfaces->cvar->findVar("cl_crosshaircolor_b");
+
+        interfaces->surface->setDrawColor(crosshairR, crosshairG, crosshairB, 255);
+        interfaces->surface->drawLine(width_mid + 10, height_mid + 10, width_mid + 4, height_mid + 4);
+        interfaces->surface->drawLine(width_mid - 10, height_mid + 10, width_mid - 4, height_mid + 4);
+        interfaces->surface->drawLine(width_mid + 10, height_mid - 10, width_mid + 4, height_mid - 4);
+        interfaces->surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
+        break;
+       
+       */
     }
 }
 

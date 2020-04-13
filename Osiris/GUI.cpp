@@ -768,6 +768,7 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::SameLine();
     ImGui::Checkbox("Wireframe smoke", &config->visuals.wireframeSmoke);
     ////
+
     ImGui::Text("Custom Viewmodel XYZ");
         ImGui::SameLine();
         ImGui::Checkbox("Enable", &config->visuals.viewmodel_xyz);
@@ -780,13 +781,13 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
         if (!viewModelType) {
 
             ImGui::PushID(0);
-            ImGui::SliderFloat("", &config->visuals.viewmodel_x, -25, 25, "Guns X: %.1f");
+            ImGui::SliderFloat("", &config->visuals.viewmodel_x_guns, -25, 25, "Guns X: %.1f");
             ImGui::PopID(); 
             ImGui::PushID(1);
-            ImGui::SliderFloat("", &config->visuals.viewmodel_y, -25, 25, "Guns Y: %.1f");
+            ImGui::SliderFloat("", &config->visuals.viewmodel_y_guns, -25, 25, "Guns Y: %.1f");
             ImGui::PopID();
             ImGui::PushID(2);
-            ImGui::SliderFloat("", &config->visuals.viewmodel_z, -25, 25, "Guns Z: %.1f");
+            ImGui::SliderFloat("", &config->visuals.viewmodel_z_guns, -25, 25, "Guns Z: %.1f");
             ImGui::PopID();
         };
         //
