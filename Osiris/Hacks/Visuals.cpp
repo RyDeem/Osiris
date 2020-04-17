@@ -18,15 +18,20 @@
 #include <array>
 
 void Visuals::ViewmodelXYZcreateMove() noexcept {
-    
-    ////
+////////
     if (!localPlayer) {
         int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
+        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand")->getInt();
+        //
+        if (cl_righthand_default != cl_righthandCvar) { cl_righthand_default = cl_righthandCvar; };
+    };
+////////
+};
 
-            if (cl_righthand_default != cl_righthandCvar->getInt()) { cl_righthand_default = cl_righthandCvar->getInt(); };
-    
-    };// else { return; };
+/*
+    //if (cl_righthand_default != cl_righthandCvar->getInt()) { config->visuals.viewmodel_xyz_clright_default = cl_righthandCvar; };
+
+    // else { return; };
 
     //config.visuals.viewmodel_xyz_clright_default // x.5 y-2 z-1
     //if (viewmodel_x != viewmodel_x_knife) { viewmodel_offset_x->setValue(viewmodel_x_knife); };
@@ -37,7 +42,7 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
 
     // if (cl_righthandCvar->getInt()) { cl_righthand_default = 1; } else { cl_righthand_default = 0; done = 1; }
 
-    /*
+
     const float viewmodel_x_default  = config->visuals.viewmodel_x_default;
     const float viewmodel_y_default  = config->visuals.viewmodel_y_default;
     const float viewmodel_z_default  = config->visuals.viewmodel_z_default;
@@ -45,8 +50,8 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
     const float viewmodel_offset_x   = interfaces->cvar->findVar("viewmodel_offset_x")->getFloat;
     const float viewmodel_offset_y   = interfaces->cvar->findVar("viewmodel_offset_y")->getFloat;
     const float viewmodel_offset_z   = interfaces->cvar->findVar("viewmodel_offset_z")->getFloat;
-    
-    
+
+
     // if (viewmodel_x_default != viewmodel_offset_x) { viewmodel_x_default->setValue(viewmodel_offset_x); };
 
 
@@ -54,24 +59,19 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
 
     // cl_righthand_default->setValue(cl_righthandCvar ? 1 : 0);
      */
-};
 
 void Visuals::ViewmodelXYZ() noexcept {
 
-    if (!localPlayer) {
-        //if (done) return;
-        return; 
-        //if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthand_default = cl_righthandCvar->getInt(); return; };
-    };
-
-    if (!localPlayer->getActiveWeapon() )   return;
+    if (!localPlayer) { return; };
+    if (!localPlayer->getActiveWeapon()) { return; };
     //
         static auto sv_minSpecCvar = interfaces->cvar->findVar("sv_competitive_minspec");
         //
         int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
-        int cl_righthand_guns        = config->visuals.viewmodel_xyz_clrightguns;
-        int cl_righthand_knife       = config->visuals.viewmodel_xyz_clrightknife;
+        auto  cl_righthandCvar   = interfaces->cvar->findVar("cl_righthand");
+        //
+        int cl_righthand_guns    = config->visuals.viewmodel_xyz_clrightguns;
+        int cl_righthand_knife   = config->visuals.viewmodel_xyz_clrightknife;
         //////
         static auto viewmodel_offset_x      = interfaces->cvar->findVar("viewmodel_offset_x");
         static auto viewmodel_offset_y      = interfaces->cvar->findVar("viewmodel_offset_y");
@@ -120,7 +120,6 @@ void Visuals::ViewmodelXYZ() noexcept {
                     if (viewmodel_offset_y->getFloat() != viewmodel_y_guns) { viewmodel_offset_y->setValue(viewmodel_y_guns); };
                     if (viewmodel_offset_z->getFloat() != viewmodel_z_guns) { viewmodel_offset_z->setValue(viewmodel_z_guns); };
                 };
-            //
         } else { 
             if (sv_minSpecCvar->getInt() != 1) { sv_minSpecCvar->setValue(1); };
             if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthandCvar->setValue(cl_righthand_default); }; 
