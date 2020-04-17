@@ -19,7 +19,14 @@
 
 void Visuals::ViewmodelXYZcreateMove() noexcept {
     
-    return;
+    ////
+    if (!localPlayer) {
+        int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
+        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
+
+            if (cl_righthand_default != cl_righthandCvar->getInt()) { cl_righthand_default = cl_righthandCvar->getInt(); };
+    
+    };// else { return; };
 
     //config.visuals.viewmodel_xyz_clright_default // x.5 y-2 z-1
     //if (viewmodel_x != viewmodel_x_knife) { viewmodel_offset_x->setValue(viewmodel_x_knife); };
@@ -28,7 +35,7 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
     //static auto cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
     //static auto cl_righthandCvar     = interfaces->cvar->findVar("cl_righthand");
 
-    //if (cl_righthandCvar->getInt()) { cl_righthand_default = 1; } else { cl_righthand_default = 0; done = 1; }
+    // if (cl_righthandCvar->getInt()) { cl_righthand_default = 1; } else { cl_righthand_default = 0; done = 1; }
 
     /*
     const float viewmodel_x_default  = config->visuals.viewmodel_x_default;
@@ -50,22 +57,19 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
 };
 
 void Visuals::ViewmodelXYZ() noexcept {
-    ////
-    //bool done = 0;
+
     if (!localPlayer) {
         //if (done) return;
-        int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
-        if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthand_default == cl_righthandCvar->getInt(); return; };
+        return; 
         //if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthand_default = cl_righthandCvar->getInt(); return; };
     };
 
-    if (!localPlayer->getActiveWeapon())   return;
+    if (!localPlayer->getActiveWeapon() )   return;
     //
         static auto sv_minSpecCvar = interfaces->cvar->findVar("sv_competitive_minspec");
         //
+        int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
         static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
-        int cl_righthand_default     = config->visuals.viewmodel_xyz_clright_default;
         int cl_righthand_guns        = config->visuals.viewmodel_xyz_clrightguns;
         int cl_righthand_knife       = config->visuals.viewmodel_xyz_clrightknife;
         //////

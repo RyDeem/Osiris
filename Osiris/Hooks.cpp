@@ -250,6 +250,7 @@ static void __stdcall frameStageNotify(FrameStage stage) noexcept
         Misc::disablePanoramablur();
         Visuals::colorWorld();
         Misc::fakePrime();
+        Visuals::ViewmodelXYZcreateMove();
     }
     if (interfaces->engine->isInGame()) {
         Visuals::playerModel(stage);
@@ -258,7 +259,6 @@ static void __stdcall frameStageNotify(FrameStage stage) noexcept
         Misc::fixAnimationLOD(stage);
         Backtrack::update(stage);
         SkinChanger::run(stage);
-        Visuals::ViewmodelXYZcreateMove();
     }
     hooks->client.callOriginal<void, 37>(stage);
 }

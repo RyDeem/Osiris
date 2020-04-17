@@ -156,14 +156,19 @@ void Misc::watermark() noexcept
         interfaces->surface->printText(L"Osiris");
         //////////
         bool cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-        std::wstring cl_righthandDefa{ L"Righthand Default: " + std::to_wstring(static_cast<bool>((cl_righthand_default))) };
+        std::wstring righthandDefault{ L"Righthand Default: " + std::to_wstring(static_cast<int>(cl_righthand_default)) };
         interfaces->surface->setTextPosition(5, 20);
-        interfaces->surface->printText(cl_righthandDefa.c_str());
+        interfaces->surface->printText(righthandDefault.c_str());
         ////
         auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
-        std::wstring cl_righthandVar{ L"Cl_righthand: " + std::to_wstring(static_cast<int>(cl_righthandCvar->getInt())) };
+        std::wstring righthandVar{ L"Cl_righthand: " + std::to_wstring(static_cast<int>(cl_righthandCvar->getInt())) };
         interfaces->surface->setTextPosition(5, 40);
-        interfaces->surface->printText(cl_righthandVar.c_str());
+        interfaces->surface->printText(righthandVar.c_str());
+        ////
+        bool localplayerFound = localPlayer;
+        std::wstring localplayerFoundText{ L"LocalPlayer: " + std::to_wstring(localplayerFound) };
+        interfaces->surface->setTextPosition(5, 60);
+        interfaces->surface->printText(localplayerFoundText.c_str());
         ///////////
         static auto frameRate = 1.0f;
         frameRate = 0.9f * frameRate + 0.1f * memory->globalVars->absoluteFrameTime;
