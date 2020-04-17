@@ -19,16 +19,16 @@
 
 void Visuals::ViewmodelXYZcreateMove() noexcept {
     
-    //return;
+    return;
 
     //config.visuals.viewmodel_xyz_clright_default // x.5 y-2 z-1
     //if (viewmodel_x != viewmodel_x_knife) { viewmodel_offset_x->setValue(viewmodel_x_knife); };
-    bool done = 0;
-    if (done) return;
-    static auto cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-    const auto cl_righthandCvar     = interfaces->cvar->findVar("cl_righthand");
+    //bool done = 0;
+    //if (done) return;
+    //static auto cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
+    //static auto cl_righthandCvar     = interfaces->cvar->findVar("cl_righthand");
 
-    if (cl_righthandCvar->getInt()) { cl_righthand_default = 1; } else { cl_righthand_default = 0; done = 1; }
+    //if (cl_righthandCvar->getInt()) { cl_righthand_default = 1; } else { cl_righthand_default = 0; done = 1; }
 
     /*
     const float viewmodel_x_default  = config->visuals.viewmodel_x_default;
@@ -51,34 +51,46 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
 
 void Visuals::ViewmodelXYZ() noexcept {
     ////
-    if (!localPlayer)   return;
+    //bool done = 0;
+    if (!localPlayer) {
+        //if (done) return;
+        int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
+        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
+        if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthand_default == cl_righthandCvar->getInt(); return; };
+        //if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthand_default = cl_righthandCvar->getInt(); return; };
+    };
+
     if (!localPlayer->getActiveWeapon())   return;
     //
-        const auto sv_minSpecCvar = interfaces->cvar->findVar("sv_competitive_minspec");
+        static auto sv_minSpecCvar = interfaces->cvar->findVar("sv_competitive_minspec");
         //
-        const auto cl_righthandCvar    = interfaces->cvar->findVar("cl_righthand");
-        const int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-        const int cl_righthand_guns    = config->visuals.viewmodel_xyz_clrightguns;
-        const int cl_righthand_knife   = config->visuals.viewmodel_xyz_clrightknife;
+        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
+        int cl_righthand_default     = config->visuals.viewmodel_xyz_clright_default;
+        int cl_righthand_guns        = config->visuals.viewmodel_xyz_clrightguns;
+        int cl_righthand_knife       = config->visuals.viewmodel_xyz_clrightknife;
         //////
-        const auto viewmodel_offset_x  = interfaces->cvar->findVar("viewmodel_offset_x");
-        const auto viewmodel_offset_y  = interfaces->cvar->findVar("viewmodel_offset_y");
-        const auto viewmodel_offset_z  = interfaces->cvar->findVar("viewmodel_offset_z");
+        static auto viewmodel_offset_x      = interfaces->cvar->findVar("viewmodel_offset_x");
+        static auto viewmodel_offset_y      = interfaces->cvar->findVar("viewmodel_offset_y");
+        static auto viewmodel_offset_z      = interfaces->cvar->findVar("viewmodel_offset_z");
         //////
         if (config->visuals.viewmodel_xyz) {
             //Weapon Identification
-            const auto activeWeapon        = localPlayer->getActiveWeapon()->itemDefinitionIndex2();   //WeaponId.h
-            const auto activeWeaponClassId = localPlayer->getActiveWeapon()->getClientClass()->classId;// ClassId.h
+            static auto activeWeapon        = localPlayer->getActiveWeapon()->itemDefinitionIndex2();   //WeaponId.h
+            static auto activeWeaponClassId = localPlayer->getActiveWeapon()->getClientClass()->classId;// ClassId.h
             //Config shortcuts
-            const auto viewmodel_x_knife = config->visuals.viewmodel_x_knife;
-            const auto viewmodel_y_knife = config->visuals.viewmodel_y_knife;
-            const auto viewmodel_z_knife = config->visuals.viewmodel_z_knife;
-            const auto viewmodel_x_guns  = config->visuals.viewmodel_x_guns;
-            const auto viewmodel_y_guns  = config->visuals.viewmodel_y_guns;
-            const auto viewmodel_z_guns  = config->visuals.viewmodel_z_guns;
+            float viewmodel_x_knife = config->visuals.viewmodel_x_knife;
+            float viewmodel_y_knife = config->visuals.viewmodel_y_knife;
+            float viewmodel_z_knife = config->visuals.viewmodel_z_knife;
+            float viewmodel_x_guns  = config->visuals.viewmodel_x_guns;
+            float viewmodel_y_guns  = config->visuals.viewmodel_y_guns;
+            float viewmodel_z_guns  = config->visuals.viewmodel_z_guns;
             //
-            if (sv_minSpecCvar->getInt() == 1) { sv_minSpecCvar->setValue(0); };
-            //
+            if (sv_minSpecCvar->getInt() != 0) { sv_minSpecCvar->setValue(0); };
+            //fixes for minspec
+
+
+            ///
+            //////
                 if (activeWeaponClassId == ClassId::C4) {
                     if (viewmodel_offset_x->getFloat() != 0.0f) { viewmodel_offset_x->setValue(0.0f); };
                     if (viewmodel_offset_y->getFloat() != 0.0f) { viewmodel_offset_y->setValue(0.0f); };
@@ -106,11 +118,12 @@ void Visuals::ViewmodelXYZ() noexcept {
                 };
             //
         } else { 
-            if (sv_minSpecCvar->getInt() == 0) { sv_minSpecCvar->setValue(1); };
-            if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthandCvar->setValue(cl_righthand_default); }; };
+            if (sv_minSpecCvar->getInt() != 1) { sv_minSpecCvar->setValue(1); };
+            if (cl_righthandCvar->getInt() != cl_righthand_default) { cl_righthandCvar->setValue(cl_righthand_default); }; 
             if (viewmodel_offset_x->getFloat() != 0.0f) { viewmodel_offset_x->setValue(0.0f); };
             if (viewmodel_offset_y->getFloat() != 0.0f) { viewmodel_offset_y->setValue(0.0f); };
             if (viewmodel_offset_z->getFloat() != 0.0f) { viewmodel_offset_z->setValue(0.0f); };
+        };
 };
 
     /*
@@ -499,6 +512,10 @@ void Visuals::hitMarker(GameEvent* event) noexcept
     const auto width_mid = width / 2;
     const auto height_mid = height / 2;
 
+    auto crosshairR = interfaces->cvar->findVar("cl_crosshaircolor_r");
+    auto crosshairG = interfaces->cvar->findVar("cl_crosshaircolor_g");
+    auto crosshairB = interfaces->cvar->findVar("cl_crosshaircolor_b");
+
     switch (config->visuals.hitMarker) {
     case 1:
 
@@ -509,21 +526,15 @@ void Visuals::hitMarker(GameEvent* event) noexcept
         interfaces->surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
         break;
     
-    
     case 2:
-        
-        static auto crosshairR = interfaces->cvar->findVar("cl_crosshaircolor_r")->getInt();
-        static auto crosshairG = interfaces->cvar->findVar("cl_crosshaircolor_g")->getInt();
-        static auto crosshairB = interfaces->cvar->findVar("cl_crosshaircolor_b")->getInt();
 
-        interfaces->surface->setDrawColor(crosshairR, crosshairG, crosshairB, 255);
+        interfaces->surface->setDrawColor(crosshairR->getInt(), crosshairG->getInt(), crosshairB->getInt(), 255);
         interfaces->surface->drawLine(width_mid + 10, height_mid + 10, width_mid + 4, height_mid + 4);
         interfaces->surface->drawLine(width_mid - 10, height_mid + 10, width_mid - 4, height_mid + 4);
         interfaces->surface->drawLine(width_mid + 10, height_mid - 10, width_mid + 4, height_mid - 4);
         interfaces->surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
         break;
-       
-       
+
     }
 }
 
