@@ -30,7 +30,7 @@ public:
     };
     
     struct ColorToggle : public Color {
-        bool enabled{ false };
+        bool enabled{ true };
     };
 
     struct Aimbot {

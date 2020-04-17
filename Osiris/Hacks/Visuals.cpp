@@ -23,13 +23,14 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
 
     //config.visuals.viewmodel_xyz_clright_default // x.5 y-2 z-1
     //if (viewmodel_x != viewmodel_x_knife) { viewmodel_offset_x->setValue(viewmodel_x_knife); };
-    /*
-    const auto cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
+    bool done = 0;
+    if (done) return;
+    static auto cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
     const auto cl_righthandCvar     = interfaces->cvar->findVar("cl_righthand");
 
-    if (cl_righthandCvar->getInt() == 0) { cl_righthand_default == 0; } else { cl_righthand_default == 1; };
+    if (cl_righthandCvar->getInt()) { cl_righthand_default = 1; } else { cl_righthand_default = 0; done = 1; }
 
-    
+    /*
     const float viewmodel_x_default  = config->visuals.viewmodel_x_default;
     const float viewmodel_y_default  = config->visuals.viewmodel_y_default;
     const float viewmodel_z_default  = config->visuals.viewmodel_z_default;
@@ -37,14 +38,14 @@ void Visuals::ViewmodelXYZcreateMove() noexcept {
     const float viewmodel_offset_x   = interfaces->cvar->findVar("viewmodel_offset_x")->getFloat;
     const float viewmodel_offset_y   = interfaces->cvar->findVar("viewmodel_offset_y")->getFloat;
     const float viewmodel_offset_z   = interfaces->cvar->findVar("viewmodel_offset_z")->getFloat;
-    */
-    /*
+    
+    
     // if (viewmodel_x_default != viewmodel_offset_x) { viewmodel_x_default->setValue(viewmodel_offset_x); };
 
 
     // if (cl_righthandCvar == 1) { cl_righthand_default->setValue(1); };
 
-    // cl_righthand_default->setValue(config->visuals.fullBright ? 1 : 0);
+    // cl_righthand_default->setValue(cl_righthandCvar ? 1 : 0);
      */
 };
 
@@ -507,13 +508,13 @@ void Visuals::hitMarker(GameEvent* event) noexcept
         interfaces->surface->drawLine(width_mid + 10, height_mid - 10, width_mid + 4, height_mid - 4);
         interfaces->surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
         break;
-    /*
+    
     
     case 2:
         
-        static auto crosshairR = interfaces->cvar->findVar("cl_crosshaircolor_r");
-        static auto crosshairG = interfaces->cvar->findVar("cl_crosshaircolor_g");
-        static auto crosshairB = interfaces->cvar->findVar("cl_crosshaircolor_b");
+        static auto crosshairR = interfaces->cvar->findVar("cl_crosshaircolor_r")->getInt();
+        static auto crosshairG = interfaces->cvar->findVar("cl_crosshaircolor_g")->getInt();
+        static auto crosshairB = interfaces->cvar->findVar("cl_crosshaircolor_b")->getInt();
 
         interfaces->surface->setDrawColor(crosshairR, crosshairG, crosshairB, 255);
         interfaces->surface->drawLine(width_mid + 10, height_mid + 10, width_mid + 4, height_mid + 4);
@@ -522,7 +523,7 @@ void Visuals::hitMarker(GameEvent* event) noexcept
         interfaces->surface->drawLine(width_mid - 10, height_mid - 10, width_mid - 4, height_mid - 4);
         break;
        
-       */
+       
     }
 }
 

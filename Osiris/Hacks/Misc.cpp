@@ -154,7 +154,21 @@ void Misc::watermark() noexcept
 
         interfaces->surface->setTextPosition(5, 0);
         interfaces->surface->printText(L"Osiris");
+        //////////
+        static int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
 
+        std::wstring cl_righthandDefa{ L"cl_righthand_Default = " + (cl_righthand_default) };
+
+        interfaces->surface->setTextPosition(5, 20);
+        interfaces->surface->printText(cl_righthandDefa.c_str());
+        ////
+        const auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
+
+        std::wstring cl_righthandVar{ L"cl_righthand = " + cl_righthandCvar->getInt() };
+
+        interfaces->surface->setTextPosition(5, 40);
+        interfaces->surface->printText(cl_righthandVar.c_str());
+        ///////////
         static auto frameRate = 1.0f;
         frameRate = 0.9f * frameRate + 0.1f * memory->globalVars->absoluteFrameTime;
         const auto [screenWidth, screenHeight] = interfaces->surface->getScreenSize();
