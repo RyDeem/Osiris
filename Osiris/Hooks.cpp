@@ -186,6 +186,7 @@ static int __stdcall doPostScreenEffects(int param) noexcept
         Glow::render();
 
         Visuals::ViewmodelXYZ();
+
     }
     return hooks->clientMode.callOriginal<int, 44>(param);
 }
@@ -247,10 +248,10 @@ static void __stdcall frameStageNotify(FrameStage stage) noexcept
         Misc::changeName(true, nullptr, 0.0f);
 
     if (stage == FrameStage::RENDER_START) {
+        Visuals::ViewmodelXYZcreateMove();
         Misc::disablePanoramablur();
         Visuals::colorWorld();
         Misc::fakePrime();
-        Visuals::ViewmodelXYZcreateMove();
     }
     if (interfaces->engine->isInGame()) {
         Visuals::playerModel(stage);

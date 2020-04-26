@@ -19,11 +19,10 @@
 
 void Visuals::ViewmodelXYZcreateMove() noexcept {
 ////////
+    int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
+    auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
     if (!localPlayer) {
-        int cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-        static auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand")->getInt();
-        //
-        if (cl_righthand_default != cl_righthandCvar) { cl_righthand_default = cl_righthandCvar; };
+        if (cl_righthand_default != cl_righthandCvar->getInt()) { cl_righthand_default = cl_righthandCvar->getInt(); } else { return; };
     };
 ////////
 };
