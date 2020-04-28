@@ -237,6 +237,7 @@ static void __stdcall paintTraverse(unsigned int panel, bool forceRepaint, bool 
         Misc::spectatorList();
         Misc::watermark();        
         Visuals::hitMarker();
+        //Visuals::ViewmodelXYZcreateMove();
     }
     hooks->panel.callOriginal<void, 41>(panel, forceRepaint, allowForce);
 }
@@ -249,7 +250,6 @@ static void __stdcall frameStageNotify(FrameStage stage) noexcept
         Misc::changeName(true, nullptr, 0.0f);
 
     if (stage == FrameStage::RENDER_START) {
-        Visuals::ViewmodelXYZcreateMove();
         Misc::disablePanoramablur();
         Visuals::colorWorld();
         Misc::fakePrime();

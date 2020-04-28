@@ -160,21 +160,29 @@ void Misc::watermark() noexcept
 
         interfaces->surface->setTextPosition(5, 0);
         interfaces->surface->printText(L"Osiris");
-        //////////
-        bool cl_righthand_default = config->visuals.viewmodel_xyz_clright_default;
-        std::wstring righthandDefault       { L"Righthand Default: " + std::to_wstring(static_cast<int>(cl_righthand_default)) };
+        ///////////
+            //////
+        std::wstring isGrenadeText{ L"isGrenade: " + std::to_wstring(static_cast<bool>(localPlayer->isGrenade())) };
         interfaces->surface->setTextPosition(225, 60);
-        interfaces->surface->printText(righthandDefault.c_str());
+        interfaces->surface->printText(isGrenadeText.c_str());
+        ////
+        std::wstring isC4Text{ L"isC4: " + std::to_wstring(static_cast<bool>(localPlayer->isC4())) };
+        interfaces->surface->setTextPosition(225, 80);
+        interfaces->surface->printText(isC4Text.c_str());
+        ////
+        std::wstring isKnifeText{ L"isKnife: " + std::to_wstring(static_cast<bool>(localPlayer->isKnife())) };
+        interfaces->surface->setTextPosition(225, 100);
+        interfaces->surface->printText(isKnifeText.c_str());
         ////
         auto cl_righthandCvar = interfaces->cvar->findVar("cl_righthand");
-        std::wstring righthandVar           { L"Cl_righthand: " + std::to_wstring(static_cast<int>(cl_righthandCvar->getInt())) };
-        interfaces->surface->setTextPosition(225, 80);
+        std::wstring righthandVar{ L"Cl_righthand: " + std::to_wstring(static_cast<int>(cl_righthandCvar->getInt())) };
+        interfaces->surface->setTextPosition(225, 120);
         interfaces->surface->printText(righthandVar.c_str());
         ////
-        bool localplayerFound = localPlayer;
-        std::wstring localplayerFoundText   { L"LocalPlayer: " + std::to_wstring(localplayerFound) };
-        interfaces->surface->setTextPosition(225, 100);
+        std::wstring localplayerFoundText{ L"LocalPlayer: " + std::to_wstring(static_cast<bool>(localPlayer)) };
+        interfaces->surface->setTextPosition(225, 140);
         interfaces->surface->printText(localplayerFoundText.c_str());
+        //////
         ///////////
         static auto frameRate = 1.0f;
         frameRate = 0.9f * frameRate + 0.1f * memory->globalVars->absoluteFrameTime;

@@ -67,12 +67,27 @@ public:
             return weaponData->type;
         return WeaponType::Unknown;
     }
-
+    //Pistol
     constexpr auto isPistol() noexcept
     {
         return getWeaponType() == WeaponType::Pistol;
     }
-
+    //Knife
+    constexpr auto isKnife() noexcept
+    {
+        return getWeaponType() == WeaponType::Knife;
+    }
+    //Grenade
+    constexpr auto isGrenade() noexcept
+    {
+        return getWeaponType() == WeaponType::Grenade;
+    }
+    //C4
+    constexpr auto isC4() noexcept
+    {
+        return getWeaponType() == WeaponType::C4;
+    }
+    //Sniper
     constexpr auto isSniperRifle() noexcept
     {
         return getWeaponType() == WeaponType::SniperRifle;
