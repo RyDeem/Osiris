@@ -8,6 +8,7 @@
 #include "imgui/imgui.h"
 #include "nSkinz/config_.hpp"
 #include "ConfigStructs.h"
+#include "SDK/Vector.h"
 
 class Config {
 public:
@@ -188,6 +189,7 @@ public:
         float hitMarkerTime{ 0.6f };
         int playerModelT{ 0 };
         int playerModelCT{ 0 };
+        int thirdpersonMode{ 0 };
 
         struct {
             bool enabled = false;
@@ -288,6 +290,13 @@ public:
         int delay{ 1 };
         int rounds{ 1 };
     } reportbot;
+    
+    struct {
+        bool thirdPersonAnglesSet{ false };
+        Vector fakeAngle;
+        Vector realAngle;
+        Vector cmdAngle;
+    } globals;
 private:
     std::filesystem::path path;
     std::vector<std::string> configs;

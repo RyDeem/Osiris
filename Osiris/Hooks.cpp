@@ -180,6 +180,19 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
 
     previousViewAngles = cmd->viewangles;
 
+    if (sendPacket)
+    {
+        config->globals.fakeAngle = cmd->viewangles;
+        config->globals.cmdAngle = cmd->viewangles;
+        config->globals.thirdPersonAnglesSet = true;
+    }
+    else
+    {
+        config->globals.realAngle = cmd->viewangles;
+        config->globals.cmdAngle = cmd->viewangles;
+        config->globals.thirdPersonAnglesSet = true;
+    }
+
     return false;
 }
 
@@ -187,7 +200,6 @@ static int __stdcall doPostScreenEffects(int param) noexcept
 {
     if (interfaces->engine->isInGame()) {
         Visuals::modifySmoke();
-        Visuals::thirdperson();
         Misc::inverseRagdollGravity();
         Visuals::disablePostProcessing();
         Visuals::reduceFlashEffect();
@@ -252,6 +264,16 @@ static void __stdcall frameStageNotify(FrameStage stage) noexcept
     if (interfaces->engine->isConnected() && !interfaces->engine->isInGame())
         Misc::changeName(true, nullptr, 0.0f);
 
+    if (interfaces->engine->isConnected() && interfaces->engine->isInGame())
+    {
+        if (config->visuals.thirdpersonMode == 0)
+            Visuals::thirdperson(stage, config->globals.fakeAngle);
+        if (config->visuals.thirdpersonMode == 1)
+            Visuals::thirdperson(stage, config->globals.realAngle);
+        if (config->visuals.thirdpersonMode == 2)
+            Visuals::thirdperson(stage, config->globals.cmdAngle);
+    }
+    
     if (stage == FrameStage::RENDER_START) {
         Misc::disablePanoramablur();
         Visuals::colorWorld();
