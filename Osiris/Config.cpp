@@ -83,10 +83,20 @@ void Config::load(size_t id) noexcept
 
     {
         const auto& antiAimJson = json["Anti aim"];
-        if (antiAimJson.isMember("Enabled")) antiAim.enabled = antiAimJson["Enabled"].asBool();
-        if (antiAimJson.isMember("Pitch")) antiAim.pitch = antiAimJson["Pitch"].asBool();
-        if (antiAimJson.isMember("Pitch angle")) antiAim.pitchAngle = antiAimJson["Pitch angle"].asFloat();
-        if (antiAimJson.isMember("Yaw")) antiAim.yaw = antiAimJson["Yaw"].asBool();
+        if (antiAimJson.isMember("Enabled")) config->antiAim.enabled = antiAimJson["Enabled"].asBool();
+        if (antiAimJson.isMember("Pitch")) config->antiAim.pitch = antiAimJson["Pitch"].asBool();
+        if (antiAimJson.isMember("Pitch angle")) config->antiAim.pitchAngle = antiAimJson["Pitch angle"].asFloat();
+        if (antiAimJson.isMember("Yaw")) config->antiAim.yaw = antiAimJson["Yaw"].asBool();
+        if (antiAimJson.isMember("Yaw angle")) config->antiAim.yawAngle = antiAimJson["Yaw angle"].asFloat();
+        if (antiAimJson.isMember("Inverse Yaw Key")) config->antiAim.yawInverseAngleKey = antiAimJson["Inverse Yaw Key"].asInt();
+        if (antiAimJson.isMember("Inverse Yaw Key Mode")) config->antiAim.yawInverseKeyMode = antiAimJson["Inverse Yaw Key Mode"].asInt();
+        if (antiAimJson.isMember("Yaw Real")) config->antiAim.yawReal = antiAimJson["Yaw Real"].asBool();
+        if (antiAimJson.isMember("Body Lean")) config->antiAim.bodyLean = antiAimJson["Body Lean"].asFloat();
+        if (antiAimJson.isMember("AntiAim Mode")) config->antiAim.mode = antiAimJson["AntiAim Mode"].asInt();
+        if (antiAimJson.isMember("Jitter Max")) config->antiAim.jitterMax = antiAimJson["Jitter Max"].asFloat();
+        if (antiAimJson.isMember("Jitter Min")) config->antiAim.jitterMin = antiAimJson["Jitter Min"].asFloat();
+        if (antiAimJson.isMember("LBY Breaker")) config->antiAim.LBYBreaker = antiAimJson["LBY Breaker"].asBool();
+        if (antiAimJson.isMember("LBY Angle")) antiAim.LBYAngle = antiAimJson["LBY Angle"].asFloat();
     }
 
     for (size_t i = 0; i < glow.size(); i++) {
@@ -688,6 +698,12 @@ void Config::load(size_t id) noexcept
         if (visualsJson.isMember("flashReduction")) visuals.flashReduction = visualsJson["flashReduction"].asInt();
         if (visualsJson.isMember("brightness")) visuals.brightness = visualsJson["brightness"].asFloat();
         if (visualsJson.isMember("skybox")) visuals.skybox = visualsJson["skybox"].asInt();
+        if (visualsJson.isMember("Thirdperson Mode")) config->antiAim.thirdpersonMode = visualsJson["Thirdperson Mode"].asInt();
+        if (visualsJson.isMember("Indicators Enabled")) visuals.indicatorsEnabled = visualsJson["Indicators Enabled"].asBool();
+        if (visualsJson.isMember("Desync Indicator")) visuals.selectedIndicators[0] = visualsJson["Desync Indicator"].asBool();
+        if (visualsJson.isMember("LBY Indicator")) visuals.selectedIndicators[1] = visualsJson["LBY Indicator"].asBool();
+        if (visualsJson.isMember("Fakelag Indicator")) visuals.selectedIndicators[2] = visualsJson["Fakelag Indicator"].asBool();
+        if (visualsJson.isMember("Fakeduck Indicator")) visuals.selectedIndicators[3] = visualsJson["Fakeduck Indicator"].asBool();
         if (visualsJson.isMember("World")) {
             const auto& worldJson = visualsJson["World"];
 
@@ -722,7 +738,19 @@ void Config::load(size_t id) noexcept
         if (visualsJson.isMember("Hit marker time")) visuals.hitMarkerTime = visualsJson["Hit marker time"].asFloat();
         if (visualsJson.isMember("Playermodel T")) visuals.playerModelT = visualsJson["Playermodel T"].asInt();
         if (visualsJson.isMember("Playermodel CT")) visuals.playerModelCT = visualsJson["Playermodel CT"].asInt();
+        if (visualsJson.isMember("Bullet Beams")) {
+            const auto& worldJson = visualsJson["Bullet Beams"];
 
+            if (worldJson.isMember("Enabled")) visuals.bulletTracers.enabled = worldJson["Enabled"].asBool();
+
+            if (worldJson.isMember("Color")) {
+                visuals.bulletTracers.color[0] = worldJson["Color"][0].asFloat();
+                visuals.bulletTracers.color[1] = worldJson["Color"][1].asFloat();
+                visuals.bulletTracers.color[2] = worldJson["Color"][2].asFloat();
+            }
+            if (worldJson.isMember("Rainbow")) visuals.bulletTracers.rainbow = worldJson["Rainbow"].asBool();
+            if (worldJson.isMember("Rainbow speed")) visuals.bulletTracers.rainbowSpeed = worldJson["Rainbow speed"].asFloat();
+        }
         if (visualsJson.isMember("Color correction")) {
             const auto& cc = visualsJson["Color correction"];
 
@@ -903,17 +931,30 @@ void Config::load(size_t id) noexcept
         if (miscJson.isMember("Prepare revolver")) misc.prepareRevolver = miscJson["Prepare revolver"].asBool();
         if (miscJson.isMember("Prepare revolver key")) misc.prepareRevolverKey = miscJson["Prepare revolver key"].asInt();
         if (miscJson.isMember("Hit sound")) misc.hitSound = miscJson["Hit sound"].asInt();
-        if (miscJson.isMember("Choked packets")) misc.chokedPackets = miscJson["Choked packets"].asInt();
-        if (miscJson.isMember("Choked packets key")) misc.chokedPacketsKey = miscJson["Choked packets key"].asInt();
+        if (miscJson.isMember("Fakelag Ticks")) misc.fakeLagTicks = miscJson["Fakelag Ticks"].asInt();
+        if (miscJson.isMember("Fakelag Mode")) misc.fakeLagMode = miscJson["Fakelag Mode"].asInt();
+        if (miscJson.isMember("Fakelag While Shooting")) misc.fakeLagSelectedFlags[0] = miscJson["Fakelag While Shooting"].asBool();
+        if (miscJson.isMember("Fakelag While Standing")) misc.fakeLagSelectedFlags[1] = miscJson["Fakelag While Standing"].asBool();
+        if (miscJson.isMember("Fakelag While Moving")) misc.fakeLagSelectedFlags[2] = miscJson["Fakelag While Moving"].asBool();
+        if (miscJson.isMember("Fakelag In Air")) misc.fakeLagSelectedFlags[3] = miscJson["Fakelag In Air"].asBool();
+        if (miscJson.isMember("Fakelag key")) misc.fakeLagKey = miscJson["Fakelag key"].asInt();
         if (miscJson.isMember("Quick healthshot key")) misc.quickHealthshotKey = miscJson["Quick healthshot key"].asInt();
         if (miscJson.isMember("Grenade predict")) misc.nadePredict = miscJson["Grenade predict"].asBool();
         if (miscJson.isMember("Fix tablet signal")) misc.fixTabletSignal = miscJson["Fix tablet signal"].asBool();
         if (miscJson.isMember("Max angle delta")) misc.maxAngleDelta = miscJson["Max angle delta"].asFloat();
         if (miscJson.isMember("Fake prime")) misc.fakePrime = miscJson["Fake prime"].asBool();
+//<<<<<<< HEAD
         if (miscJson.isMember("Sv pure bypass")) misc.svpurebypass = miscJson["Sv pure bypass"].asBool();
+//=======
+        if (miscJson.isMember("Autozeus")) misc.autoZeus = miscJson["Autozeus"].asBool();
+        if (miscJson.isMember("Autozeus BAIM Only")) misc.autoZeusBaimOnly = miscJson["Autozeus BAIM Only"].asBool();
+        if (miscJson.isMember("Autozeus Max Pen Dist")) misc.autoZeusMaxPenDist = miscJson["Autozeus Max Pen Dist"].asInt();
+//>>>>>>> pr/1546
         if (miscJson.isMember("Custom Hit Sound")) misc.customHitSound = miscJson["Custom Hit Sound"].asString();
         if (miscJson.isMember("Kill sound")) misc.killSound = miscJson["Kill sound"].asInt();
         if (miscJson.isMember("Custom Kill Sound")) misc.customKillSound = miscJson["Custom Kill Sound"].asString();
+        if (miscJson.isMember("Fake Duck")) misc.fakeDuck = miscJson["Fake Duck"].asBool();
+        if (miscJson.isMember("Fake Duck Key")) misc.fakeDuckKey = miscJson["Fake Duck Key"].asInt();
 
         if (const auto& purchaseList = miscJson["Purchase List"]; purchaseList.isObject()) {
             if (const auto& enabled{ purchaseList["Enabled"] }; enabled.isBool())
@@ -1009,6 +1050,16 @@ void Config::save(size_t id) const noexcept
         antiAimJson["Pitch"] = antiAim.pitch;
         antiAimJson["Pitch angle"] = antiAim.pitchAngle;
         antiAimJson["Yaw"] = antiAim.yaw;
+        antiAimJson["Yaw angle"] = antiAim.yawAngle;
+        antiAimJson["Inverse Yaw Key"] = antiAim.yawInverseAngleKey;
+        antiAimJson["Inverse Yaw Key Mode"] = antiAim.yawInverseKeyMode;
+        antiAimJson["Yaw Real"] = antiAim.yawReal;
+        antiAimJson["Body Lean"] = antiAim.bodyLean;
+        antiAimJson["AntiAim Mode"] = antiAim.mode;
+        antiAimJson["Jitter Max"] = antiAim.jitterMax;
+        antiAimJson["Jitter Min"] = antiAim.jitterMin;
+        antiAimJson["LBY Breaker"] = antiAim.LBYBreaker;
+        antiAimJson["LBY Angle"] = antiAim.LBYAngle;
     }
 
     for (size_t i = 0; i < glow.size(); i++) {
@@ -1484,6 +1535,12 @@ void Config::save(size_t id) const noexcept
         visualsJson["flashReduction"] = visuals.flashReduction;
         visualsJson["brightness"] = visuals.brightness;
         visualsJson["skybox"] = visuals.skybox;
+        visualsJson["Thirdperson Mode"] = config->antiAim.thirdpersonMode;
+        visualsJson["Indicators Enabled"] = visuals.indicatorsEnabled;
+        visualsJson["Desync Indicator"] = visuals.selectedIndicators[0];
+        visualsJson["LBY Indicator"] = visuals.selectedIndicators[1];
+        visualsJson["Fakelag Indicator"] = visuals.selectedIndicators[2];
+        visualsJson["Fakeduck Indicator"] = visuals.selectedIndicators[3];
 
         {
             auto& worldJson = visualsJson["World"];
@@ -1503,6 +1560,16 @@ void Config::save(size_t id) const noexcept
             skyJson["Color"][2] = visuals.sky.color[2];
             skyJson["Rainbow"] = visuals.sky.rainbow;
             skyJson["Rainbow speed"] = visuals.sky.rainbowSpeed;
+        }
+
+        {
+            auto& skyJson = visualsJson["Bullet Beams"];
+            skyJson["Enabled"] = visuals.bulletTracers.enabled;
+            skyJson["Color"][0] = visuals.bulletTracers.color[0];
+            skyJson["Color"][1] = visuals.bulletTracers.color[1];
+            skyJson["Color"][2] = visuals.bulletTracers.color[2];
+            skyJson["Rainbow"] = visuals.bulletTracers.rainbow;
+            skyJson["Rainbow speed"] = visuals.bulletTracers.rainbowSpeed;
         }
 
         visualsJson["Deagle spinner"] = visuals.deagleSpinner;
@@ -1666,17 +1733,30 @@ void Config::save(size_t id) const noexcept
         miscJson["Prepare revolver"] = misc.prepareRevolver;
         miscJson["Prepare revolver key"] = misc.prepareRevolverKey;
         miscJson["Hit sound"] = misc.hitSound;
-        miscJson["Choked packets"] = misc.chokedPackets;
-        miscJson["Choked packets key"] = misc.chokedPacketsKey;
+        miscJson["Fakelag Ticks"] = misc.fakeLagTicks;
+        miscJson["Fakelag Mode"] = misc.fakeLagMode;
+        miscJson["Fakelag While Shooting"] = misc.fakeLagSelectedFlags[0];
+        miscJson["Fakelag While Standing"] = misc.fakeLagSelectedFlags[1];
+        miscJson["Fakelag While Moving"] = misc.fakeLagSelectedFlags[2];
+        miscJson["Fakelag In Air"] = misc.fakeLagSelectedFlags[3];
+        miscJson["Fakelag key"] = misc.fakeLagKey;
         miscJson["Quick healthshot key"] = misc.quickHealthshotKey;
         miscJson["Grenade predict"] = misc.nadePredict;
         miscJson["Fix tablet signal"] = misc.fixTabletSignal;
         miscJson["Max angle delta"] = misc.maxAngleDelta;
         miscJson["Fake prime"] = misc.fakePrime;
+//<<<<<<< HEAD
         miscJson["Sv pure bypass"] = misc.svpurebypass;
+//=======
+        miscJson["Autozeus"] = misc.autoZeus;
+        miscJson["Autozeus BAIM Only"] = misc.autoZeusBaimOnly;
+        miscJson["Autozeus Max Pen Dist"] = misc.autoZeusMaxPenDist;
+//>>>>>>> pr/1546
         miscJson["Custom Hit Sound"] = misc.customHitSound;
         miscJson["Kill sound"] = misc.killSound;
         miscJson["Custom Kill Sound"] = misc.customKillSound;
+        miscJson["Fake Duck"] = misc.fakeDuck;
+        miscJson["Fake Duck Key"] = misc.fakeDuckKey;
 
         {
             auto& purchaseListJson = miscJson["Purchase List"];
@@ -1751,7 +1831,7 @@ void Config::listConfigs() noexcept
 
     std::error_code ec;
     std::transform(std::filesystem::directory_iterator{ path, ec },
-                   std::filesystem::directory_iterator{ },
-                   std::back_inserter(configs),
-                   [](const auto& entry) { return std::string{ (const char*)entry.path().filename().u8string().c_str() }; });
+        std::filesystem::directory_iterator{ },
+        std::back_inserter(configs),
+        [](const auto& entry) { return std::string{ (const char*)entry.path().filename().u8string().c_str() }; });
 }
