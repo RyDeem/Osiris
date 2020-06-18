@@ -41,11 +41,13 @@ public:
     VIRTUAL_METHOD(void, release, 1, (), (this + 8))
     VIRTUAL_METHOD(ClientClass*, getClientClass, 2, (), (this + 8))
     VIRTUAL_METHOD(void, preDataUpdate, 6, (int updateType), (this + 8, updateType))
+    VIRTUAL_METHOD(void, postDataUpdate, 7, (int updateType), (this + 8, updateType))
     VIRTUAL_METHOD(bool, isDormant, 9, (), (this + 8))
     VIRTUAL_METHOD(int, index, 10, (), (this + 8))
     VIRTUAL_METHOD(void, setDestroyedOnRecreateEntities, 13, (), (this + 8))
 
     VIRTUAL_METHOD(const Model*, getModel, 8, (), (this + 4))
+    VIRTUAL_METHOD(const matrix3x4&, toWorldTransform, 32, (), (this + 4))
 
     VIRTUAL_METHOD(int&, handle, 2, (), (this))
     VIRTUAL_METHOD(Collideable*, getCollideable, 3, (), (this))
@@ -57,16 +59,30 @@ public:
     VIRTUAL_METHOD(Entity*, getActiveWeapon, 267, (), (this))
     VIRTUAL_METHOD(int, getWeaponSubType, 281, (), (this))
     VIRTUAL_METHOD(Entity*, getObserverTarget, 294, (), (this))
-    VIRTUAL_METHOD(WeaponData*, getWeaponData, 460, (), (this))
+    VIRTUAL_METHOD(WeaponType, getWeaponType, 454, (), (this))
+    VIRTUAL_METHOD(WeaponInfo*, getWeaponData, 460, (), (this))
     VIRTUAL_METHOD(float, getInaccuracy, 482, (), (this))
 
-    constexpr auto getWeaponType() noexcept
+/*
+        constexpr auto isPistol() noexcept
+    {
+        return getWeaponType() == WeaponType::Pistol;
+    }
+
+    constexpr auto isSniperRifle() noexcept
+    {
+        return getWeaponType() == WeaponType::SniperRifle;
+    }
+
+    constexpr auto requiresRecoilControl() noexcept
     {
         const auto weaponData = getWeaponData();
         if (weaponData)
-            return weaponData->type;
-        return WeaponType::Unknown;
+            return weaponData->recoilMagnitude < 35.0f && weaponData->recoveryTimeStand > weaponData->cycletime;
+        return false;
     }
+
+*/
     //Pistol
     constexpr auto isPistol() noexcept
     {
@@ -119,7 +135,7 @@ public:
 
     Vector getBonePosition(int bone) noexcept
     {
-        if (matrix3x4 boneMatrices[128]; setupBones(boneMatrices, 128, 256, 0.0f))
+        if (matrix3x4 boneMatrices[256]; setupBones(boneMatrices, 256, 256, 0.0f))
             return Vector{ boneMatrices[bone][0][3], boneMatrices[bone][1][3], boneMatrices[bone][2][3] };
         else
             return Vector{ };
@@ -141,16 +157,9 @@ public:
         interfaces->engineTrace->traceRay({ localPlayer->getEyePosition(), position ? position : getBonePosition(8) }, 0x46004009, { localPlayer.get() }, trace);
         return trace.entity == this || trace.fraction > 0.97f;
     }
+    
+    bool isOtherEnemy(Entity* other) noexcept;
 
-    bool isEnemy() noexcept
-    {
-        // SHOULD NEVER HAPPEN
-        if (!localPlayer)
-            return false;
-
-        return memory->isOtherEnemy(this, localPlayer.get());
-    }
-  
     VarMap* getVarMap() noexcept
     {
         return reinterpret_cast<VarMap*>(this + 0x24);
@@ -158,7 +167,7 @@ public:
    
     AnimState* getAnimstate() noexcept
     {
-        return *reinterpret_cast<AnimState**>(this + 0x3900);
+        return *reinterpret_cast<AnimState**>(this + 0x3914);
     }
 
     float getMaxDesyncAngle() noexcept
@@ -181,16 +190,42 @@ public:
         return *reinterpret_cast<bool*>(uintptr_t(&clip()) + 0x41);
     }
 
-    matrix3x4& coordinateFrame() noexcept
-    {
-        return *reinterpret_cast<matrix3x4*>(this + 0x444);
-    }
-
     auto getAimPunch() noexcept
     {
         Vector vec;
         VirtualMethod::call<void, 345>(this, std::ref(vec));
         return vec;
+    }
+
+    auto getUserId() noexcept
+    {
+        if (PlayerInfo playerInfo; interfaces->engine->getPlayerInfo(index(), playerInfo))
+            return playerInfo.userId;
+
+        return -1;
+    }
+
+    [[nodiscard]] auto getPlayerName(bool normalize) noexcept
+    {
+        std::string playerName = "unknown";
+
+        PlayerInfo playerInfo;
+        if (!interfaces->engine->getPlayerInfo(index(), playerInfo))
+            return playerName;
+
+        playerName = playerInfo.name;
+
+        if (normalize) {
+            if (wchar_t wide[128]; MultiByteToWideChar(CP_UTF8, 0, playerInfo.name, 128, wide, 128)) {
+                if (wchar_t wideNormalized[128]; NormalizeString(NormalizationKC, wide, -1, wideNormalized, 128)) {
+                    if (char nameNormalized[128]; WideCharToMultiByte(CP_UTF8, 0, wideNormalized, -1, nameNormalized, 128, nullptr, nullptr))
+                        playerName = nameNormalized;
+                }
+            }
+        }
+
+        playerName.erase(std::remove(playerName.begin(), playerName.end(), '\n'), playerName.cend());
+        return playerName;
     }
 
     NETVAR(body, "CBaseAnimating", "m_nBody", int)
@@ -235,6 +270,7 @@ public:
     NETVAR(worldDroppedModelIndex, "CBaseCombatWeapon", "m_iWorldDroppedModelIndex", int)
     NETVAR(weaponWorldModel, "CBaseCombatWeapon", "m_hWeaponWorldModel", int)
     NETVAR(clip, "CBaseCombatWeapon", "m_iClip1", int)
+    NETVAR(reserveAmmoCount, "CBaseCombatWeapon", "m_iPrimaryReserveAmmoCount", int)
     NETVAR(nextPrimaryAttack, "CBaseCombatWeapon", "m_flNextPrimaryAttack", float)
 
     NETVAR(nextAttack, "CBaseCombatCharacter", "m_flNextAttack", float)

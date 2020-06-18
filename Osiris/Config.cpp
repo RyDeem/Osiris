@@ -13,17 +13,8 @@ Config::Config(const char* name) noexcept
         CoTaskMemFree(pathToDocuments);
     }
 
-    std::error_code ec;
-
-    if (!std::filesystem::is_directory(path, ec)) {
-        std::filesystem::remove(path, ec);
-        std::filesystem::create_directory(path, ec);
-    }
-
-    std::transform(std::filesystem::directory_iterator{ path, ec },
-                   std::filesystem::directory_iterator{ },
-                   std::back_inserter(configs),
-                   [](const auto& entry) { return std::string{ (const char*)entry.path().filename().u8string().c_str() }; });
+    listConfigs();
+    misc.clanTag[0] = '\0';
 }
 
 void Config::load(size_t id) noexcept
@@ -102,17 +93,22 @@ void Config::load(size_t id) noexcept
 
         if (glowJson.isMember("Enabled")) glowConfig.enabled = glowJson["Enabled"].asBool();
         if (glowJson.isMember("healthBased")) glowConfig.healthBased = glowJson["healthBased"].asBool();
-        if (glowJson.isMember("thickness")) glowConfig.thickness = glowJson["thickness"].asFloat();
-        if (glowJson.isMember("alpha")) glowConfig.alpha = glowJson["alpha"].asFloat();
+
+        // TODO: remove soon
+        if (glowJson.isMember("alpha")) glowConfig.color[3] = glowJson["alpha"].asFloat();
+
         if (glowJson.isMember("style")) glowConfig.style = glowJson["style"].asInt();
         if (glowJson.isMember("Color")) {
             const auto& colorJson = glowJson["Color"];
-            auto& colorConfig = glowConfig.color;
+            auto& colorConfig = glowConfig;
 
             if (colorJson.isMember("Color")) {
                 colorConfig.color[0] = colorJson["Color"][0].asFloat();
                 colorConfig.color[1] = colorJson["Color"][1].asFloat();
                 colorConfig.color[2] = colorJson["Color"][2].asFloat();
+
+                if (colorJson["Color"].size() == 4)
+                    colorConfig.color[3] = colorJson["Color"][3].asFloat();
             }
 
             if (colorJson.isMember("Rainbow")) colorConfig.rainbow = colorJson["Rainbow"].asBool();
@@ -124,7 +120,7 @@ void Config::load(size_t id) noexcept
         const auto& chamsJson = json["Chams"][i];
         auto& chamsConfig = chams[i];
 
-        for (size_t j = 0; j < chams[0].materials.size(); j++) {
+        for (size_t j = 0; j < chamsConfig.materials.size(); j++) {
             const auto& materialsJson = chamsJson[j];
             auto& materialsConfig = chams[i].materials[j];
 
@@ -135,18 +131,21 @@ void Config::load(size_t id) noexcept
             if (materialsJson.isMember("Wireframe")) materialsConfig.wireframe = materialsJson["Wireframe"].asBool();
             if (materialsJson.isMember("Color")) {
                 const auto& colorJson = materialsJson["Color"];
-                auto& colorConfig = materialsConfig.color;
+                auto& colorConfig = materialsConfig; // leftover
 
                 if (colorJson.isMember("Color")) {
                     colorConfig.color[0] = colorJson["Color"][0].asFloat();
                     colorConfig.color[1] = colorJson["Color"][1].asFloat();
                     colorConfig.color[2] = colorJson["Color"][2].asFloat();
+
+                    if (colorJson["Color"].size() == 4)
+                        colorConfig.color[3] = colorJson["Color"][3].asFloat();
                 }
 
                 if (colorJson.isMember("Rainbow")) colorConfig.rainbow = colorJson["Rainbow"].asBool();
                 if (colorJson.isMember("Rainbow speed")) colorConfig.rainbowSpeed = colorJson["Rainbow speed"].asFloat();
             }
-            if (materialsJson.isMember("Alpha")) materialsConfig.alpha = materialsJson["Alpha"].asFloat();
+            if (materialsJson.isMember("Alpha")) materialsConfig.color[3] = materialsJson["Alpha"].asFloat();
         }
     }
 
@@ -156,6 +155,8 @@ void Config::load(size_t id) noexcept
 
         if (espJson.isMember("Enabled")) espConfig.enabled = espJson["Enabled"].asBool();
         if (espJson.isMember("Font")) espConfig.font = espJson["Font"].asInt();
+        if (espJson.isMember("HP side")) espConfig.hpside = espJson["HP side"].asInt();
+        if (espJson.isMember("Armor side")) espConfig.armorside = espJson["Armor side"].asInt();
 
         if (espJson.isMember("Snaplines")) {
             const auto& snaplinesJson = espJson["Snaplines"];
@@ -350,7 +351,21 @@ void Config::load(size_t id) noexcept
             if (outlineJson.isMember("Rainbow")) outlineConfig.rainbow = outlineJson["Rainbow"].asBool();
             if (outlineJson.isMember("Rainbow speed")) outlineConfig.rainbowSpeed = outlineJson["Rainbow speed"].asFloat();
         }
+        if (espJson.isMember("Ammo")) {
+            const auto& ammoJson = espJson["Ammo"];
+            auto& ammoConfig = espConfig.ammo;
 
+            if (ammoJson.isMember("Enabled")) ammoConfig.enabled = ammoJson["Enabled"].asBool();
+
+            if (ammoJson.isMember("Color")) {
+                ammoConfig.color[0] = ammoJson["Color"][0].asFloat();
+                ammoConfig.color[1] = ammoJson["Color"][1].asFloat();
+                ammoConfig.color[2] = ammoJson["Color"][2].asFloat();
+            }
+
+            if (ammoJson.isMember("Rainbow")) ammoConfig.rainbow = ammoJson["Rainbow"].asBool();
+            if (ammoJson.isMember("Rainbow speed")) ammoConfig.rainbowSpeed = ammoJson["Rainbow speed"].asFloat();
+        }
         if (espJson.isMember("Distance")) {
             const auto& distanceJson = espJson["Distance"];
             auto& distanceConfig = espConfig.distance;
@@ -822,7 +837,7 @@ void Config::load(size_t id) noexcept
         if (miscJson.isMember("Bunny hop")) misc.bunnyHop = miscJson["Bunny hop"].asBool();
         if (miscJson.isMember("Custom clan tag")) misc.customClanTag = miscJson["Custom clan tag"].asBool();
         if (miscJson.isMember("Clock tag")) misc.clocktag = miscJson["Clock tag"].asBool();
-        if (miscJson.isMember("Clan tag")) misc.clanTag = miscJson["Clan tag"].asString();
+        if (miscJson.isMember("Clan tag")) strncpy_s(misc.clanTag, miscJson["Clan tag"].asCString(), _TRUNCATE);
         if (miscJson.isMember("Animated clan tag")) misc.animatedClanTag = miscJson["Animated clan tag"].asBool();
         if (miscJson.isMember("Fast duck")) misc.fastDuck = miscJson["Fast duck"].asBool();
         if (miscJson.isMember("Moonwalk")) misc.moonwalk = miscJson["Moonwalk"].asBool();
@@ -915,6 +930,19 @@ void Config::load(size_t id) noexcept
         if (miscJson.isMember("Custom Hit Sound")) misc.customHitSound = miscJson["Custom Hit Sound"].asString();
         if (miscJson.isMember("Kill sound")) misc.killSound = miscJson["Kill sound"].asInt();
         if (miscJson.isMember("Custom Kill Sound")) misc.customKillSound = miscJson["Custom Kill Sound"].asString();
+
+        if (const auto& purchaseList = miscJson["Purchase List"]; purchaseList.isObject()) {
+            if (const auto& enabled{ purchaseList["Enabled"] }; enabled.isBool())
+                misc.purchaseList.enabled = enabled.asBool();
+            if (const auto& onlyDuringFreezeTime{ purchaseList["Only During Freeze Time"] }; onlyDuringFreezeTime.isBool())
+                misc.purchaseList.onlyDuringFreezeTime = onlyDuringFreezeTime.asBool();
+            if (const auto& showPrices{ purchaseList["Show Prices"] }; showPrices.isBool())
+                misc.purchaseList.showPrices = showPrices.asBool();
+            if (const auto& noTitleBar{ purchaseList["No Title Bar"] }; noTitleBar.isBool())
+                misc.purchaseList.noTitleBar = noTitleBar.asBool();
+            if (const auto& mode{ purchaseList["Mode"] }; mode.isInt())
+                misc.purchaseList.mode = mode.asInt();
+        }
     }
 
     {
@@ -1003,17 +1031,16 @@ void Config::save(size_t id) const noexcept
 
         glowJson["Enabled"] = glowConfig.enabled;
         glowJson["healthBased"] = glowConfig.healthBased;
-        glowJson["thickness"] = glowConfig.thickness;
-        glowJson["alpha"] = glowConfig.alpha;
         glowJson["style"] = glowConfig.style;
 
         {
             auto& colorJson = glowJson["Color"];
-            const auto& colorConfig = glowConfig.color;
+            const auto& colorConfig = glowConfig;
 
             colorJson["Color"][0] = colorConfig.color[0];
             colorJson["Color"][1] = colorConfig.color[1];
             colorJson["Color"][2] = colorConfig.color[2];
+            colorJson["Color"][3] = colorConfig.color[3];
 
             colorJson["Rainbow"] = colorConfig.rainbow;
             colorJson["Rainbow speed"] = colorConfig.rainbowSpeed;
@@ -1024,7 +1051,7 @@ void Config::save(size_t id) const noexcept
         auto& chamsJson = json["Chams"][i];
         const auto& chamsConfig = chams[i];
 
-        for (size_t j = 0; j < chams[0].materials.size(); j++) {
+        for (size_t j = 0; j < chamsConfig.materials.size(); j++) {
             auto& materialsJson = chamsJson[j];
             const auto& materialsConfig = chams[i].materials[j];
 
@@ -1036,17 +1063,16 @@ void Config::save(size_t id) const noexcept
 
             {
                 auto& colorJson = materialsJson["Color"];
-                const auto& colorConfig = materialsConfig.color;
+                const auto& colorConfig = materialsConfig; // leftover
 
                 colorJson["Color"][0] = colorConfig.color[0];
                 colorJson["Color"][1] = colorConfig.color[1];
                 colorJson["Color"][2] = colorConfig.color[2];
+                colorJson["Color"][3] = colorConfig.color[3];
 
                 colorJson["Rainbow"] = colorConfig.rainbow;
                 colorJson["Rainbow speed"] = colorConfig.rainbowSpeed;
             }
-
-            materialsJson["Alpha"] = materialsConfig.alpha;
         }
     }
 
@@ -1056,6 +1082,8 @@ void Config::save(size_t id) const noexcept
 
         espJson["Enabled"] = espConfig.enabled;
         espJson["Font"] = espConfig.font;
+        espJson["HP side"] = espConfig.hpside;
+        espJson["Armor side"] = espConfig.armorside;
 
         {
             auto& snaplinesJson = espJson["Snaplines"];
@@ -1202,7 +1230,17 @@ void Config::save(size_t id) const noexcept
             outlineJson["Rainbow"] = outlineConfig.rainbow;
             outlineJson["Rainbow speed"] = outlineConfig.rainbowSpeed;
         }
+        {
+            auto& ammoJson = espJson["Ammo"];
+            const auto& ammoConfig = espConfig.ammo;
 
+            ammoJson["Enabled"] = ammoConfig.enabled;
+            ammoJson["Color"][0] = ammoConfig.color[0];
+            ammoJson["Color"][1] = ammoConfig.color[1];
+            ammoJson["Color"][2] = ammoConfig.color[2];
+            ammoJson["Rainbow"] = ammoConfig.rainbow;
+            ammoJson["Rainbow speed"] = ammoConfig.rainbowSpeed;
+        }
         {
             auto& distanceJson = espJson["Distance"];
             const auto& distanceConfig = espConfig.distance;
@@ -1671,6 +1709,15 @@ void Config::save(size_t id) const noexcept
         miscJson["Custom Hit Sound"] = misc.customHitSound;
         miscJson["Kill sound"] = misc.killSound;
         miscJson["Custom Kill Sound"] = misc.customKillSound;
+
+        {
+            auto& purchaseListJson = miscJson["Purchase List"];
+            purchaseListJson["Enabled"] = misc.purchaseList.enabled;
+            purchaseListJson["Only During Freeze Time"] = misc.purchaseList.onlyDuringFreezeTime;
+            purchaseListJson["Show Prices"] = misc.purchaseList.showPrices;
+            purchaseListJson["No Title Bar"] = misc.purchaseList.noTitleBar;
+            purchaseListJson["Mode"] = misc.purchaseList.mode;
+        }
     }
 
     {
@@ -1687,10 +1734,8 @@ void Config::save(size_t id) const noexcept
         reportbotJson["Other Hacking"] = reportbot.other;
     }
 
-    if (std::error_code ec; !std::filesystem::is_directory(path, ec)) {
-        std::filesystem::remove(path, ec);
-        std::filesystem::create_directory(path, ec);
-    }
+    std::error_code ec;
+    std::filesystem::create_directory(path, ec);
 
     if (std::ofstream out{ path / (const char8_t*)configs[id].c_str() }; out.good())
         out << json;
@@ -1730,4 +1775,15 @@ void Config::reset() noexcept
     style = { };
     misc = { };
     reportbot = { };
+}
+
+void Config::listConfigs() noexcept
+{
+    configs.clear();
+
+    std::error_code ec;
+    std::transform(std::filesystem::directory_iterator{ path, ec },
+                   std::filesystem::directory_iterator{ },
+                   std::back_inserter(configs),
+                   [](const auto& entry) { return std::string{ (const char*)entry.path().filename().u8string().c_str() }; });
 }

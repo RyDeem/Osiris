@@ -11,6 +11,7 @@
 #include "../SDK/Input.h"
 #include "../SDK/Material.h"
 #include "../SDK/MaterialSystem.h"
+#include "../SDK/NetworkStringTable.h"
 #include "../SDK/RenderContext.h"
 #include "../SDK/Surface.h"
 #include "../SDK/ModelInfo.h"
@@ -259,7 +260,26 @@ void Visuals::playerModel(FrameStage stage) noexcept
         "models/player/custom_player/legacy/tm_leet_varianti.mdl",
         "models/player/custom_player/legacy/tm_phoenix_variantf.mdl",
         "models/player/custom_player/legacy/tm_phoenix_variantg.mdl",
-        "models/player/custom_player/legacy/tm_phoenix_varianth.mdl"
+        "models/player/custom_player/legacy/tm_phoenix_varianth.mdl",
+        
+        "models/player/custom_player/legacy/tm_pirate.mdl",
+        "models/player/custom_player/legacy/tm_pirate_varianta.mdl",
+        "models/player/custom_player/legacy/tm_pirate_variantb.mdl",
+        "models/player/custom_player/legacy/tm_pirate_variantc.mdl",
+        "models/player/custom_player/legacy/tm_pirate_variantd.mdl",
+        "models/player/custom_player/legacy/tm_anarchist.mdl",
+        "models/player/custom_player/legacy/tm_anarchist_varianta.mdl",
+        "models/player/custom_player/legacy/tm_anarchist_variantb.mdl",
+        "models/player/custom_player/legacy/tm_anarchist_variantc.mdl",
+        "models/player/custom_player/legacy/tm_anarchist_variantd.mdl",
+        "models/player/custom_player/legacy/tm_balkan_varianta.mdl",
+        "models/player/custom_player/legacy/tm_balkan_variantb.mdl",
+        "models/player/custom_player/legacy/tm_balkan_variantc.mdl",
+        "models/player/custom_player/legacy/tm_balkan_variantd.mdl",
+        "models/player/custom_player/legacy/tm_balkan_variante.mdl",
+        "models/player/custom_player/legacy/tm_jumpsuit_varianta.mdl",
+        "models/player/custom_player/legacy/tm_jumpsuit_variantb.mdl",
+        "models/player/custom_player/legacy/tm_jumpsuit_variantc.mdl"
         };
 
         switch (team) {
@@ -270,8 +290,15 @@ void Visuals::playerModel(FrameStage stage) noexcept
     };
 
     if (const auto model = getModel(localPlayer->team())) {
-        if (stage == FrameStage::RENDER_START)
+        if (stage == FrameStage::RENDER_START) {
             originalIdx = localPlayer->modelIndex();
+            if (const auto modelprecache = interfaces->networkStringTableContainer->findTable("modelprecache")) {
+                modelprecache->addString(false, model);
+                const auto viewmodelArmConfig = memory->getPlayerViewmodelArmConfigForPlayerModel(model);
+                modelprecache->addString(false, viewmodelArmConfig[2]);
+                modelprecache->addString(false, viewmodelArmConfig[3]);
+            }
+        }
 
         const auto idx = stage == FrameStage::RENDER_END && originalIdx ? originalIdx : interfaces->modelInfo->getModelIndex(model);
 

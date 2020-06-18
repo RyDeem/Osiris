@@ -7,7 +7,8 @@
 class MaterialVar {
 public:
     VIRTUAL_METHOD(void, setValue, 4, (float value), (this, value))
-    VIRTUAL_METHOD(void, setVectorValue, 11, (float r, float g, float b), (this, r, g, b))
+    VIRTUAL_METHOD(void, setVectorValue, 11, (float x, float y, float z), (this, x, y, z))
+    VIRTUAL_METHOD(void, setVecComponentValue, 26, (float value, int component), (this, value, component))
 };
 
 enum class MaterialVarFlag {
@@ -21,7 +22,8 @@ public:
     VIRTUAL_METHOD(const char*, getName, 0, (), (this))
     VIRTUAL_METHOD(const char*, getTextureGroupName, 1, (), (this))
     VIRTUAL_METHOD(MaterialVar*, findVar, 11, (const char* name, bool* found = nullptr, bool complain = true), (this, name, found, complain))
-    VIRTUAL_METHOD(int, incrementReferenceCount, 12, (), (this))
+    VIRTUAL_METHOD(void, incrementReferenceCount, 12, (), (this))
+    VIRTUAL_METHOD(void, decrementReferenceCount, 13, (), (this))
     VIRTUAL_METHOD(void, alphaModulate, 27, (float alpha), (this, alpha))
     VIRTUAL_METHOD(void, colorModulate, 28, (const float color[3]), (this, color[0], color[1], color[2]))
     VIRTUAL_METHOD(void, colorModulate, 28, (float r, float g, float b), (this, r, g, b))
