@@ -11,7 +11,7 @@ Backtrack::Cvars Backtrack::cvars;
 
 void Backtrack::update(FrameStage stage) noexcept
 {
-    if (!config->backtrack.enabled || !localPlayer || !localPlayer->isAlive()) {
+    if (!config->backtrack.enabled || !localPlayer /*|| !localPlayer->isAlive()*/) {
         for (auto& record : records)
             record.clear();
 
@@ -68,8 +68,7 @@ void Backtrack::run(UserCmd* cmd) noexcept
 
     for (int i = 1; i <= interfaces->engine->getMaxClients(); i++) {
         auto entity = interfaces->entityList->getEntity(i);
-        if (!entity || entity == localPlayer.get() || entity->isDormant() || !entity->isAlive()
-            || !entity->isOtherEnemy(localPlayer.get()))
+        if (!entity || entity == localPlayer.get() || entity->isDormant() || !entity->isAlive() || !entity->isOtherEnemy(localPlayer.get()))
             continue;
 
         auto head = entity->getBonePosition(8);
@@ -85,7 +84,7 @@ void Backtrack::run(UserCmd* cmd) noexcept
     }
 
     if (bestTarget) {
-        if (records[bestTargetIndex].size() <= 3 || (!config->backtrack.ignoreSmoke && memory->lineGoesThroughSmoke(localPlayer->getEyePosition(), bestTargetHead, 1)))
+        if ( records[bestTargetIndex].size() <= 3) //|| (!config->backtrack.ignoreSmoke && memory->lineGoesThroughSmoke(localPlayer->getEyePosition(), bestTargetHead, 1)) )
             return;
 
         bestFov = 255.f;
