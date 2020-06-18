@@ -413,6 +413,10 @@ void GUI::renderBacktrackWindow(bool contentOnly) noexcept
     ImGui::PushItemWidth(220.0f);
     ImGui::SliderInt("Time limit", &config->backtrack.timeLimit, 1, 200, "%d ms");
     ImGui::PopItemWidth();
+    ImGui::Checkbox("Enabled Fake Latency", &config->backtrack.fakeLatency);
+    ImGui::PushItemWidth(220.0f);
+    ImGui::SliderInt("Latency Ammount", &config->backtrack.fakeLatencyAmmount, 0, 200, "%d ms");
+    ImGui::PopItemWidth();
     if (!contentOnly)
         ImGui::End();
 }
@@ -1233,6 +1237,7 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::SetNextItemWidth(120.0f);
     ImGui::SliderFloat("Max angle delta", &config->misc.maxAngleDelta, 0.0f, 255.0f, "%.2f");
     ImGui::Checkbox("Fake prime", &config->misc.fakePrime);
+    ImGui::Checkbox("Sv pure bypass", &config->misc.svpurebypass);
     ImGui::Checkbox("Purchase List", &config->misc.purchaseList.enabled);
     ImGui::SameLine();
 

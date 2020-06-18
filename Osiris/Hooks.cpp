@@ -111,6 +111,38 @@ static HRESULT __stdcall reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* 
     return hooks->originalReset(device, params);
 }
 
+static int __fastcall SendDatagram(NetworkChannel* network, void* edx, void* datagram)
+{
+    auto original = hooks->networkChannel.getOriginal<int, void*>(46, datagram);
+    if (!config->backtrack.fakeLatency || config->backtrack.fakeLatencyAmmount == 0 || datagram || !interfaces->engine->isInGame())
+    {
+        return original(network,datagram);
+    }
+    int instate = network->InReliableState;
+    int insequencenr = network->InSequenceNr;
+
+    float delta = std::clamp(config->backtrack.fakeLatencyAmmount / 1000.f - network->getLatency(0),0.f,Backtrack::cvars.maxUnlag->getFloat());
+
+    Backtrack::AddLatencyToNetwork(network, delta);
+
+    int result = original(network, datagram);
+
+    network->InReliableState = instate;
+    network->InSequenceNr = insequencenr;
+
+    return result;
+}
+
+static bool __fastcall SendNetMsg(void* networkchannel, void* edx, NetworkMessage& msg, bool bForceReliable, bool bVoice)
+{
+    auto original = hooks->networkChannel.getOriginal<bool, NetworkMessage&,bool,bool>(40, msg, bForceReliable, bVoice);
+
+    if (msg.getType() == 14 && config->misc.svpurebypass) // Return and don't send messsage if its FileCRCCheck
+        return false;
+
+    return original(networkchannel ,msg, bForceReliable, bVoice);
+}
+
 static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
 {
     auto result = hooks->clientMode.callOriginal<bool, 24>(inputSampleTime, cmd);
@@ -148,7 +180,21 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     Misc::quickHealthshot(cmd);
     Misc::fixTabletSignal();
     Misc::slowwalk(cmd);
-
+    
+    Backtrack::UpdateIncomingSequences();
+    
+    static void* oldPointer = nullptr;
+    
+    auto network = interfaces->engine->getNetworkChannel();
+    if (oldPointer != network && network)
+    {
+        oldPointer = network;
+        hooks->networkChannel.init(network);
+        hooks->networkChannel.hookAt(40, SendNetMsg);
+        hooks->networkChannel.hookAt(46, SendDatagram);
+        Backtrack::UpdateIncomingSequences(true);
+    }
+    
     EnginePrediction::run(cmd);
 
     Aimbot::run(cmd);
@@ -620,6 +666,7 @@ void Hooks::uninstall() noexcept
     surface.restore();
     svCheats.restore();
     viewRender.restore();
+    networkChannel.restore();
 
     netvars->restore();
 
