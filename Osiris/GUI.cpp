@@ -25,8 +25,8 @@ constexpr auto windowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoRe
 
 GUI::GUI() noexcept
 {
-    ImGui::CreateContext();
-    ImGui_ImplWin32_Init(FindWindowW(L"Valve001", NULL));
+    //ImGui::CreateContext();
+    //ImGui_ImplWin32_Init(FindWindowW(L"Valve001", NULL));
 
     ImGui::StyleColorsDark();
     ImGuiStyle& style = ImGui::GetStyle();
@@ -43,11 +43,11 @@ GUI::GUI() noexcept
         CoTaskMemFree(pathToFonts);
 
         static constexpr ImWchar ranges[]{ 0x0020, 0xFFFF, 0 };
-        //ImFontConfig cfg;
-        //cfg.OversampleV = 3;
+        ImFontConfig cfg;
+        cfg.OversampleV = 3;
 
-        fonts.tahoma = io.Fonts->AddFontFromFileTTF((path / "tahoma.ttf").string().c_str(), 15.0f, nullptr, ranges);
-        fonts.segoeui = io.Fonts->AddFontFromFileTTF((path / "segoeui.ttf").string().c_str(), 15.0f, nullptr, ranges);
+        fonts.tahoma = io.Fonts->AddFontFromFileTTF((path / "tahoma.ttf").string().c_str(), 15.0f, &cfg, ranges);
+        fonts.segoeui = io.Fonts->AddFontFromFileTTF((path / "segoeui.ttf").string().c_str(), 15.0f, &cfg, ranges);
     }
 }
 
