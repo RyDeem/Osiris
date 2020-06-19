@@ -204,6 +204,7 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     Triggerbot::run(cmd);
     Backtrack::run(cmd);
     Misc::edgejump(cmd);
+    Visuals::fullBright();
     Misc::moonwalk(cmd);
 
     config->globals.serverTime = memory->globalVars->serverTime();

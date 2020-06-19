@@ -4,8 +4,7 @@
 enum class FrameStage;
 class GameEvent;
 
-namespace Visuals
-{
+namespace Visuals {
     void playerModel(FrameStage stage) noexcept;
     void colorWorld() noexcept;
     void modifySmoke() noexcept;
@@ -28,4 +27,5 @@ namespace Visuals
     void skybox() noexcept;
     void indicators() noexcept;
 	void bulletBeams(GameEvent* event = nullptr) noexcept;
+    void fullBright() noexcept;
 }
