@@ -393,3 +393,12 @@ void Visuals::skybox() noexcept
         memory->loadSky(sv_skyname->string);
     }
 }
+
+void Visuals::fullBright() noexcept
+{
+    const bool PlayerConnected = interfaces->entityList->getEntity(interfaces->engine->isConnected());
+    if (!PlayerConnected)
+        return;
+    if (interfaces->cvar->findVar("mat_fullbright")->getInt() != config->visuals.fullBright)
+        interfaces->cvar->findVar("mat_fullbright")->setValue(config->visuals.fullBright ? true : false);
+};

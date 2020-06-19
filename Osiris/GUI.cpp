@@ -789,8 +789,12 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::PushID(4);
     ImGui::SliderInt("", &config->visuals.flashReduction, 0, 100, "Flash reduction: %d%%");
     ImGui::PopID();
+    const char* brightnessText = ("placeHolderForBrightnessText");
+    if (config->visuals.brightness == 1.0f)   { brightnessText = "mat_fullbright 1"; if (config->visuals.fullBright != true)  config->visuals.fullBright = true; };
+    if (config->visuals.brightness <= 0.999f) { brightnessText = "Brightness: %.2f"; if (config->visuals.fullBright != false) config->visuals.fullBright = false;};
+    if (config->visuals.brightness == 0.0f)   { brightnessText = "Brightness: %.2f (default)"; };
     ImGui::PushID(5);
-    ImGui::SliderFloat("", &config->visuals.brightness, 0.0f, 1.0f, "Brightness: %.2f");
+    ImGui::SliderFloat("", &config->visuals.brightness, 0.0f, 1.0f, brightnessText);
     ImGui::PopID();
     ImGui::PopItemWidth();
     ImGui::Combo("Skybox", &config->visuals.skybox, "Default\0cs_baggage_skybox_\0cs_tibet\0embassy\0italy\0jungle\0nukeblank\0office\0sky_cs15_daylight01_hdr\0sky_cs15_daylight02_hdr\0sky_cs15_daylight03_hdr\0sky_cs15_daylight04_hdr\0sky_csgo_cloudy01\0sky_csgo_night_flat\0sky_csgo_night02\0sky_day02_05_hdr\0sky_day02_05\0sky_dust\0sky_l4d_rural02_ldr\0sky_venice\0vertigo_hdr\0vertigo\0vertigoblue_hdr\0vietnam\0");
