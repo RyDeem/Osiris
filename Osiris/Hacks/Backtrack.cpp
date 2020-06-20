@@ -141,7 +141,7 @@ void Backtrack::UpdateIncomingSequences(bool reset) noexcept
     {
         if (network->InSequenceNr > lastIncomingSequenceNumber)
         {
-            lastIncomingSequenceNumber = network->InSequenceNr;
+            lastIncomingSequenceNumber = static_cast<float>(network->InSequenceNr);
 
             sequences.push_front(IncomingSequence(network->InReliableState, network->OutReliableState, network->InSequenceNr, memory->globalVars->serverTime()));
         }

@@ -600,7 +600,7 @@ void Misc::chokePackets(bool& sendPacket, UserCmd* cmd) noexcept
         }
         if (config->misc.fakeLagMode == 3)
         {
-            float lagTicks = RandomFloat(config->misc.fakeLagTicks, 16);
+            float lagTicks = RandomFloat(static_cast<float>(config->misc.fakeLagTicks), 16);
             sendPacket = interfaces->engine->getNetworkChannel()->chokedPackets >= lagTicks;
         }
         if (config->misc.fakeLagMode == 4)

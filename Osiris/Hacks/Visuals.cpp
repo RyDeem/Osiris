@@ -23,7 +23,7 @@ void Visuals::fullBright() noexcept
     const bool PlayerConnected = interfaces->entityList->getEntity(interfaces->engine->isConnected());
     if (!PlayerConnected) 
         return;
-    if (interfaces->cvar->findVar("mat_fullbright")->getInt() != config->visuals.fullBright) 
+    if (interfaces->cvar->findVar("mat_fullbright")->getInt() != config->visuals.fullBright)
         interfaces->cvar->findVar("mat_fullbright")->setValue(config->visuals.fullBright ? true : false);
 };
 
@@ -166,14 +166,20 @@ void Visuals::thirdperson(FrameStage stage, Vector angle) noexcept
     }
 
     if (config->visuals.thirdperson)
+    {
         if (memory->input->isCameraInThirdPerson = (!config->visuals.thirdpersonKey || isInThirdperson) && localPlayer && localPlayer->isAlive())
         {
             memory->input->cameraOffset.z = static_cast<float>(config->visuals.thirdpersonDistance);
+
             if (config->globals.thirdPersonAnglesSet && stage == FrameStage::RENDER_START)
             {
                 *(Vector*)((uintptr_t)(localPlayer.get()) + 0x31D8) = angle;
             }
+            else if (!localPlayer->isAlive()){
+                localPlayer->observerMode() = (!config->visuals.thirdpersonKey || isInThirdperson) ? ObserverMode::OBS_MODE_CHASE : ObserverMode::OBS_MODE_IN_EYE;
+            }
         }
+    }
 }
 
 void Visuals::removeVisualRecoil(FrameStage stage) noexcept
@@ -412,6 +418,7 @@ void Visuals::skybox() noexcept
 
 int GetBlendedColor(int percentage)
 {
+    
     if (percentage < 50)
         return std::round(percentage * 2.55);
     else
