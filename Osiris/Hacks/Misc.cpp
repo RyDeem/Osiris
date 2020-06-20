@@ -565,6 +565,9 @@ float Misc::RandomFloat(float min, float max) noexcept
 
 void Misc::chokePackets(bool& sendPacket, UserCmd* cmd) noexcept
 {
+    if (!interfaces->engine->isConnected() && !interfaces->engine->isInGame() && !localPlayer->isAlive())
+        return;
+
     bool doFakeLag{ false };
     auto position = localPlayer->getAbsOrigin();
     auto velocity = localPlayer->velocity();
@@ -701,6 +704,9 @@ void Misc::killSound(GameEvent& event) noexcept
 void Misc::fakeDuck(UserCmd* cmd, bool& sendPacket) noexcept
 {
     auto state = localPlayer->getAnimstate();
+
+    if (!interfaces->engine->isConnected() && !interfaces->engine->isInGame() && !localPlayer->isAlive())
+        return;
 
     if (config->misc.fakeDuck)
     {

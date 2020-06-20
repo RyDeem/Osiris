@@ -84,6 +84,7 @@ void Config::load(size_t id) noexcept
     {
         const auto& antiAimJson = json["Anti aim"];
         if (antiAimJson.isMember("Enabled")) config->antiAim.enabled = antiAimJson["Enabled"].asBool();
+        if (antiAimJson.isMember("Enabled Keybind")) config->antiAim.enabledKeybind = antiAimJson["Enabled Keybind"].asInt();
         if (antiAimJson.isMember("Pitch")) config->antiAim.pitch = antiAimJson["Pitch"].asBool();
         if (antiAimJson.isMember("Pitch angle")) config->antiAim.pitchAngle = antiAimJson["Pitch angle"].asFloat();
         if (antiAimJson.isMember("Yaw")) config->antiAim.yaw = antiAimJson["Yaw"].asBool();
@@ -1048,6 +1049,7 @@ void Config::save(size_t id) const noexcept
     {
         auto& antiAimJson = json["Anti aim"];
         antiAimJson["Enabled"] = antiAim.enabled;
+        antiAimJson["Enabled Keybind"] = antiAim.enabledKeybind;
         antiAimJson["Pitch"] = antiAim.pitch;
         antiAimJson["Pitch angle"] = antiAim.pitchAngle;
         antiAimJson["Yaw"] = antiAim.yaw;

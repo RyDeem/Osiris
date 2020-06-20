@@ -93,6 +93,7 @@ public:
 
     struct {
         bool enabled{ false };
+        int enabledKeybind{ 0 };
         int thirdpersonMode{ 0 };
         bool pitch{ false };
         bool yaw{ false };

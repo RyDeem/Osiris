@@ -262,6 +262,9 @@ void GUI::renderAntiAimWindow(bool contentOnly) noexcept
         ImGui::Begin("Anti aim", &window.antiAim, windowFlags);
     }
     ImGui::Checkbox("Enabled", &config->antiAim.enabled);
+    ImGui::SameLine();
+    hotkey(config->antiAim.enabledKeybind);
+
     if (config->antiAim.enabled)
     {
         ImGui::Checkbox("Pitch", &config->antiAim.pitch);

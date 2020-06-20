@@ -15,6 +15,10 @@ float AntiAim::RandomFloat(float min, float max) noexcept
 
 void AntiAim::setPitch(float pitch, UserCmd* cmd, bool sendPacket) noexcept
 {
+
+    if (!interfaces->engine->isConnected() && !interfaces->engine->isInGame() && !localPlayer->isAlive())
+        return;
+
     float newviewangle = pitch;
 
     cmd->viewangles.x = newviewangle;
@@ -22,13 +26,17 @@ void AntiAim::setPitch(float pitch, UserCmd* cmd, bool sendPacket) noexcept
 
 bool AntiAim::LbyUpdate()
 {
+
+    if (!interfaces->engine->isConnected() && !interfaces->engine->isInGame() && !localPlayer->isAlive())
+        return false;
+
     constexpr auto timeToTicks = [](float time) {  return static_cast<int>(0.5f + time / config->globals.tickRate); };
 
     if (!(localPlayer->flags() & 1))
     {
         return false;
     }
-    if (localPlayer->velocity() > 0.f)
+    if (localPlayer->velocity() > 0.0f)
     {
         config->globals.nextLBY = 0.22f;
         return false;
@@ -47,6 +55,10 @@ bool AntiAim::LbyUpdate()
 
 void AntiAim::setYaw(float yaw, float desyncYaw, UserCmd* cmd, bool sendPacket) noexcept
 {
+
+    if (!interfaces->engine->isConnected() && !interfaces->engine->isInGame() && !localPlayer->isAlive())
+        return;
+
     float newviewangle = yaw;
     //float LBYDifference = localPlayer->lby() - localPlayer->getMaxDesyncAngle() * config->antiAim.bodyLean / 100;
 
@@ -78,6 +90,14 @@ void AntiAim::setYaw(float yaw, float desyncYaw, UserCmd* cmd, bool sendPacket) 
 
 void AntiAim::run(UserCmd* cmd, const Vector& previousViewAngles, const Vector& currentViewAngles, bool& sendPacket) noexcept
 {
+    if (config->antiAim.enabledKeybind != 0) {
+        if (!GetAsyncKeyState(config->antiAim.enabledKeybind)){
+            config->antiAim.enabled = false;
+            return;
+        }
+        config->antiAim.enabled = true;
+    }
+
     if (config->antiAim.enabled && localPlayer->isAlive() && interfaces->engine->isConnected() && interfaces->engine->isInGame()) {
         if (config->antiAim.yawInverseAngleKey != 0) {
             if (config->antiAim.yawInverseKeyMode == 0) {

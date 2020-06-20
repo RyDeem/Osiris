@@ -559,7 +559,7 @@ void Visuals::bulletBeams(GameEvent* event) noexcept
     beam_info.m_pszModelName = "sprites/physbeam.vmt";
     beam_info.m_nModelIndex = -1;
     beam_info.m_flHaloScale = 0.f;
-    beam_info.m_flLife = 4.f;
+    beam_info.m_flLife = 0.2f;
     beam_info.m_flWidth = 1.f;
     beam_info.m_flEndWidth = 1.f;
     beam_info.m_flFadeLength = 0.1f;
