@@ -821,7 +821,6 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::Checkbox("Zoom", &config->visuals.zoom);
     ImGui::SameLine();
     hotkey(config->visuals.zoomKey);
-    ImGui::Checkbox("Dead thirdperson", &config->visuals.deadThirdperson);
     ImGui::Checkbox("Thirdperson", &config->visuals.thirdperson);
     ImGui::SameLine();
     hotkey(config->visuals.thirdpersonKey);
