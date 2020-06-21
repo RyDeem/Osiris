@@ -3,15 +3,9 @@
 #include <d3d9.h>
 #include <memory>
 #include <type_traits>
-#include <unordered_map>
 #include <Windows.h>
 
-#include "Hooks/MinHook.h"
-#include "Hooks/VmtSwap.h"
-
 struct SoundInfo;
-
-using HookType = MinHook;
 
 class Hooks {
 public:
@@ -63,18 +57,18 @@ public:
         size_t length = 0;
     };
 
-    HookType bspQuery;
-    HookType client;
-    HookType clientMode;
-    HookType engine;
-    HookType gameEventManager;
-    HookType modelRender;
-    HookType panel;
-    HookType sound;
-    HookType surface;
-    HookType viewRender;
-
-    HookType svCheats;
+    Vmt bspQuery;
+    Vmt client;
+    Vmt clientMode;
+    Vmt engine;
+    Vmt gameEventManager;
+    Vmt modelRender;
+    Vmt panel;
+    Vmt sound;
+    Vmt surface;
+    Vmt svCheats;
+    Vmt viewRender;
+    Vmt networkChannel;
 private:
     HMODULE module;
     HWND window;
