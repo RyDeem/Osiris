@@ -332,39 +332,6 @@ public:
         std::string customHitSound;
         PurchaseList purchaseList;
 
-        const char* wposLockFlags[14] = {
-            "Aimbot",
-            "Anti Aim",
-            "Triggerbot",
-            "Backtrack",
-            "Glow",
-            "Chams",
-            "Esp",
-            "Visuals",
-            "Skinchanger",
-            "Sound",
-            "Style",
-            "Misc",
-            "Reportbot",
-            "Config"
-        };
-        bool wposLockSelectedFlags[14] = {
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-        };
-
             // wps config .h //
         //aimbot
         float wposAimbotX{ 450.0f };
@@ -408,6 +375,18 @@ public:
         //config
         float wposConfigX{ 450.0f };
         float wposConfigY{ 450.0f };
+        // "wpos Locks" //
+        const char* wposLockFlags[14] = {
+            "Aimbot", "Anti Aim", "Triggerbot", "Backtrack",
+            "Glow", "Chams", "Esp", "Visuals", "Skinchanger",
+            "Sound", "Style", "Misc", "Reportbot", "Config"
+        };
+        bool wposLockSelectedFlags[14] = {
+            false, false, false, false,
+            false, false, false, false,
+            false, false, false, false,
+            false, false
+        };//  
     } misc;
 
     struct {

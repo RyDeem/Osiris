@@ -130,7 +130,6 @@ void GUI::renderAimbotWindow(bool contentOnly) noexcept
     if (!config->misc.wposLockSelectedFlags[0]) {  //
         if (config->misc.wposAimbotX != ImGui::GetWindowPos().x) { config->misc.wposAimbotX = ImGui::GetWindowPos().x; }
         if (config->misc.wposAimbotY != ImGui::GetWindowPos().y) { config->misc.wposAimbotY = ImGui::GetWindowPos().y; }
-        ImGuiWindowFlags_None;
         windowFlags;
     }
     else {
