@@ -1286,7 +1286,26 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::Checkbox("Fix bone matrix", &config->misc.fixBoneMatrix);
     ImGui::Checkbox("Fix movement", &config->misc.fixMovement);
     ImGui::Checkbox("Disable model occlusion", &config->misc.disableModelOcclusion);
-    ImGui::SliderFloat("Aspect Ratio", &config->misc.aspectratio, 0.0f, 5.0f, "%.2f");
+    ImGui::Text("Aspect Ratio");
+    ImGui::SameLine();
+    if (ImGui::Button("Default"))
+        config->misc.aspectratio = 0.0f;
+    if (ImGui::Button("16:9"))
+        config->misc.aspectratio = 1.777777777777778f;
+    ImGui::SameLine();
+    if (ImGui::Button("4:3"))
+        config->misc.aspectratio = 1.333333333333333f;
+    ImGui::SameLine();
+    if (ImGui::Button("3:2"))
+        config->misc.aspectratio = 1.5f;
+    ImGui::SameLine();
+    if (ImGui::Button("21:9"))
+        config->misc.aspectratio = 2.333333333333333f;
+    ImGui::PushID("Custom Ratio");
+    ImGui::SetNextItemWidth(180.0f);
+    ImGui::SliderFloat("", &config->misc.aspectratio, 0.0f, 5.0f, "Custom Ratio %.2f");
+    ImGui::PopID();
+
     ImGui::NextColumn();
     ImGui::Checkbox("Disable HUD blur", &config->misc.disablePanoramablur);
     ImGui::Checkbox("Animated clan tag", &config->misc.animatedClanTag);
