@@ -84,7 +84,7 @@ void Backtrack::run(UserCmd* cmd) noexcept
     }
 
     if (bestTarget) {
-        if ( records[bestTargetIndex].size() <= 3) //|| (!config->backtrack.ignoreSmoke && memory->lineGoesThroughSmoke(localPlayer->getEyePosition(), bestTargetHead, 1)) )
+        if ( records[bestTargetIndex].size() <= 3 || (!config->backtrack.ignoreSmoke && memory->lineGoesThroughSmoke(localPlayer->getEyePosition(), bestTargetHead, 1)) )
             return;
 
         bestFov = 255.f;

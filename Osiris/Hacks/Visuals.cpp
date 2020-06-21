@@ -175,13 +175,17 @@ void Visuals::thirdperson(FrameStage stage, Vector angle) noexcept
             {
                 *(Vector*)((uintptr_t)(localPlayer.get()) + 0x31D8) = angle;
             }
-            else if (!localPlayer->isAlive()){
-                localPlayer->observerMode() = (!config->visuals.thirdpersonKey || isInThirdperson) ? ObserverMode::OBS_MODE_CHASE : ObserverMode::OBS_MODE_IN_EYE;
-            }
+            
+        }
+
+        if (localPlayer && !localPlayer->isAlive() && (config->visuals.thirdpersonKey & 1 /*|| isInThirdperson*/) ) {
+
+            localPlayer->observerMode() = ObserverMode::OBS_MODE_CHASE;
+            //memory->input->cameraOffset.z = static_cast<float>(config->visuals.thirdpersonDistance);
         }
     }
 }
-
+// (!config->visuals.thirdpersonKey || isInThirdperson) ? ....................... : ObserverMode::OBS_MODE_IN_EYE;
 void Visuals::removeVisualRecoil(FrameStage stage) noexcept
 {
     if (!localPlayer || !localPlayer->isAlive())

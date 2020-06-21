@@ -319,9 +319,7 @@ public:
         bool fixTabletSignal{ false };
         float maxAngleDelta{ 255.0f };
         bool fakePrime{ false };
-//<<<<<<< HEAD
         bool svpurebypass{ false };
-//=======
         bool autoZeus{ false };
         bool autoZeusBaimOnly{ false };
         int autoZeusMaxPenDist{ 0 };
@@ -329,11 +327,87 @@ public:
         int fakeDuckKey{ 0 };
         bool fakeDucking{ false };
         int fakeDuckShotState{ 0 };
-//>>>>>>> pr/1546
         int killSound{ 0 };
         std::string customKillSound;
         std::string customHitSound;
         PurchaseList purchaseList;
+
+        const char* wposLockFlags[14] = {
+            "Aimbot",
+            "Anti Aim",
+            "Triggerbot",
+            "Backtrack",
+            "Glow",
+            "Chams",
+            "Esp",
+            "Visuals",
+            "Skinchanger",
+            "Sound",
+            "Style",
+            "Misc",
+            "Reportbot",
+            "Config"
+        };
+        bool wposLockSelectedFlags[14] = {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        };
+
+            // wps config .h //
+        //aimbot
+        float wposAimbotX{ 450.0f };
+        float wposAimbotY{ 450.0f };
+        //antiaim
+        float wposAntiAimX{ 450.0f };
+        float wposAntiAimY{ 450.0f };
+        //triggerbot
+        float wposTriggerBotX{ 450.0f };
+        float wposTriggerBotY{ 450.0f };
+        //backtrack
+        float wposBacktrackX{ 450.0f };
+        float wposBacktrackY{ 450.0f };
+        //glow
+        float wposGlowX{ 450.0f };
+        float wposGlowY{ 450.0f };
+        //chams
+        float wposChamsX{ 450.0f };
+        float wposChamsY{ 450.0f };
+        //esp
+        float wposEspX{ 450.0f };
+        float wposEspY{ 450.0f };
+        //visuals
+        float wposVisualsX{ 450.0f };
+        float wposVisualsY{ 450.0f };
+        //skinchanger
+        float wposSkinchangerX{ 450.0f };
+        float wposSkinchangerY{ 450.0f };
+        //sound
+        float wposSoundX{ 450.0f };
+        float wposSoundY{ 450.0f };
+        //style
+        float wposStyleX{ 450.0f };
+        float wposStyleY{ 450.0f };
+        //misc
+        float wposMiscX{ 450.0f };
+        float wposMiscY{ 450.0f };
+        //reportbot
+        float wposReportbotX{ 450.0f };
+        float wposReportbotY{ 450.0f };
+        //config
+        float wposConfigX{ 450.0f };
+        float wposConfigY{ 450.0f };
     } misc;
 
     struct {
