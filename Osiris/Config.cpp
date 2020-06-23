@@ -948,8 +948,6 @@ void Config::load(size_t id) noexcept
         if (miscJson.isMember("Custom Hit Sound")) misc.customHitSound = miscJson["Custom Hit Sound"].asString();
         if (miscJson.isMember("Kill sound")) misc.killSound = miscJson["Kill sound"].asInt();
         if (miscJson.isMember("Custom Kill Sound")) misc.customKillSound = miscJson["Custom Kill Sound"].asString();
-        if (miscJson.isMember("Fake Duck")) misc.fakeDuck = miscJson["Fake Duck"].asBool();
-        if (miscJson.isMember("Fake Duck Key")) misc.fakeDuckKey = miscJson["Fake Duck Key"].asInt();
 
         if (const auto& purchaseList = miscJson["Purchase List"]; purchaseList.isObject()) {
             if (const auto& enabled{ purchaseList["Enabled"] }; enabled.isBool())
@@ -1824,8 +1822,6 @@ void Config::save(size_t id) const noexcept
         miscJson["Custom Hit Sound"] = misc.customHitSound;
         miscJson["Kill sound"] = misc.killSound;
         miscJson["Custom Kill Sound"] = misc.customKillSound;
-        miscJson["Fake Duck"] = misc.fakeDuck;
-        miscJson["Fake Duck Key"] = misc.fakeDuckKey;
 
         {
             auto& purchaseListJson = miscJson["Purchase List"];

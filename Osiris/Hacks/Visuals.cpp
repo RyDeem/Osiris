@@ -535,17 +535,6 @@ void Visuals::indicators() noexcept
                 interfaces->surface->setTextColor(0, 255, 0, 255);
                 interfaces->surface->printText(fakelagIndicator);
             }
-
-            if (config->visuals.selectedIndicators[3])
-            {
-                interfaces->surface->setTextFont(18); // fakeduck indicator
-                interfaces->surface->setTextPosition(bottomLeft[0], bottomLeft[1] - (screenSizeMultiplier[1] * 75) - FDHeight);
-                if (config->misc.fakeDucking)
-                    interfaces->surface->setTextColor(0, 255, 0, 255);
-                else
-                    interfaces->surface->setTextColor(255, 0, 0, 255);
-                interfaces->surface->printText(fakeduckIndicator);
-            }
         }
     }
 }

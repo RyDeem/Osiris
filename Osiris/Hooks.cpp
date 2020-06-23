@@ -217,8 +217,6 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
         if (config->misc.fakeLagKey == 0 || GetAsyncKeyState(config->misc.fakeLagKey))
             Misc::chokePackets(sendPacket, cmd);
 
-    Misc::fakeDuck(cmd, sendPacket);
-
     //if (!(cmd->buttons & (UserCmd::IN_ATTACK | UserCmd::IN_ATTACK2 | UserCmd::IN_USE)))
     AntiAim::run(cmd, previousViewAngles, currentViewAngles, sendPacket);
 
@@ -508,9 +506,6 @@ static void __stdcall overrideView(ViewSetup* setup) noexcept
     if (localPlayer && !localPlayer->isScoped())
         setup->fov += config->visuals.fov;
     setup->farZ += config->visuals.farZ * 10;
-    if (config->misc.fakeDucking)
-        setup->origin.z = localPlayer->getAbsOrigin().z + 64.f;
-    hooks->clientMode.callOriginal<void, 18>(setup);
 }
 
 struct RenderableInfo {

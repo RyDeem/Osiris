@@ -56,23 +56,6 @@ static float handleBulletPenetration(SurfaceData* enterSurfaceData, const Trace&
     return damage;
 }
 
-static bool handleTaserPenetration(UserCmd* cmd, Vector& angle, Vector& target) noexcept
-{
-    Vector end;
-    Trace enterTrace;
-    __asm {
-        mov ecx, end
-        mov edx, enterTrace
-    }
-
-    interfaces->engineTrace->traceRay({ localPlayer->getEyePosition(), target }, 0x46004009, { localPlayer.get() }, enterTrace);
-
-    if (sqrt(sqrt(enterTrace.startpos.x * enterTrace.startpos.y * enterTrace.startpos.z)) - sqrt(sqrt(target.x * target.y * target.z)) <= config->misc.autoZeusMaxPenDist)
-        return true;
-    else
-        return false;
-}
-
 static bool canScan(Entity* entity, const Vector& destination, const WeaponInfo* weaponData, int minDamage, bool allowFriendlyFire) noexcept
 {
     if (!localPlayer)
@@ -150,10 +133,7 @@ void Aimbot::autoZeus(UserCmd* cmd) noexcept
 
         auto boneList = std::initializer_list{ 3, 4 };
 
-        if (!config->misc.autoZeusBaimOnly)
-            boneList = std::initializer_list{ 3, 4, 5, 6, 7, 11, 28, 39, 53, 73, 74, 76, 82, 83 };
-        else
-            boneList = std::initializer_list{ 3, 4, 5 };
+        boneList = std::initializer_list{ 3, 4, 5 };
 
         for (auto bone : boneList) {
             auto bonePosition = entity->getBonePosition(bone);
@@ -165,7 +145,7 @@ void Aimbot::autoZeus(UserCmd* cmd) noexcept
                 std::cos(degreesToRadians(cmd->viewangles.x + angle.x)) * std::sin(degreesToRadians(cmd->viewangles.y + angle.y)) * weaponData->range,
                 -std::sin(degreesToRadians(cmd->viewangles.x + angle.x)) * weaponData->range };
 
-            if (!entity->isVisible(bonePosition) && !handleTaserPenetration(cmd, viewAngles, bonePosition))
+            if (!entity->isVisible(bonePosition))
                 continue;
             else
             {
@@ -244,9 +224,6 @@ void Aimbot::run(UserCmd* cmd) noexcept
 
     if (weaponClass == 40)
         return;
-
-    if (activeWeapon->itemDefinitionIndex2() == WeaponId::Taser && config->misc.autoZeus)
-        Aimbot::autoZeus(cmd);
 
     if (!config->aimbot[weaponIndex].enabled)
         weaponIndex = weaponClass;
