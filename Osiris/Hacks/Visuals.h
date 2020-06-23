@@ -8,7 +8,7 @@ namespace Visuals {
     void playerModel(FrameStage stage) noexcept;
     void colorWorld() noexcept;
     void modifySmoke() noexcept;
-	void thirdperson(FrameStage stage, Vector angle) noexcept;
+    void thirdperson(FrameStage stage, Vector angle) noexcept;
     void removeVisualRecoil(FrameStage stage) noexcept;
     void removeBlur() noexcept;
     void updateBrightness() noexcept;
@@ -26,7 +26,7 @@ namespace Visuals {
     bool removeWeapons(const char* modelName) noexcept;
     void skybox() noexcept;
     void indicators() noexcept;
-	void bulletBeams(GameEvent* event = nullptr) noexcept;
+    void bulletBeams(GameEvent* event = nullptr) noexcept;
     void fullBright() noexcept;
     void ViewmodelXYZ() noexcept;
 }

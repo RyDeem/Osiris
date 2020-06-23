@@ -39,8 +39,7 @@ static float handleBulletPenetration(SurfaceData* enterSurfaceData, const Trace&
     if (enterSurfaceData->material == 71 || enterSurfaceData->material == 89) {
         damageModifier = 0.05f;
         penetrationModifier = 3.0f;
-    }
-    else if (enterTrace.contents >> 3 & 1 || enterTrace.surface.flags >> 7 & 1) {
+    } else if (enterTrace.contents >> 3 & 1 || enterTrace.surface.flags >> 7 & 1) {
         penetrationModifier = 1.0f;
     }
 
