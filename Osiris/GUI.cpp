@@ -944,6 +944,66 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::Checkbox("No grass", &config->visuals.noGrass);
     ImGui::Checkbox("No shadows", &config->visuals.noShadows);
     ImGui::Checkbox("Wireframe smoke", &config->visuals.wireframeSmoke);
+
+
+
+
+
+
+
+
+
+
+    ////
+    ImGui::Text("Custom Viewmodel XYZ");
+    ImGui::SameLine();
+    ImGui::Checkbox("Enable",       &config->viewmodel.isOnXYZ );
+    ImGui::Checkbox("Gun or Knife", &config->viewmodel.MenuType);
+    ImGui::SameLine();
+    if (!config->viewmodel.MenuType)    { ImGui::Checkbox("Swap Gun Side",     &config->viewmodel.clrightguns ); };
+    if (config->viewmodel.MenuType)     { ImGui::Checkbox("Swap Knife Side",   &config->viewmodel.clrightknife); };
+    ImGui::PushItemWidth(320.0f);
+    //
+    if (!config->viewmodel.MenuType) {
+
+        ImGui::PushID("viewmodel.x_guns");
+        ImGui::SliderFloat("", &config->viewmodel.x_guns, -25, 25, "Guns X: %.1f");
+        ImGui::PopID();
+        ImGui::PushID("viewmodel.y_guns");
+        ImGui::SliderFloat("", &config->viewmodel.y_guns, -25, 25, "Guns Y: %.1f");
+        ImGui::PopID();
+        ImGui::PushID("viewmodel.z_guns");
+        ImGui::SliderFloat("", &config->viewmodel.z_guns, -25, 25, "Guns Z: %.1f");
+        ImGui::PopID();
+    };
+    //
+    if (config->viewmodel.MenuType) {
+        ImGui::PushID("viewmodel.x_knife");
+        ImGui::SliderFloat("", &config->viewmodel.x_knife, -25, 25, "Knife X: %.1f");
+        ImGui::PopID();
+        ImGui::PushID("viewmodel.y_knife");
+        ImGui::SliderFloat("", &config->viewmodel.y_knife, -25, 25, "Knife Y: %.1f");
+        ImGui::PopID();
+        ImGui::PushID("viewmodel.z_knife");
+        ImGui::SliderFloat("", &config->viewmodel.z_knife, -25, 25, "Knife Z: %.1f");
+        ImGui::PopID();
+    };
+    //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     ImGui::NextColumn();
     ImGui::Checkbox("Zoom", &config->visuals.zoom);
     ImGui::SameLine();
@@ -953,7 +1013,6 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     hotkey(config->visuals.thirdpersonKey);
     ImGui::SetNextItemWidth(140.0f);
     ImGui::Combo("Thirdperson Angles", &config->antiAim.thirdpersonMode, "Fake\0Real\0Current Tick\0");
-
     ImGui::PushItemWidth(290.0f);
     ImGui::PushID("thirdpersonDistance");
     ImGui::SliderInt("", &config->visuals.thirdpersonDistance, -30, 1000, "Thirdperson distance: %d");

@@ -1038,6 +1038,27 @@ void Config::load(size_t id) noexcept
         if (wposJson.isMember("wpos Style2 Lock")) wpos.LockSelectedFlags[14] = wposJson["wpos Style2 Lock"].asBool();
         if (wposJson.isMember("wpos PurchaseList Lock")) wpos.LockSelectedFlags[15] = wposJson["wpos PurchaseList Lock"].asBool();
     }
+
+    {
+        const auto& viewmodelJson = json["Viewmodel Options"];
+        
+        if (viewmodelJson.isMember("Viewmodel XYZ Turned On")) viewmodel.isOnXYZ = viewmodelJson["Viewmodel XYZ Turned On"].asBool();
+        if (viewmodelJson.isMember("Viewmodel XYZ Default")) viewmodel.clright_Default = viewmodelJson["Viewmodel XYZ Default"].asBool();
+        if (viewmodelJson.isMember("Viewmodel XYZ Swap Guns")) viewmodel.clrightguns = viewmodelJson["Viewmodel XYZ Swap Guns"].asBool();
+        if (viewmodelJson.isMember("Viewmodel XYZ Swap Knife")) viewmodel.clrightknife = viewmodelJson["Viewmodel XYZ Swap Knife"].asBool();
+        //
+        if (viewmodelJson.isMember("Viewmodel X Default")) viewmodel.x_default = viewmodelJson["Viewmodel X Default"].asFloat();
+        if (viewmodelJson.isMember("Viewmodel Y Default")) viewmodel.y_default = viewmodelJson["Viewmodel Y Default"].asFloat();
+        if (viewmodelJson.isMember("Viewmodel Z Default")) viewmodel.z_default = viewmodelJson["Viewmodel Z Default"].asFloat();
+        //
+        if (viewmodelJson.isMember("Viewmodel X Guns")) viewmodel.x_guns = viewmodelJson["Viewmodel X Guns"].asFloat();
+        if (viewmodelJson.isMember("Viewmodel Y Guns")) viewmodel.y_guns = viewmodelJson["Viewmodel Y Guns"].asFloat();
+        if (viewmodelJson.isMember("Viewmodel Z Guns")) viewmodel.z_guns = viewmodelJson["Viewmodel Z Guns"].asFloat();
+        //
+        if (viewmodelJson.isMember("Viewmodel X Knife")) viewmodel.x_knife = viewmodelJson["Viewmodel X Knife"].asFloat();
+        if (viewmodelJson.isMember("Viewmodel Y Knife")) viewmodel.y_knife = viewmodelJson["Viewmodel Y Knife"].asFloat();
+        if (viewmodelJson.isMember("Viewmodel Z Knife")) viewmodel.z_knife = viewmodelJson["Viewmodel Z Knife"].asFloat();
+    }
 }
 
 void Config::save(size_t id) const noexcept
@@ -1890,6 +1911,24 @@ void Config::save(size_t id) const noexcept
         wposJson["wpos Config Lock"] = wpos.LockSelectedFlags[13];
         wposJson["wpos Style2 Lock"] = wpos.LockSelectedFlags[14];
         wposJson["wpos PurchaseList Lock"] = wpos.LockSelectedFlags[15];
+    }
+
+    {
+        auto& viewmodelJson = json["Viewmodel Options"];
+
+        viewmodelJson["Viewmodel XYZ Turned On"] = viewmodel.isOnXYZ;
+        viewmodelJson["Viewmodel XYZ Default"] = viewmodel.clright_Default;
+        viewmodelJson["Viewmodel XYZ Swap Guns"] = viewmodel.clrightguns;
+        viewmodelJson["Viewmodel XYZ Swap Knife"] = viewmodel.clrightknife;
+        viewmodelJson["Viewmodel X Default"] = viewmodel.x_default;
+        viewmodelJson["Viewmodel Y Default"] = viewmodel.y_default;
+        viewmodelJson["Viewmodel Z Default"] = viewmodel.z_default;
+        viewmodelJson["Viewmodel X"] = viewmodel.x_guns;
+        viewmodelJson["Viewmodel Y"] = viewmodel.y_guns;
+        viewmodelJson["Viewmodel Z"] = viewmodel.z_guns;
+        viewmodelJson["Viewmodel X Knife"] = viewmodel.x_knife;
+        viewmodelJson["Viewmodel Y Knife"] = viewmodel.y_knife;
+        viewmodelJson["Viewmodel Z Knife"] = viewmodel.z_knife;
     }
 
     std::error_code ec;

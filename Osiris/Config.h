@@ -358,7 +358,7 @@ public:
         int chokedPackets{ 0 };
     } globals;
 
-struct {
+    struct {
         float AimbotX{ 250.0f }; // wpos config .h //
         float AimbotY{ 250.0f };
         float AntiAimX{ 250.0f };
@@ -408,6 +408,22 @@ struct {
         };
     } wpos;
 
+    struct {
+        bool MenuType{ 0 };
+        bool isOnXYZ{ 0 };
+        bool clright_Default{ 1 };
+        bool clrightguns{ 1 };
+        bool clrightknife{ 1 };
+        float x_default{ 0.0f };
+        float y_default{ 0.0f };
+        float z_default{ 0.0f };
+        float x_guns{ 0.0f };
+        float y_guns{ 0.0f };
+        float z_guns{ 0.0f };
+        float x_knife{ 0.0f };
+        float y_knife{ 0.0f };
+        float z_knife{ 0.0f };
+    } viewmodel;
 private:
     std::filesystem::path path;
     std::vector<std::string> configs;

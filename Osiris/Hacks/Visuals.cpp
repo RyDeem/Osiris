@@ -594,3 +594,167 @@ void Visuals::bulletBeams(GameEvent* event) noexcept
     if (beam)
         memory->renderBeams->DrawBeam(beam);
 }
+
+void Visuals::ViewmodelXYZ() noexcept {
+    //Cvar ShortCuts
+    static auto sv_minSpecCvar     = interfaces->cvar->findVar("sv_competitive_minspec");
+    static auto cl_righthandCvar   = interfaces->cvar->findVar("cl_righthand");
+    static auto viewmodel_offset_x = interfaces->cvar->findVar("viewmodel_offset_x");
+    static auto viewmodel_offset_y = interfaces->cvar->findVar("viewmodel_offset_y");
+    static auto viewmodel_offset_z = interfaces->cvar->findVar("viewmodel_offset_z");
+    //Weapon Identification
+    static auto activeWeapon        = localPlayer->getActiveWeapon()->itemDefinitionIndex2();          // WeaponId.h
+    static auto activeWeaponClassId = localPlayer->getActiveWeapon()->getClientClass()->classId;// ClassId.h
+    //static bool IsKnife             = (activeWeaponClassId == ClassId::Knife);
+    //Config shortcuts
+    static float viewmodel_x_knife  = config->viewmodel.x_knife;
+    static float viewmodel_y_knife  = config->viewmodel.y_knife;
+    static float viewmodel_z_knife  = config->viewmodel.z_knife;
+    static float viewmodel_x_guns   = config->viewmodel.x_guns;
+    static float viewmodel_y_guns   = config->viewmodel.y_guns;
+    static float viewmodel_z_guns   = config->viewmodel.z_guns;
+    static int cl_righthand_guns    = config->viewmodel.clrightguns;
+    static int cl_righthand_knife   = config->viewmodel.clrightknife;
+    //static int cl_righthand_default = config->viewmodel.clright_Default;
+
+    /*bool minspecfixup = 0;
+    bool minspecfixdown = 0;
+    if (sv_minSpecCvar->getInt() == 0) {
+        if (config->visuals.fov != config->visuals.fov + 60 && minspecfixup == 0) {
+            config->visuals.fov + 60;
+            minspecfixup = 1;
+        } else if (minspecfixdown == 0) {
+            config->visuals.fov - 60;
+            minspecfixdown = 1;
+        }
+    }*/
+    
+    //if (config->viewmodel.isOnXYZ) {
+
+    //    if (!interfaces->engine->isConnected() && !interfaces->engine->isInGame())  return;
+
+    //    if (sv_minSpecCvar->getInt() != 0) sv_minSpecCvar->setValue(0);
+
+    //    if (activeWeaponClassId == ClassId::C4 ) {
+    //        if (viewmodel_offset_x->getFloat() != 0.0f) viewmodel_offset_x->setValue(0.0f);
+    //        if (viewmodel_offset_y->getFloat() != 0.0f) viewmodel_offset_y->setValue(0.0f);
+    //        if (viewmodel_offset_z->getFloat() != 0.0f) viewmodel_offset_z->setValue(0.0f);
+    //    } else if (activeWeapon == WeaponId::Elite) {
+    //        if (viewmodel_offset_x->getFloat() != 0.0f) viewmodel_offset_x->setValue(0.0f);
+    //        if (viewmodel_offset_y->getFloat() != 0.0f) viewmodel_offset_y->setValue(0.0f);
+    //        if (viewmodel_offset_z->getFloat() != 0.0f) viewmodel_offset_z->setValue(0.0f);
+    //    } else if (activeWeaponClassId == ClassId::Knife) {
+    //        if (cl_righthandCvar->getInt() != cl_righthand_knife)    cl_righthandCvar->setValue(cl_righthand_knife);
+    //        if (viewmodel_offset_x->getFloat() != viewmodel_x_knife) viewmodel_offset_x->setValue(viewmodel_x_knife); 
+    //        if (viewmodel_offset_y->getFloat() != viewmodel_y_knife) viewmodel_offset_y->setValue(viewmodel_y_knife);
+    //        if (viewmodel_offset_z->getFloat() != viewmodel_z_knife) viewmodel_offset_z->setValue(viewmodel_z_knife);
+    //    } else {//(!IsKnife && activeWeaponClassId != ClassId::C4 && activeWeapon != WeaponId::Elite)
+    //        if (cl_righthandCvar->getInt() != cl_righthand_guns)    cl_righthandCvar->setValue(cl_righthand_guns);
+    //        if (viewmodel_offset_x->getFloat() != viewmodel_x_guns) viewmodel_offset_x->setValue(viewmodel_x_guns);
+    //        if (viewmodel_offset_y->getFloat() != viewmodel_y_guns) viewmodel_offset_y->setValue(viewmodel_y_guns);
+    //        if (viewmodel_offset_z->getFloat() != viewmodel_z_guns) viewmodel_offset_z->setValue(viewmodel_z_guns);
+    //    }
+    //} 
+    //else {
+    //    if (sv_minSpecCvar->getInt() != 1) sv_minSpecCvar->setValue(1);
+    //    //if (cl_righthandCvar->getInt() != cl_righthand_default) cl_righthandCvar->setValue(cl_righthand_default);
+    //    if (viewmodel_offset_x->getFloat() != 0.0f) viewmodel_offset_x->setValue(0.0f);
+    //    if (viewmodel_offset_y->getFloat() != 0.0f) viewmodel_offset_y->setValue(0.0f);
+    //    if (viewmodel_offset_z->getFloat() != 0.0f) viewmodel_offset_z->setValue(0.0f);
+    //}
+};
+
+/*
+
+activeWeapon == WeaponId::Bayonet || activeWeapon == WeaponId::Bowie || activeWeapon == WeaponId::Butterfly
+            || activeWeapon == WeaponId::Daggers || activeWeapon == WeaponId::Falchion || activeWeapon == WeaponId::Flip
+            || activeWeapon == WeaponId::GhostKnife || activeWeapon == WeaponId::GoldenKnife || activeWeapon == WeaponId::Gut
+            || activeWeapon == WeaponId::Huntsman || activeWeapon == WeaponId::Karambit || activeWeapon == WeaponId::Knife
+            || activeWeapon == WeaponId::KnifeT || activeWeapon == WeaponId::M9Bayonet || activeWeapon == WeaponId::Navaja
+            || activeWeapon == WeaponId::Stiletto || activeWeapon == WeaponId::Talon || activeWeapon == WeaponId::Ursus
+
+activeWeapon != WeaponId::Bayonet && activeWeapon != WeaponId::Bowie && activeWeapon != WeaponId::Butterfly
+            && activeWeapon != WeaponId::Daggers && activeWeapon != WeaponId::Falchion && activeWeapon != WeaponId::Flip
+            && activeWeapon != WeaponId::GhostKnife && activeWeapon != WeaponId::GoldenKnife && activeWeapon != WeaponId::Gut
+            && activeWeapon != WeaponId::Huntsman && activeWeapon != WeaponId::Karambit && activeWeapon != WeaponId::Knife
+            && activeWeapon != WeaponId::KnifeT && activeWeapon != WeaponId::M9Bayonet && activeWeapon != WeaponId::Navaja
+            && activeWeapon != WeaponId::Stiletto && activeWeapon != WeaponId::Talon && activeWeapon != WeaponId::Ursus
+            && activeWeapon != WeaponId::Elite && activeWeaponClassId != ClassId::C4
+
+oldxyzcode reference
+
+if (!localPlayer){return;};
+//
+int weaponType = 0;
+const auto activeWeaponClassId = localPlayer->getActiveWeapon()->getClientClass()->classId;
+const auto sv_minSpecCvar = interfaces->cvar->findVar("sv_competitive_minspec");
+const auto viewmodel_offset_x = interfaces->cvar->findVar("viewmodel_offset_x");
+const auto viewmodel_offset_y = interfaces->cvar->findVar("viewmodel_offset_y");
+const auto viewmodel_offset_z = interfaces->cvar->findVar("viewmodel_offset_z");
+const auto cl_righthand_cvar = interfaces->cvar->findVar("cl_righthand");
+//
+if (config->visuals.viewmodel_xyz && localPlayer) {
+    //////
+    if (activeWeaponClassId == ClassId::C4)     { weaponType = 1; };
+    if (activeWeaponClassId == ClassId::Elite)  { weaponType = 2; };
+    if (activeWeaponClassId == ClassId::Knife)  { weaponType = 3; };
+    //
+    if (sv_minSpecCvar != 0) sv_minSpecCvar->setValue(0);
+    //
+             //c4
+    if (weaponType == 1) {
+        if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+        if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+        if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+    };
+
+            //Elite
+    if (weaponType == 2) {
+        if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+        if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+        if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+    };
+
+            //Knife
+    if (weaponType == 3) {
+        int viewmodel_x_knife = 0; int viewmodel_y_knife = 0; int viewmodel_z_knife = 0; bool righthand = 0;
+        cl_righthand_cvar->setValue(righthand);
+        if (righthand != config->visuals.viewmodel_xyz_clrightknife) { cl_righthand_cvar->setValue(config->visuals.viewmodel_xyz_clrightknife); };
+        viewmodel_offset_x->setValue(viewmodel_x_knife);
+        viewmodel_offset_y->setValue(viewmodel_y_knife);
+        viewmodel_offset_z->setValue(viewmodel_z_knife);
+        if (viewmodel_x_knife != config->visuals.viewmodel_x_knife) { viewmodel_offset_x->setValue(config->visuals.viewmodel_x_knife); };
+        if (viewmodel_y_knife != config->visuals.viewmodel_y_knife) { viewmodel_offset_y->setValue(config->visuals.viewmodel_y_knife); };
+        if (viewmodel_z_knife != config->visuals.viewmodel_z_knife) { viewmodel_offset_z->setValue(config->visuals.viewmodel_z_knife); };
+    };
+
+    ///////////////////////////////////////////////////////////////////
+            //c4               //Knife              //Elite
+    if ((weaponType != 1) && (weaponType != 2) && (weaponType != 3)) {
+        int viewmodel_x = 0; int viewmodel_y = 0; int viewmodel_z = 0; bool minspec = 0; bool righthand = 0;
+        sv_minSpecCvar->setValue(minspec); if (minspec != 0) sv_minSpecCvar->setValue(0);
+        cl_righthand_cvar->setValue(righthand);
+        if (righthand != config->visuals.viewmodel_xyz_clrightguns)
+            cl_righthand_cvar->setValue(config->visuals.viewmodel_xyz_clrightguns);
+        viewmodel_offset_x->setValue(viewmodel_x);
+        viewmodel_offset_y->setValue(viewmodel_y);
+        viewmodel_offset_z->setValue(viewmodel_z);
+        if (viewmodel_x != config->visuals.viewmodel_x)
+            viewmodel_offset_x->setValue(config->visuals.viewmodel_x);
+        if (viewmodel_y != config->visuals.viewmodel_y)
+            viewmodel_offset_y->setValue(config->visuals.viewmodel_y);
+        if (viewmodel_z != config->visuals.viewmodel_z)
+            viewmodel_offset_z->setValue(config->visuals.viewmodel_z);
+    };
+};
+if (!config->visuals.viewmodel_xyz) {
+    if (viewmodel_offset_x != 0) { viewmodel_offset_x->setValue(0); };
+    if (viewmodel_offset_y != 0) { viewmodel_offset_y->setValue(0); };
+    if (viewmodel_offset_z != 0) { viewmodel_offset_z->setValue(0); };
+    bool minspec = 1; sv_minSpecCvar->setValue(minspec);
+    if (minspec != 1) sv_minSpecCvar->setValue(1);
+    bool righthand = 1; cl_righthand_cvar->setValue(righthand);
+    if (righthand != 1) cl_righthand_cvar->setValue(1);
+};
+
+*/

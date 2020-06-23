@@ -183,6 +183,7 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     Misc::quickHealthshot(cmd);
     Misc::fixTabletSignal();
     Misc::slowwalk(cmd);
+    Visuals::ViewmodelXYZ();
     
     Backtrack::UpdateIncomingSequences();
     

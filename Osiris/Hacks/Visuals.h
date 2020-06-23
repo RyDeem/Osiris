@@ -28,4 +28,5 @@ namespace Visuals {
     void indicators() noexcept;
 	void bulletBeams(GameEvent* event = nullptr) noexcept;
     void fullBright() noexcept;
+    void ViewmodelXYZ() noexcept;
 }
