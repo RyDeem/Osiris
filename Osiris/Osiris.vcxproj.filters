@@ -24,6 +24,12 @@
     <Filter Include="json">
       <UniqueIdentifier>{a5ac10c7-4d96-4bca-80b2-b5e98f0d672a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MinHook">
+      <UniqueIdentifier>{d845b8dc-ce6b-48c5-b78d-1003a5a857e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hooks">
+      <UniqueIdentifier>{8899dcd1-0468-4bfa-b60d-c2af1c97a39e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUI.cpp">
