@@ -184,11 +184,11 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     Misc::fixTabletSignal();
     Misc::slowwalk(cmd);
     Visuals::ViewmodelXYZ();
-    
+
     Backtrack::UpdateIncomingSequences();
-    
+
     static void* oldPointer = nullptr;
-    
+
     auto network = interfaces->engine->getNetworkChannel();
     if (oldPointer != network && network)
     {
@@ -198,7 +198,7 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
         hooks->networkChannel.hookAt(46, SendDatagram);
         Backtrack::UpdateIncomingSequences(true);
     }
-    
+
     EnginePrediction::run(cmd);
 
     Aimbot::run(cmd);
@@ -211,7 +211,7 @@ static bool __stdcall createMove(float inputSampleTime, UserCmd* cmd) noexcept
     config->globals.serverTime = memory->globalVars->serverTime();
     config->globals.chokedPackets = interfaces->engine->getNetworkChannel()->chokedPackets;
     config->globals.tickRate = static_cast<int>(memory->globalVars->intervalPerTick);
-    
+
     if (!(cmd->buttons & (UserCmd::IN_ATTACK | UserCmd::IN_ATTACK2)) || config->misc.fakeLagSelectedFlags[0])
         if (config->misc.fakeLagKey == 0 || GetAsyncKeyState(config->misc.fakeLagKey))
             Misc::chokePackets(sendPacket, cmd);
@@ -397,6 +397,19 @@ static void __stdcall emitSound(SoundData data) noexcept
 
 static bool __stdcall shouldDrawFog() noexcept
 {
+    if constexpr (std::is_same_v<HookType, MinHook>) {
+#ifdef _DEBUG
+    // Check if we always get the same return address
+    if (*static_cast<std::uint32_t*>(_ReturnAddress()) == 0x6274C084) {
+        static const auto returnAddress = std::uintptr_t(_ReturnAddress());
+        assert(returnAddress == std::uintptr_t(_ReturnAddress()));
+    }
+#endif
+
+    if (*static_cast<std::uint32_t*>(_ReturnAddress()) != 0x6274C084)
+        return hooks->clientMode.callOriginal<bool, 17>();
+    }
+
     return !config->visuals.noFog;
 }
 
@@ -438,8 +451,6 @@ static bool __stdcall fireEventClientSide(GameEvent* event) noexcept
     if (event) {
         switch (fnv::hashRuntime(event->getName())) {
         case fnv::hash("player_death"):
-            Misc::killMessage(*event);
-            Misc::killSound(*event);
             SkinChanger::overrideHudIcon(*event);
             break;
         case fnv::hash("player_hurt"):
