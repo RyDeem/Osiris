@@ -87,8 +87,6 @@ public:
         bool ignoreSmoke{ false };
         bool recoilBasedFov{ false };
         int timeLimit{ 200 };
-        bool fakeLatency{ false };
-        int fakeLatencyAmmount{ 0 };
     } backtrack;
 
     struct {
@@ -319,14 +317,6 @@ public:
         bool fixTabletSignal{ false };
         float maxAngleDelta{ 255.0f };
         bool fakePrime{ false };
-        bool svpurebypass{ false };
-        bool autoZeus{ false };
-        bool autoZeusBaimOnly{ false };
-        int autoZeusMaxPenDist{ 0 };
-        bool fakeDuck{ false };
-        int fakeDuckKey{ 0 };
-        bool fakeDucking{ false };
-        int fakeDuckShotState{ 0 };
         int killSound{ 0 };
         std::string customKillSound;
         std::string customHitSound;

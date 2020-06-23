@@ -519,10 +519,6 @@ void GUI::renderBacktrackWindow(bool contentOnly) noexcept
     ImGui::PushItemWidth(220.0f);
     ImGui::SliderInt("Time limit", &config->backtrack.timeLimit, 1, 200, "%d ms");
     ImGui::PopItemWidth();
-    ImGui::Checkbox("Enabled Fake Latency", &config->backtrack.fakeLatency);
-    ImGui::PushItemWidth(220.0f);
-    ImGui::SliderInt("Latency Amount", &config->backtrack.fakeLatencyAmmount, 0, 200, "%d ms");
-    ImGui::PopItemWidth();
     if (!contentOnly)
         ImGui::End();
 }
@@ -580,7 +576,7 @@ void GUI::renderGlowWindow(bool contentOnly) noexcept
     ImGui::NextColumn();
     ImGui::SetNextItemWidth(100.0f);
     ImGui::Combo("Style", &config->glow[currentItem].style, "Default\0Rim3d\0Edge\0Edge Pulse\0");
-   
+
     ImGui::Columns(1);
     if (!contentOnly)
         ImGui::End();
@@ -1052,7 +1048,7 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGuiCustom::MultiCombo("", config->visuals.indicators, config->visuals.selectedIndicators, 4);
     ImGui::PopID();
     ImGuiCustom::colorPicker("Bullet Tracers", config->visuals.bulletTracers);
-    
+
     ImGui::Checkbox("Color correction", &config->visuals.colorCorrection.enabled);
     ImGui::SameLine();
     bool ccPopup = ImGui::Button("Edit");
@@ -1258,7 +1254,7 @@ void GUI::renderStyleWindow(bool contentOnly) noexcept
     }
 
     if (config->style.menuStyle == 0){
-        if (!config->wpos.LockSelectedFlags[10]) 
+        if (!config->wpos.LockSelectedFlags[10])
         {
             if (config->wpos.StyleX != ImGui::GetWindowPos().x) { config->wpos.StyleX = ImGui::GetWindowPos().x; }
             if (config->wpos.StyleY != ImGui::GetWindowPos().y) { config->wpos.StyleY = ImGui::GetWindowPos().y; }
@@ -1442,18 +1438,6 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::SetNextItemWidth(120.0f);
     ImGui::SliderFloat("Max angle delta", &config->misc.maxAngleDelta, 0.0f, 255.0f, "%.2f");
     ImGui::Checkbox("Fake prime", &config->misc.fakePrime);
-    ImGui::Checkbox("Sv pure bypass", &config->misc.svpurebypass);
-    ImGui::Checkbox("Zeusbot", &config->misc.autoZeus);
-    if (config->misc.autoZeus)
-    {
-        ImGui::SetNextItemWidth(120.0f);
-        ImGui::SliderInt("Zeus Max Wall Penetration Distance", &config->misc.autoZeusMaxPenDist, 0, 50);
-        config->misc.autoZeusMaxPenDist = std::clamp(config->misc.autoZeusMaxPenDist, 0, 50);
-        ImGui::Checkbox("Zeusbot BAIM Only", &config->misc.autoZeusBaimOnly);
-    }
-    ImGui::Checkbox("Fakeduck", &config->misc.fakeDuck);
-    ImGui::SameLine();
-    hotkey(config->misc.fakeDuckKey);
     ImGui::Checkbox("Purchase List", &config->misc.purchaseList.enabled);
     ImGui::SameLine();
 
@@ -1646,7 +1630,7 @@ void GUI::renderGuiStyle2() noexcept
     } else {
         ImGui::Begin("Osiris", nullptr, windowFlags | ImGuiWindowFlags_NoTitleBar);
     }
-    
+
         if (!config->wpos.LockSelectedFlags[14]) {
             if (config->wpos.Style2X != ImGui::GetWindowPos().x) { config->wpos.Style2X = ImGui::GetWindowPos().x; }
             if (config->wpos.Style2Y != ImGui::GetWindowPos().y) { config->wpos.Style2Y = ImGui::GetWindowPos().y; }
