@@ -92,6 +92,7 @@ public:
     struct {
         struct {
             bool enabled{ false };
+            int menuType{ 0 };
             int yawInverseAngleKey{ 0 };
             int yawInverseKeyMode{ 0 };
             bool yawInversed{ false };

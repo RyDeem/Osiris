@@ -261,33 +261,45 @@ void GUI::renderAntiAimWindow(bool contentOnly) noexcept
         ImGui::SetNextWindowSize({ 0.0f, 0.0f });
         ImGui::Begin("Anti aim", &window.antiAim, windowFlags);
     }
+
     ImGui::Checkbox("Enabled", &config->antiAim.general.enabled);
+
     if (config->antiAim.general.enabled)
     {
         ImGui::Text("Invert Key");
         ImGui::SameLine();
         hotkey(config->antiAim.general.yawInverseAngleKey);
         ImGui::SameLine();
-        ImGui::PushID(1);
+        ImGui::PushID("InvertKeyMode");
         ImGui::SetNextItemWidth(75.0f);
         ImGui::Combo("", &config->antiAim.general.yawInverseKeyMode, "Hold\0Toggle\0");
         ImGui::PopID();
+
         ImGui::Checkbox("Fakewalk", &config->antiAim.general.fakeWalk.enabled);
         if (config->antiAim.general.fakeWalk.enabled) {
             ImGui::SameLine();
             hotkey(config->antiAim.general.fakeWalk.key);
             ImGui::SameLine();
-            ImGui::PushID(2);
+            ImGui::PushID("fakewalkKeyMode");
             ImGui::SetNextItemWidth(75.0f);
             ImGui::Combo("", &config->antiAim.general.fakeWalk.keyMode, "Hold\0Toggle\0");
             ImGui::PopID();
             ImGui::SetNextItemWidth(240.0f);
             ImGui::SliderInt("Speed", &config->antiAim.general.fakeWalk.maxChoke, 3, 15);
         }
-        ImGui::Text("Standing");
-        ImGui::Checkbox("Standing Enabled", &config->antiAim.standing.enabled);
-        if (config->antiAim.standing.enabled)
-        {
+
+        ImGui::PushID("menuTypeSelect");
+        ImGui::Combo("", &config->antiAim.general.menuType, "Standing\0Moving\0In Air\0");
+        ImGui::PopID();
+        ImGui::SameLine();
+        ImGui::Text("Menu Type");
+
+        if (config->antiAim.general.menuType == 0) {
+            
+            ImGui::PushID("Standing Enabled");
+            ImGui::Checkbox("Enabled", &config->antiAim.standing.enabled);
+            ImGui::PopID();
+
             ImGui::Checkbox("Standing Pitch", &config->antiAim.standing.pitch.enabled);
             if (config->antiAim.standing.pitch.enabled) {
                 ImGui::SameLine();
@@ -337,10 +349,12 @@ void GUI::renderAntiAimWindow(bool contentOnly) noexcept
                 }
             }
         }
-        ImGui::Text("Moving");
-        ImGui::Checkbox("Moving Enabled", &config->antiAim.moving.enabled);
-        if (config->antiAim.moving.enabled)
-        {
+        if (config->antiAim.general.menuType == 1) {
+
+            ImGui::PushID("Moving Enabled");
+            ImGui::Checkbox("Enabled", &config->antiAim.moving.enabled);
+            ImGui::PopID();
+
             ImGui::Checkbox("Moving Pitch", &config->antiAim.moving.pitch.enabled);
             if (config->antiAim.moving.pitch.enabled) {
                 ImGui::SameLine();
@@ -390,10 +404,12 @@ void GUI::renderAntiAimWindow(bool contentOnly) noexcept
                 }
             }
         }
-        ImGui::Text("In Air");
-        ImGui::Checkbox("In Air Enabled", &config->antiAim.inAir.enabled);
-        if (config->antiAim.inAir.enabled)
-        {
+        if (config->antiAim.general.menuType == 2){
+
+            ImGui::PushID("In Air Enabled");
+            ImGui::Checkbox("Enabled", &config->antiAim.inAir.enabled);
+            ImGui::PopID();
+
             ImGui::Checkbox("In Air Pitch", &config->antiAim.inAir.pitch.enabled);
             if (config->antiAim.inAir.pitch.enabled) {
                 ImGui::SameLine();
