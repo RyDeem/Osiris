@@ -757,15 +757,13 @@ void Misc::jumpbug(UserCmd* cmd) noexcept {
         return;
 
     bool bhopWasEnabled = false;
+    bool JumpDone;
+
     auto unduck = true;
 
-    bool bDidJump;
-
-    const auto plocalPlayer = localPlayer.get();
-
-    float max_radias = M_PI * 2;
-    float step = max_radias / 128;
-    float xThick = 23;
+    float max_radius = M_PI * 2;
+    float step = max_radius / 128;
+    float xThickness = 23;
 
     if (GetAsyncKeyState(config->misc.jumpbugkey) && (localPlayer->flags() & 1)) {
 
@@ -773,72 +771,71 @@ void Misc::jumpbug(UserCmd* cmd) noexcept {
             config->misc.bunnyHop = false;
             bhopWasEnabled = true;
         }
-
         if (unduck) {
-            bDidJump = false;
+            JumpDone = false;
             cmd->buttons &= ~UserCmd::IN_DUCK;
             unduck = false;
         }
         Vector pos = localPlayer->origin();
-        for (float a = 0.f; a < max_radias; a += step) {
+        for (float a = 0.f; a < max_radius; a += step) {
             Vector pt;
-            pt.x = (xThick * cos(a)) + pos.x;
-            pt.y = (xThick * sin(a)) + pos.y;
+            pt.x = (xThickness * cos(a)) + pos.x;
+            pt.y = (xThickness * sin(a)) + pos.y;
             pt.z = pos.z;
 
             Vector pt2 = pt;
             pt2.z -= 6;
 
-            Trace fag;
+            Trace target;
 
-            TraceFilter flt = plocalPlayer;
+            TraceFilter flt = localPlayer.get();
 
-            interfaces->engineTrace->traceRay({ pt, pt2 }, 0x1400B, flt, fag);
+            interfaces->engineTrace->traceRay({ pt, pt2 }, 0x1400B, flt, target);
 
-            if (fag.fraction != 1.0f && fag.fraction != 0.0f) {
-                bDidJump = true;
+            if (target.fraction != 1.0f && target.fraction != 0.0f) {
+                JumpDone = true;
                 cmd->buttons |= UserCmd::IN_DUCK;
                 cmd->buttons &= ~UserCmd::IN_JUMP;
                 unduck = true;
             }
         }
-        for (float a = 0.f; a < max_radias; a += step) {
+        for (float a = 0.f; a < max_radius; a += step) {
             Vector pt;
-            pt.x = ((xThick - 2.f) * cos(a)) + pos.x;
-            pt.y = ((xThick - 2.f) * sin(a)) + pos.y;
+            pt.x = ((xThickness - 2.f) * cos(a)) + pos.x;
+            pt.y = ((xThickness - 2.f) * sin(a)) + pos.y;
             pt.z = pos.z;
 
             Vector pt2 = pt;
             pt2.z -= 6;
 
-            Trace fag;
+            Trace target;
 
-            TraceFilter flt = plocalPlayer;
-            interfaces->engineTrace->traceRay({ pt, pt2 }, 0x1400B, flt, fag);
+            TraceFilter flt = localPlayer.get();
+            interfaces->engineTrace->traceRay({ pt, pt2 }, 0x1400B, flt, target);
 
-            if (fag.fraction != 1.f && fag.fraction != 0.f) {
-                bDidJump = true;
+            if (target.fraction != 1.f && target.fraction != 0.f) {
+                JumpDone = true;
                 cmd->buttons |= UserCmd::IN_DUCK;
                 cmd->buttons &= ~UserCmd::IN_JUMP;
                 unduck = true;
             }
         }
-        for (float a = 0.f; a < max_radias; a += step) {
+        for (float a = 0.f; a < max_radius; a += step) {
             Vector pt;
-            pt.x = ((xThick - 20.f) * cos(a)) + pos.x;
-            pt.y = ((xThick - 20.f) * sin(a)) + pos.y;
+            pt.x = ((xThickness - 20.f) * cos(a)) + pos.x;
+            pt.y = ((xThickness - 20.f) * sin(a)) + pos.y;
             pt.z = pos.z;
 
             Vector pt2 = pt;
             pt2.z -= 6;
 
-            Trace fag;
+            Trace target;
 
-            TraceFilter flt = plocalPlayer;
-            interfaces->engineTrace->traceRay({ pt, pt2 }, 0x1400B, flt, fag);
+            TraceFilter flt = localPlayer.get();
+            interfaces->engineTrace->traceRay({ pt, pt2 }, 0x1400B, flt, target);
 
-            if (fag.fraction != 1.f && fag.fraction != 0.f) {
-                bDidJump = true;
+            if (target.fraction != 1.f && target.fraction != 0.f) {
+                JumpDone = true;
                 cmd->buttons |= UserCmd::IN_DUCK;
                 cmd->buttons &= ~UserCmd::IN_JUMP;
                 unduck = true;
