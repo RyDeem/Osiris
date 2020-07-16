@@ -412,6 +412,6 @@ void Visuals::fullBright() noexcept
     const bool PlayerConnected = interfaces->entityList->getEntity(interfaces->engine->isConnected());
     if (!PlayerConnected)
         return;
-    if (interfaces->cvar->findVar("mat_fullbright")->getInt() != config->visuals.fullBright)
+    if (interfaces->cvar->findVar("mat_fullbright")->getInt() != static_cast<int>(config->visuals.fullBright))
         interfaces->cvar->findVar("mat_fullbright")->setValue(config->visuals.fullBright ? true : false);
 };
