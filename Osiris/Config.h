@@ -297,7 +297,6 @@ public:
         bool revealRanks{ false };
         bool revealMoney{ false };
         bool revealSuspect{ false };
-        //ColorToggle spectatorList;
         bool spectatorList{ false };
         ColorToggle watermark;
         bool fixAnimationLOD{ false };
