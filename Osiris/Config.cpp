@@ -486,7 +486,7 @@ static void from_json(const json& j, Config::Misc& m)
     read<value_t::boolean>(j, "Reveal ranks", m.revealRanks);
     read<value_t::boolean>(j, "Reveal money", m.revealMoney);
     read<value_t::boolean>(j, "Reveal suspect", m.revealSuspect);
-    //  read<value_t::object>(j, "Spectator list", m.spectatorList);
+    read<value_t::boolean>(j, "Spectator list", m.spectatorList);
     //  read<value_t::object>(j, "Watermark", m.watermark);
     read<value_t::boolean>(j, "Fix animation LOD", m.fixAnimationLOD);
     read<value_t::boolean>(j, "Fix bone matrix", m.fixBoneMatrix);
@@ -909,8 +909,7 @@ static void to_json(json& j, const Config::Misc& o)
     WRITE("Reveal ranks", revealRanks);
     WRITE("Reveal money", revealMoney);
     WRITE("Reveal suspect", revealSuspect);
-
-    //  WRITE("Spectator list", spectatorList);
+    WRITE("Spectator list", spectatorList);
     //  WRITE("Watermark", watermark);
     WRITE("Fix animation LOD", fixAnimationLOD);
     WRITE("Fix bone matrix", fixBoneMatrix);

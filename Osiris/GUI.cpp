@@ -1165,7 +1165,7 @@ void GUI::renderMiscWindow(bool contentOnly) noexcept
     ImGui::Checkbox("Reveal ranks", &config->misc.revealRanks);
     ImGui::Checkbox("Reveal money", &config->misc.revealMoney);
     ImGui::Checkbox("Reveal suspect", &config->misc.revealSuspect);
-    ImGuiCustom::colorPicker("Spectator list", config->misc.spectatorList);
+    ImGui::Checkbox("Spectator list", &config->misc.spectatorList);
     ImGuiCustom::colorPicker("Watermark", config->misc.watermark);
     ImGui::Checkbox("Fix animation LOD", &config->misc.fixAnimationLOD);
     ImGui::Checkbox("Fix bone matrix", &config->misc.fixBoneMatrix);
