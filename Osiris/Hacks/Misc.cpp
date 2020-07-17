@@ -126,7 +126,7 @@ void Misc::spectatorList() noexcept
     ImGui::PopStyleVar();
     for (int i = 1; i <= interfaces->engine->getMaxClients(); ++i) {
         const auto entity = interfaces->entityList->getEntity(i);
-        if (!entity || entity->isDormant() || entity->isAlive() /*|| entity->getObserverTarget() != localPlayer.get()*/)
+        if (!entity || entity->isDormant() || entity->isAlive() || entity->getObserverTarget() != localPlayer.get())
             continue;
         PlayerInfo playerInfo;
         if (!interfaces->engine->getPlayerInfo(i, playerInfo))
