@@ -52,7 +52,7 @@ void Visuals::playerModel(FrameStage stage) noexcept
         "models/player/custom_player/legacy/tm_phoenix_variantf.mdl",
         "models/player/custom_player/legacy/tm_phoenix_variantg.mdl",
         "models/player/custom_player/legacy/tm_phoenix_varianth.mdl",
-        
+
         "models/player/custom_player/legacy/tm_pirate.mdl",
         "models/player/custom_player/legacy/tm_pirate_varianta.mdl",
         "models/player/custom_player/legacy/tm_pirate_variantb.mdl",
@@ -316,7 +316,7 @@ void Visuals::hitEffect(GameEvent* event) noexcept
                 return effects[config->visuals.hitEffect - 2];
             };
 
-           
+
             auto material = interfaces->materialSystem->findMaterial(getEffectMaterial());
             if (config->visuals.hitEffect == 1)
                 material->findVar("$c0_x")->setValue(0.0f);
@@ -408,7 +408,7 @@ void Visuals::skybox(FrameStage stage) noexcept
 }
 
 void Visuals::viewmodelxyz() noexcept
-{   
+{
     if (!localPlayer) return;
 
     static std::array<ConVar*, 3> viewmodel_pos{ interfaces->cvar->findVar("viewmodel_offset_x"), interfaces->cvar->findVar("viewmodel_offset_y"), interfaces->cvar->findVar("viewmodel_offset_z") };
@@ -504,4 +504,13 @@ void Visuals::viewmodelxyz() noexcept
             if (cl_righthand->getInt() != 1)cl_righthand->setValue(1);
         }
     }
+}
+
+void Visuals::fullBright() noexcept
+{
+    const bool PlayerConnected = interfaces->entityList->getEntity(interfaces->engine->isConnected());
+    if (!PlayerConnected)
+        return;
+    if (interfaces->cvar->findVar("mat_fullbright")->getInt() != static_cast<int>(config->visuals.fullBright))
+        interfaces->cvar->findVar("mat_fullbright")->setValue(config->visuals.fullBright ? true : false);
 }

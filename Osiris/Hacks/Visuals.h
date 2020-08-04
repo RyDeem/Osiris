@@ -26,4 +26,5 @@ namespace Visuals
     bool removeWeapons(const char* modelName) noexcept;
     void skybox(FrameStage stage) noexcept;
     void viewmodelxyz() noexcept;
+    void fullBright() noexcept;
 }
