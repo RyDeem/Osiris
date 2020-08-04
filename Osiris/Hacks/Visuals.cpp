@@ -406,3 +406,102 @@ void Visuals::skybox(FrameStage stage) noexcept
         memory->loadSky(sv_skyname->string);
     }
 }
+
+void Visuals::viewmodelxyz() noexcept
+{   
+    if (!localPlayer) return;
+
+    static std::array<ConVar*, 3> viewmodel_pos{ interfaces->cvar->findVar("viewmodel_offset_x"), interfaces->cvar->findVar("viewmodel_offset_y"), interfaces->cvar->findVar("viewmodel_offset_z") };
+    static ConVar* cl_righthand = interfaces->cvar->findVar("cl_righthand");
+    static ConVar* sv_minspec = interfaces->cvar->findVar("sv_competitive_minspec");
+
+    const std::array<float, 3> config_guns{ config->visuals.viewmodelXYZ.x_guns, config->visuals.viewmodelXYZ.y_guns, config->visuals.viewmodelXYZ.z_guns, };
+    const bool handSwitchGuns = config->visuals.viewmodelXYZ.clright_guns;
+    const std::array<float, 3> config_knife{ config->visuals.viewmodelXYZ.x_knife, config->visuals.viewmodelXYZ.y_knife, config->visuals.viewmodelXYZ.z_knife, };
+    const bool handSwitchKnife = config->visuals.viewmodelXYZ.clright_knife;
+    const std::array<float, 3> config_grenades{ config->visuals.viewmodelXYZ.x_grenades, config->visuals.viewmodelXYZ.y_grenades, config->visuals.viewmodelXYZ.z_grenades, };
+    const bool handSwitchNade = config->visuals.viewmodelXYZ.clright_grenades;
+    const std::array<float, 3> config_pistols{ config->visuals.viewmodelXYZ.x_pistols, config->visuals.viewmodelXYZ.y_pistols, config->visuals.viewmodelXYZ.z_pistols, };
+    const bool handSwitchPistol = config->visuals.viewmodelXYZ.clright_pistols;
+    const std::array<float, 3> config_dangermisc{ config->visuals.viewmodelXYZ.x_dangermisc, config->visuals.viewmodelXYZ.y_dangermisc, config->visuals.viewmodelXYZ.z_dangermisc, };
+    const bool handSwitchMisc = config->visuals.viewmodelXYZ.clright_dangermisc;
+
+    auto activeWeapon = localPlayer->getActiveWeapon();
+    if (!localPlayer->isAlive()) {
+        if (!localPlayer->getObserverTarget())
+            return;
+        if (localPlayer->getObserverMode() != ObsMode::InEye)
+            return;
+        activeWeapon = localPlayer->getObserverTarget()->getActiveWeapon();
+    }
+    const auto classid = activeWeapon->getClientClass()->classId;
+    const auto weaponClass = getWeaponClass(activeWeapon->itemDefinitionIndex2());
+    const auto weaponIndex2 = getWeaponIndex(activeWeapon->itemDefinitionIndex2());
+
+    if (!config->visuals.viewmodelXYZ.enabled) {
+        if (sv_minspec->getInt() != 1)sv_minspec->setValue(1);
+
+        if (viewmodel_pos[0]->getFloat() != 0)viewmodel_pos[0]->setValue(0);
+        if (viewmodel_pos[1]->getFloat() != 0)viewmodel_pos[1]->setValue(0);
+        if (viewmodel_pos[2]->getFloat() != 0)viewmodel_pos[2]->setValue(0);
+        if (cl_righthand->getInt() != 1)cl_righthand->setValue(1);
+    } else {
+
+        *(int*)((DWORD)&sv_minspec->onChangeCallbacks + 0xC) = 0;
+        if (sv_minspec->getInt() != 0)sv_minspec->setValue(0);
+
+        if (classid != ClassId::Knife  // other equipables not covered by the previous if's (guns in gui)
+            && weaponClass != 48
+            && weaponIndex2 != 4
+            && weaponClass != 35
+          /*&& weaponClass != 46
+            && weaponClass != 47*/ ) {
+            if (viewmodel_pos[0]->getFloat() != config_guns[0])viewmodel_pos[0]->setValue(config_guns[0]);
+            if (viewmodel_pos[1]->getFloat() != config_guns[1])viewmodel_pos[1]->setValue(config_guns[1]);
+            if (viewmodel_pos[2]->getFloat() != config_guns[2])viewmodel_pos[2]->setValue(config_guns[2]);
+            if (cl_righthand->getInt() != static_cast<int>(handSwitchGuns))cl_righthand->setValue(handSwitchGuns);
+        }
+
+        if (classid == ClassId::Knife) { //knife
+            if (viewmodel_pos[0]->getFloat() != config_knife[0])viewmodel_pos[0]->setValue(config_knife[0]);
+            if (viewmodel_pos[1]->getFloat() != config_knife[1])viewmodel_pos[1]->setValue(config_knife[1]);
+            if (viewmodel_pos[2]->getFloat() != config_knife[2])viewmodel_pos[2]->setValue(config_knife[2]);
+            if (cl_righthand->getInt() != static_cast<int>(handSwitchKnife))cl_righthand->setValue(handSwitchKnife);
+        }
+
+        //if (weaponClass == 46) { //grenades
+        //    if (viewmodel_pos[0]->getFloat() != config_grenades[0])viewmodel_pos[0]->setValue(config_grenades[0]);
+        //    if (viewmodel_pos[1]->getFloat() != config_grenades[1])viewmodel_pos[1]->setValue(config_grenades[1]);
+        //    if (viewmodel_pos[2]->getFloat() != config_grenades[2])viewmodel_pos[2]->setValue(config_grenades[2]);
+        //    if (cl_righthand->getInt() != static_cast<int>(handSwitchNade))cl_righthand->setValue(handSwitchNade);
+        //}
+
+        if (weaponClass == 35 && weaponIndex2 != 4) { //pistols
+            if (viewmodel_pos[0]->getFloat() != config_pistols[0])viewmodel_pos[0]->setValue(config_pistols[0]);
+            if (viewmodel_pos[1]->getFloat() != config_pistols[1])viewmodel_pos[1]->setValue(config_pistols[1]);
+            if (viewmodel_pos[2]->getFloat() != config_pistols[2])viewmodel_pos[2]->setValue(config_pistols[2]);
+            if (cl_righthand->getInt() != static_cast<int>(handSwitchPistol))cl_righthand->setValue(handSwitchPistol);
+        }
+
+        //if (weaponClass == 47) { //misc and dangerzone
+        //    if (viewmodel_pos[0]->getFloat() != config_dangermisc[0])viewmodel_pos[0]->setValue(config_dangermisc[0]);
+        //    if (viewmodel_pos[1]->getFloat() != config_dangermisc[1])viewmodel_pos[1]->setValue(config_dangermisc[1]);
+        //    if (viewmodel_pos[2]->getFloat() != config_dangermisc[2])viewmodel_pos[2]->setValue(config_dangermisc[2]);
+        //    if (cl_righthand->getInt() != static_cast<int>(handSwitchMisc))cl_righthand->setValue(handSwitchMisc);
+        //}
+
+        if (weaponIndex2 == 4) { //elite
+            if (viewmodel_pos[0]->getFloat() != 0)viewmodel_pos[0]->setValue(0);
+            if (viewmodel_pos[1]->getFloat() != 0)viewmodel_pos[1]->setValue(0);
+            if (viewmodel_pos[2]->getFloat() != 0)viewmodel_pos[2]->setValue(0);
+            if (cl_righthand->getInt() != 1)cl_righthand->setValue(1);
+        }
+
+        if (classid == ClassId::C4) { //c4
+            if (viewmodel_pos[0]->getFloat() != 0)viewmodel_pos[0]->setValue(0);
+            if (viewmodel_pos[1]->getFloat() != 0)viewmodel_pos[1]->setValue(0);
+            if (viewmodel_pos[2]->getFloat() != 0)viewmodel_pos[2]->setValue(0);
+            if (cl_righthand->getInt() != 1)cl_righthand->setValue(1);
+        }
+    }
+}

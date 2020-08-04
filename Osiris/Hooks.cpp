@@ -260,6 +260,7 @@ static void __stdcall frameStageNotify(FrameStage stage) noexcept
         Misc::disablePanoramablur();
         Visuals::colorWorld();
         Misc::fakePrime();
+        Visuals::viewmodelxyz();
     }
     if (interfaces->engine->isInGame()) {
         Visuals::skybox(stage);
@@ -607,6 +608,16 @@ static DWORD WINAPI unload(HMODULE module) noexcept
 
 void Hooks::uninstall() noexcept
 {
+    if (config->visuals.viewmodelXYZ.enabled == true) {
+        config->visuals.viewmodelXYZ.enabled = false; Sleep(20);
+        interfaces->cvar->findVar("viewmodel_offset_x")->setValue(0); Sleep(20);
+        interfaces->cvar->findVar("viewmodel_offset_y")->setValue(0); Sleep(20);
+        interfaces->cvar->findVar("viewmodel_offset_z")->setValue(0); Sleep(20);
+        interfaces->cvar->findVar("cl_righthand")->setValue(1); Sleep(20);
+        interfaces->cvar->findVar("sv_competitive_minspec")->setValue(1); Sleep(20);
+        
+    }
+
     if constexpr (std::is_same_v<HookType, MinHook>) {
         MH_DisableHook(MH_ALL_HOOKS);
         MH_Uninitialize();

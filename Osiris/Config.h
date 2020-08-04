@@ -168,6 +168,31 @@ public:
         int playerModelT{ 0 };
         int playerModelCT{ 0 };
 
+        struct ViewmodelXYZ {
+            bool enabled{ false };
+            int menuType{ 0 };
+            bool clright_guns{ true };
+            float x_guns{ 0.0f };
+            float y_guns{ 0.0f };
+            float z_guns{ 0.0f };
+            bool clright_knife{ true };
+            float x_knife{ 0.0f };
+            float y_knife{ 0.0f };
+            float z_knife{ 0.0f };
+            bool clright_grenades{ true };
+            float x_grenades{ 0.0f };
+            float y_grenades{ 0.0f };
+            float z_grenades{ 0.0f };
+            bool clright_dangermisc{ true };
+            float x_dangermisc{ 0.0f };
+            float y_dangermisc{ 0.0f };
+            float z_dangermisc{ 0.0f };
+            bool clright_pistols{ true };
+            float x_pistols{ 0.0f };
+            float y_pistols{ 0.0f };
+            float z_pistols{ 0.0f };
+        } viewmodelXYZ;
+
         struct ColorCorrection {
             bool enabled = false;
             float blue = 0.0f;
