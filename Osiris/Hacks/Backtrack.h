@@ -48,7 +48,7 @@ namespace Backtrack {
         int inreliablestate;
         int sequencenr;
         float servertime;
-    }
+    };
 
     extern std::deque<IncomingSequence>sequences;
 
