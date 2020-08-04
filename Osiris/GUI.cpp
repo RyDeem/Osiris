@@ -1028,7 +1028,7 @@ void GUI::renderVisualsWindow(bool contentOnly) noexcept
     ImGui::PopID();
     const char* brightnessText = ("placeHolderForBrightnessText");
     if (config->visuals.brightness == 1.0f)   { brightnessText = "mat_fullbright 1"; if (config->visuals.fullBright != true)  config->visuals.fullBright = true; };
-    if (config->visuals.brightness <= 0.999f) { brightnessText = "Brightness: %.2f"; if (config->visuals.fullBright != false) config->visuals.fullBright = false;};
+    if (config->visuals.brightness < 0.999f && config->visuals.brightness != 0.0f) { brightnessText = "Brightness: %.2f"; if (config->visuals.fullBright != false) config->visuals.fullBright = false;};
     if (config->visuals.brightness == 0.0f)   { brightnessText = "Brightness: %.2f (default)"; };
     ImGui::PushID(5);
     ImGui::SliderFloat("", &config->visuals.brightness, 0.0f, 1.0f, brightnessText);

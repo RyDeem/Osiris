@@ -997,7 +997,7 @@ static void to_json(json& j, const Config::Visuals& o)
     WRITE("Far Z", farZ);
     WRITE("Flash reduction", flashReduction);
     WRITE("Brightness", brightness);
-    WRITE("fullBright", fullBright)
+    WRITE("fullBright", fullBright);
     WRITE("Skybox", skybox);
     WRITE("World", world);
     WRITE("Sky", sky);
