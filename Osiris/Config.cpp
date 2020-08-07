@@ -428,7 +428,7 @@ static void from_json(const json& j, Config::Visuals& v)
     read(j, "Far Z", v.farZ);
     read(j, "Flash reduction", v.flashReduction);
     read(j, "Brightness", v.brightness);
-    read(j, "fullBright", v.fullBright);
+    read(j, "FullBright", v.fullBright);
     read(j, "Skybox", v.skybox);
     read<value_t::object>(j, "World", v.world);
     read<value_t::object>(j, "Sky", v.sky);
