@@ -85,6 +85,14 @@ public:
         return getWeaponType() == WeaponType::SniperRifle;
     }
 
+    constexpr auto isFullAuto() noexcept
+    {
+        const auto weaponData = getWeaponData();
+        if (weaponData)
+            return weaponData->fullAuto;
+        return false;
+    }
+
     constexpr auto requiresRecoilControl() noexcept
     {
         const auto weaponData = getWeaponData();
@@ -112,7 +120,7 @@ public:
     Vector getBonePosition(int bone) noexcept
     {
         if (matrix3x4 boneMatrices[256]; setupBones(boneMatrices, 256, 256, 0.0f))
-            return Vector{ boneMatrices[bone][0][3], boneMatrices[bone][1][3], boneMatrices[bone][2][3] };
+            return boneMatrices[bone].origin();
         else
             return Vector{ };
     }
@@ -246,6 +254,7 @@ public:
     NETVAR(lby, "CCSPlayer", "m_flLowerBodyYawTarget", float)
     NETVAR(ragdoll, "CCSPlayer", "m_hRagdoll", int)
     NETVAR(shotsFired, "CCSPlayer", "m_iShotsFired", int)
+    NETVAR(waitForNoAttack, "CCSPlayer", "m_bWaitForNoAttack", bool)
 
     NETVAR(viewModelIndex, "CBaseCombatWeapon", "m_iViewModelIndex", int)
     NETVAR(worldModelIndex, "CBaseCombatWeapon", "m_iWorldModelIndex", int)
