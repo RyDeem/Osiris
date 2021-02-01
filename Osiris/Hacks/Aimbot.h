@@ -9,4 +9,7 @@ namespace Aimbot
     void run(UserCmd*) noexcept;
 
     void updateInput() noexcept;
+
+	void autoStop(UserCmd* cmd) noexcept;
+	void init() noexcept;
 }
