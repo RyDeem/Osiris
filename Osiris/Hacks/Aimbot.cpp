@@ -225,14 +225,15 @@ void Aimbot::run(UserCmd* cmd) noexcept
             
             angle /= config->aimbot[weaponIndex].smooth;
             cmd->viewangles += angle;
+
+			if (config->aimbot[weaponIndex].autoScope && activeWeapon->nextPrimaryAttack() <= memory->globalVars->serverTime() && activeWeapon->isSniperRifle() && !localPlayer->isScoped())
+				cmd->buttons |= UserCmd::IN_ATTACK2;
+
+			if (config->aimbot[weaponIndex].autoStop)
+				autoStop(cmd);
+
             if (!config->aimbot[weaponIndex].silent)
                 interfaces->engine->setViewAngles(cmd->viewangles);
-
-            if (config->aimbot[weaponIndex].autoStop)
-                autoStop(cmd);
-
-            if (config->aimbot[weaponIndex].autoScope && activeWeapon->nextPrimaryAttack() <= memory->globalVars->serverTime() && activeWeapon->isSniperRifle() && !localPlayer->isScoped())
-                cmd->buttons |= UserCmd::IN_ATTACK2;
 
             if (config->aimbot[weaponIndex].autoShot && activeWeapon->nextPrimaryAttack() <= memory->globalVars->serverTime() && !clamped && activeWeapon->getInaccuracy() <= config->aimbot[weaponIndex].maxShotInaccuracy)
                 cmd->buttons |= UserCmd::IN_ATTACK;
@@ -255,6 +256,16 @@ void Aimbot::autoStop(UserCmd* cmd) noexcept
 
     if (localPlayer->moveType() != MoveType::WALK)
         return;
+
+	const auto activeWeapon = localPlayer->getActiveWeapon();
+	if (!activeWeapon || !activeWeapon->clip())
+		return;
+
+	if (activeWeapon->nextPrimaryAttack() > memory->globalVars->serverTime())
+		return;
+
+	if (localPlayer->shotsFired() > 0 && !activeWeapon->isFullAuto())
+		return;
 
     Vector velocity = localPlayer->velocity();
     velocity.z = 0;
