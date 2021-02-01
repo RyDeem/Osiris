@@ -10,6 +10,6 @@ namespace Aimbot
 
     void updateInput() noexcept;
 
-	void autoStop(UserCmd* cmd) noexcept;
-	void init() noexcept;
+    void autoStop(UserCmd* cmd) noexcept;
+    void init() noexcept;
 }
