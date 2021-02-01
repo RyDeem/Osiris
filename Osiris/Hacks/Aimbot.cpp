@@ -3,13 +3,23 @@
 #include "../Interfaces.h"
 #include "../Memory.h"
 #include "../SDK/Entity.h"
+#include "../SDK/ConVar.h" //
 #include "../SDK/UserCmd.h"
 #include "../SDK/Vector.h"
 #include "../SDK/WeaponId.h"
 #include "../SDK/GlobalVars.h"
 #include "../SDK/PhysicsSurfaceProps.h"
 #include "../SDK/WeaponData.h"
+//
+#include "../Hacks/Misc.h"
 
+struct Cvars {
+	ConVar* accelerate;
+	ConVar* maxSpeed;
+};
+
+static Cvars cvars;
+//
 Vector Aimbot::calculateRelativeAngle(const Vector& source, const Vector& destination, const Vector& viewAngles) noexcept
 {
     return ((destination - source).toAngle() - viewAngles).normalize();
@@ -218,6 +228,9 @@ void Aimbot::run(UserCmd* cmd) noexcept
             if (!config->aimbot[weaponIndex].silent)
                 interfaces->engine->setViewAngles(cmd->viewangles);
 
+			if (config->aimbot[weaponIndex].autoStop)
+				autoStop(cmd);
+
             if (config->aimbot[weaponIndex].autoScope && activeWeapon->nextPrimaryAttack() <= memory->globalVars->serverTime() && activeWeapon->isSniperRifle() && !localPlayer->isScoped())
                 cmd->buttons |= UserCmd::IN_ATTACK2;
 
@@ -233,4 +246,49 @@ void Aimbot::run(UserCmd* cmd) noexcept
             lastCommand = cmd->commandNumber;
         }
     }
+}
+
+void Aimbot::autoStop(UserCmd* cmd) noexcept
+{
+	if (!localPlayer)
+		return;
+
+	if (localPlayer->moveType() != MoveType::WALK)
+		return;
+
+	Vector velocity = localPlayer->velocity();
+	velocity.z = 0;
+
+	float speed = velocity.length2D();
+
+	if (speed < 1.0f) {
+		cmd->forwardmove = 0.f;
+		cmd->sidemove = 0.f;
+		return;
+	}
+
+	float accel = cvars.accelerate->getFloat();
+	float maxSpeed = cvars.maxSpeed->getFloat();
+
+	float playerSurfaceFriction = 1.0f;
+	float maxAccelSpeed = accel * memory->globalVars->intervalPerTick * maxSpeed * playerSurfaceFriction;
+
+	float wishSpeed{};
+
+	if (speed - maxAccelSpeed <= -1.f) wishSpeed = maxAccelSpeed / (speed / (accel * memory->globalVars->intervalPerTick));
+	else wishSpeed = maxAccelSpeed;
+
+	Vector ndir = (velocity * -1.f).toAngle();
+
+	ndir.y = cmd->viewangles.y - ndir.y;
+	ndir = ndir.fromAngle(ndir);
+
+	cmd->forwardmove = ndir.x * wishSpeed;
+	cmd->sidemove = ndir.y * wishSpeed;
+}
+
+void Aimbot::init() noexcept
+{
+	cvars.accelerate = interfaces->cvar->findVar("sv_accelerate");
+	cvars.maxSpeed = interfaces->cvar->findVar("sv_maxspeed");
 }
