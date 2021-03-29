@@ -71,13 +71,6 @@ public:
     std::array<Triggerbot, 40> triggerbot;
     KeyBind triggerbotHoldKey = KeyBind::NONE;
 
-    struct Backtrack {
-        bool enabled{ false };
-        bool ignoreSmoke{ false };
-        bool recoilBasedFov{ false };
-        int timeLimit{ 200 };
-    } backtrack;
-
     struct Chams {
         struct Material : Color4 {
             bool enabled = false;
@@ -92,6 +85,8 @@ public:
     };
 
     std::unordered_map<std::string, Chams> chams;
+    KeyBindToggle chamsToggleKey = KeyBind::NONE;
+    KeyBind chamsHoldKey = KeyBind::NONE;
 
     struct StreamProofESP {
         KeyBindToggle toggleKey = KeyBind::NONE;
@@ -204,6 +199,7 @@ public:
         bool revealRanks{ false };
         bool revealMoney{ false };
         bool revealSuspect{ false };
+        bool revealVotes{ false };
         bool fixAnimationLOD{ false };
         bool fixBoneMatrix{ false };
         bool fixMovement{ false };
@@ -225,8 +221,19 @@ public:
         KeyBind slowwalkKey = KeyBind::NONE;
         ColorToggleThickness noscopeCrosshair;
         ColorToggleThickness recoilCrosshair;
-        ColorToggle3 spectatorList;
-        ColorToggle3 watermark;
+
+        struct SpectatorList {
+            bool enabled = false;
+            bool noTitleBar = false;
+            ImVec2 pos;
+            ImVec2 size{ 200.0f, 200.0f };
+        };
+
+        SpectatorList spectatorList;
+        struct Watermark {
+            bool enabled = false;
+        };
+        Watermark watermark;
         float aspectratio{ 0 };
         std::string killMessageString{ "Gotcha!" };
         int banColor{ 6 };

@@ -1,3 +1,4 @@
+#include <atomic>
 #include <cstring>
 #include <list>
 #include <mutex>
@@ -8,6 +9,11 @@
 #include "Interfaces.h"
 #include "Memory.h"
 
+#include "Resources/avatar_ct.h"
+#include "Resources/avatar_tt.h"
+
+#include "stb_image.h"
+
 #include "SDK/ClientClass.h"
 #include "SDK/Engine.h"
 #include "SDK/Entity.h"
@@ -16,8 +22,10 @@
 #include "SDK/Localize.h"
 #include "SDK/LocalPlayer.h"
 #include "SDK/ModelInfo.h"
+#include "SDK/NetworkChannel.h"
 #include "SDK/PlayerResource.h"
 #include "SDK/Sound.h"
+#include "SDK/Steam.h"
 #include "SDK/WeaponId.h"
 #include "SDK/WeaponData.h"
 
@@ -31,6 +39,7 @@ static std::vector<LootCrateData> lootCrateData;
 static std::forward_list<ProjectileData> projectileData;
 static BombData bombData;
 static std::vector<InfernoData> infernoData;
+static std::atomic_int netOutgoingLatency;
 
 static auto playerByHandleWritable(int handle) noexcept
 {
@@ -38,17 +47,24 @@ static auto playerByHandleWritable(int handle) noexcept
     return it != playerData.end() ? &(*it) : nullptr;
 }
 
+static void updateNetLatency() noexcept
+{
+    if (const auto networkChannel = interfaces->engine->getNetworkChannel())
+        netOutgoingLatency = (std::max)(static_cast<int>(networkChannel->getLatency(0) * 1000.0f), 0);
+    else
+        netOutgoingLatency = 0;
+}
+
 void GameData::update() noexcept
 {
     static int lastFrame;
     if (lastFrame == memory->globalVars->framecount)
         return;
-
     lastFrame = memory->globalVars->framecount;
 
-    Lock lock;
+    updateNetLatency();
 
-    playerData.clear();
+    Lock lock;
     observerData.clear();
     weaponData.clear();
     entityData.clear();
@@ -84,8 +100,7 @@ void GameData::update() noexcept
             }
 
             if (!entity->isDormant() && !entity->isAlive()) {
-                const auto obs = entity->getObserverTarget();
-                if (obs)
+                if (const auto obs = entity->getObserverTarget())
                     observerData.emplace_back(entity, obs, obs == localPlayer.get());
             }
         } else {
@@ -162,6 +177,35 @@ void GameData::clearProjectileList() noexcept
 {
     Lock lock;
     projectileData.clear();
+}
+
+static void clearAvatarTextures() noexcept;
+
+struct PlayerAvatar {
+    mutable Texture texture;
+    std::unique_ptr<std::uint8_t[]> rgba;
+};
+
+static std::unordered_map<int, PlayerAvatar> playerAvatars;
+
+void GameData::clearTextures() noexcept
+{
+    Lock lock;
+
+    clearAvatarTextures();
+    for (const auto& [handle, avatar] : playerAvatars)
+        avatar.texture.clear();
+}
+
+void GameData::clearUnusedAvatars() noexcept
+{
+    Lock lock;
+    std::erase_if(playerAvatars, [](const auto& pair) { return std::ranges::find(std::as_const(playerData), pair.first, &PlayerData::handle) == playerData.cend(); });
+}
+
+int GameData::getNetOutgoingLatency() noexcept
+{
+    return netOutgoingLatency;
 }
 
 const Matrix4x4& GameData::toScreenMatrix() noexcept
@@ -321,20 +365,31 @@ void ProjectileData::update(Entity* projectile) noexcept
         trajectory.emplace_back(memory->globalVars->realtime, pos);
 }
 
-PlayerData::PlayerData(Entity* entity) noexcept : BaseData{ entity }
+PlayerData::PlayerData(Entity* entity) noexcept : BaseData{ entity }, handle{ entity->handle() }
 {
-    handle = entity->handle();
+    if (const auto steamID = entity->getSteamId()) {
+        const auto ctx = interfaces->engine->getSteamAPIContext();
+        const auto avatar = ctx->steamFriends->getSmallFriendAvatar(steamID);
+        constexpr auto rgbaDataSize = 4 * 32 * 32;
+
+        PlayerAvatar playerAvatar;
+        playerAvatar.rgba = std::make_unique<std::uint8_t[]>(rgbaDataSize);
+        if (ctx->steamUtils->getImageRGBA(avatar, playerAvatar.rgba.get(), rgbaDataSize))
+            playerAvatars[handle] = std::move(playerAvatar);
+    }
+
     update(entity);
 }
 
 void PlayerData::update(Entity* entity) noexcept
 {
-    entity->getPlayerName(name);
+    name = entity->getPlayerName();
 
     dormant = entity->isDormant();
     if (dormant)
         return;
 
+    team = entity->getTeamNumber();
     static_cast<BaseData&>(*this) = { entity };
     origin = entity->getAbsOrigin();
     inViewFrustum = !interfaces->engine->cullBox(obbMins + origin, obbMaxs + origin);
@@ -355,6 +410,7 @@ void PlayerData::update(Entity* entity) noexcept
     audible = isEntityAudible(entity->index());
     spotted = entity->spotted();
     health = entity->health();
+    immune = entity->gunGameImmunity();
     flashDuration = entity->flashDuration();
 
     if (const auto weapon = entity->getActiveWeapon()) {
@@ -375,6 +431,7 @@ void PlayerData::update(Entity* entity) noexcept
     if (!entity->setupBones(boneMatrices, MAXSTUDIOBONES, BONE_USED_BY_HITBOX, memory->globalVars->currenttime))
         return;
 
+    bones.clear();
     bones.reserve(20);
 
     for (int i = 0; i < studioModel->numBones; ++i) {
@@ -399,6 +456,57 @@ void PlayerData::update(Entity* entity) noexcept
         headMins -= headBox->capsuleRadius;
         headMaxs += headBox->capsuleRadius;
     }
+}
+
+struct PNGTexture {
+    template <std::size_t N>
+    PNGTexture(const std::array<char, N>& png) noexcept : pngData{ png.data() }, pngDataSize{ png.size() } {}
+
+    ImTextureID getTexture() const noexcept
+    {
+        if (!texture.get()) {
+            int width, height;
+            stbi_set_flip_vertically_on_load_thread(false);
+
+            if (const auto data = stbi_load_from_memory((const stbi_uc*)pngData, pngDataSize, &width, &height, nullptr, STBI_rgb_alpha)) {
+                texture.init(width, height, data);
+                stbi_image_free(data);
+            } else {
+                assert(false);
+            }
+        }
+
+        return texture.get();
+    }
+
+    void clearTexture() const noexcept { texture.clear(); }
+
+private:
+    const char* pngData;
+    std::size_t pngDataSize;
+
+    mutable Texture texture;
+};
+
+static const PNGTexture avatarTT{ Resource::avatar_tt };
+static const PNGTexture avatarCT{ Resource::avatar_ct };
+
+static void clearAvatarTextures() noexcept
+{
+    avatarTT.clearTexture();
+    avatarCT.clearTexture();
+}
+
+ImTextureID PlayerData::getAvatarTexture() const noexcept
+{
+    const auto it = std::as_const(playerAvatars).find(handle);
+    if (it == playerAvatars.cend())
+        return team == Team::TT ? avatarTT.getTexture() : avatarCT.getTexture();
+
+    const auto& avatar = it->second;
+    if (!avatar.texture.get())
+        avatar.texture.init(32, 32, avatar.rgba.get());
+    return avatar.texture.get();
 }
 
 WeaponData::WeaponData(Entity* entity) noexcept : BaseData{ entity }
@@ -520,12 +628,7 @@ LootCrateData::LootCrateData(Entity* entity) noexcept : BaseData{ entity }
     }(model->name);
 }
 
-ObserverData::ObserverData(Entity* entity, Entity* obs, bool targetIsLocalPlayer) noexcept
-{
-    entity->getPlayerName(name);
-    obs->getPlayerName(target);
-    this->targetIsLocalPlayer = targetIsLocalPlayer;
-}
+ObserverData::ObserverData(Entity* entity, Entity* obs, bool targetIsLocalPlayer) noexcept : playerHandle{ entity->handle() }, targetHandle{ obs->handle() }, targetIsLocalPlayer{ targetIsLocalPlayer } {}
 
 void BombData::update() noexcept
 {

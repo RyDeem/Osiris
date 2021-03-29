@@ -36,7 +36,7 @@ void Visuals::playerModel(FrameStage stage) noexcept
         return;
     }
 
-    constexpr auto getModel = [](int team) constexpr noexcept -> const char* {
+    constexpr auto getModel = [](Team team) constexpr noexcept -> const char* {
         constexpr std::array models{
         "models/player/custom_player/legacy/ctm_fbi_variantb.mdl",
         "models/player/custom_player/legacy/ctm_fbi_variantf.mdl",
@@ -103,13 +103,13 @@ void Visuals::playerModel(FrameStage stage) noexcept
         };
 
         switch (team) {
-        case 2: return static_cast<std::size_t>(config->visuals.playerModelT - 1) < models.size() ? models[config->visuals.playerModelT - 1] : nullptr;
-        case 3: return static_cast<std::size_t>(config->visuals.playerModelCT - 1) < models.size() ? models[config->visuals.playerModelCT - 1] : nullptr;
+        case Team::TT: return static_cast<std::size_t>(config->visuals.playerModelT - 1) < models.size() ? models[config->visuals.playerModelT - 1] : nullptr;
+        case Team::CT: return static_cast<std::size_t>(config->visuals.playerModelCT - 1) < models.size() ? models[config->visuals.playerModelCT - 1] : nullptr;
         default: return nullptr;
         }
     };
 
-    if (const auto model = getModel(localPlayer->team())) {
+    if (const auto model = getModel(localPlayer->getTeamNumber())) {
         if (stage == FrameStage::RENDER_START) {
             originalIdx = localPlayer->modelIndex();
             if (const auto modelprecache = interfaces->networkStringTableContainer->findTable("modelprecache")) {
@@ -546,6 +546,16 @@ void Visuals::drawMolotovHull(ImDrawList* drawList) noexcept
                     ++count;
             }
 
+            if (count < 1)
+                continue;
+
+            std::swap(screenPoints[0], *std::min_element(screenPoints.begin(), screenPoints.begin() + count, [](const auto& a, const auto& b) { return a.y < b.y || (a.y == b.y && a.x < b.x); }));
+
+            constexpr auto orientation = [](const ImVec2& a, const ImVec2& b, const ImVec2& c) {
+                return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y);
+            };
+
+            std::sort(screenPoints.begin() + 1, screenPoints.begin() + count, [&](const auto& a, const auto& b) { return orientation(screenPoints[0], a, b) > 0.0f; });
             drawList->AddConvexPolyFilled(screenPoints.data(), count, color);
         }
     }
